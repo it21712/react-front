@@ -1,0 +1,47 @@
+ul.bar {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: rgb(88, 124, 223);
+  border: 1px solid black;
+}
+
+ul.bar li.right {
+  float: right;
+}
+
+ul.bar li {
+  float: left;
+}
+
+img {
+  width: 65px;
+  height: 60px;
+  padding-right: 10px;
+  float: right;
+}
+
+.node {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 22px 28px;
+  text-decoration: none;
+  background-color: rgb(34, 60, 133);
+  border: 1px solid black;
+  border-style: ridge;
+  transition: 0.3s ease-in;
+
+  font-weight: 500;
+  letter-spacing: 2px;
+}
+
+.node:hover {
+  background-color: #555;
+  color: white;
+}
+
+.node.active {
+  background-color: #04aa6d;
+}

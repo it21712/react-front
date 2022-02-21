@@ -1,0 +1,17 @@
+h1 {
+  font-weight: bold;
+  text-decoration-line: underline;
+  text-align: center;
+}
+
+body {
+  background-color: rgb(250, 235, 215);
+}
+
+.watermark {
+  opacity: 0.5;
+  color: BLACK;
+  position: fixed;
+  top: auto;
+  left: 80%;
+}
