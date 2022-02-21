@@ -1,4 +1,4 @@
-# Getting Started with Create React App
+# Installation Guide
 
 ### Clone this repository -> https://github.com/it21712/react-front
 ### In the project directory run the following commands:
