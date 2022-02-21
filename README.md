@@ -1,6 +1,6 @@
 # Getting Started with Create React App
 
-### Clone this repository -> https://github.com/it21712/react-app
+### Clone this repository -> https://github.com/it21712/react-front
 ### In the project directory run the following commands:
 - `npm install react-scripts`
 - `npm start`
