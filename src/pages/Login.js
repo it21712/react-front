@@ -73,9 +73,15 @@ const Login = (props) => {
                     console.log('role is ' + item.role)
                     responseRole = item.role}
                 });
-                props.setUser({role:responseRole, loggedIn:true})
-                const { from } = location.state || { from: { pathname: "/profile" } };  
-                navigate(from, {replace:true});
+                if(responseRole === 'ROLE_ANONYMOUS' || responseRole === 'ROLE_ADMIN'){
+                    setLoginMessage("Wrong Credentials. Please try again")
+                    props.setUser({role:'ROLE_ANONYMOUS', loggedIn:false})
+                    console.log('logged out')
+                  }else{
+                    props.setUser({role:responseRole, loggedIn:true})
+                    const { from } = location.state || { from: { pathname: "/profile" } };  
+                    navigate(from, {replace:true});   
+                  }
             })
             
     }
