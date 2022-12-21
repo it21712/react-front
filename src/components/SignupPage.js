@@ -1,5 +1,6 @@
 import { signupHeaderText, signupSubmitText } from "../strings";
 import React, { useState } from 'react';
+import axios from 'axios';
 const SignupPage = () => {
     return (
         <div className="flex h-screen w-screen bg-slate-200">
@@ -18,27 +19,61 @@ const SignupForm = () => {
     const handleSubmit = (event) => {
 
         event.preventDefault();
-        validateForm();
+        // if (validateForm()) {
 
+        //     signUp();
+
+        // }
+        getAccount();
 
     };
 
     const validateForm = () => {
         setEmailError('');
         setPasswordError('');
-
+        let errorCount = 0;
         if (!email) {
             setEmailError('Email is required');
+            errorCount++;
         } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(email)) {
             setEmailError('Invalid email address');
+            errorCount++;
         }
         if (!password) {
             setPasswordError('Password is required');
+            errorCount++;
         } else if (password.length < 8) {
             setPasswordError('Password must be at least 8 characters');
+            errorCount++;
         }
+
+        return errorCount == 0;
     };
 
+    const signUp = () => {
+        const data = {
+            'email': email,
+            'password': password,
+        };
+
+        axios.post('http://localhost:8000/applicants/signup/', data)
+            .then((response) => {
+                console.log(response);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    };
+
+    const getAccount = () => {
+        axios.defaults.withCredentials = true;
+        axios.post('http://localhost:8000/applicants/account/', { withCredentials: true }).then((response) => {
+            console.log(response);
+        })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
 
     return (
         <form noValidate="true" onSubmit={handleSubmit} className="flex flex-col flex-wrap items-center m-auto w-[400px]  bg-white shadow-2xl shadow-slate-400 px-8 pb-20">
