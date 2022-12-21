@@ -3,3 +3,5 @@ export const welcomeText = 'Καλως Ορίσατε στην πλατφόρμ�
 export const appLoginMethodText = 'Επιλέξτε πως θέλετε να συνδεθείτε:';
 export const evaluatorText = 'Αξιολογητής (Σύνδεση με SSO)';
 export const applicantText = 'Αιτών';
+export const signupHeaderText = 'Δημιουργία λογαριασμού';
+export const signupSubmitText = 'Εγγραφή';
