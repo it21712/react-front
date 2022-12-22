@@ -1,6 +1,7 @@
 import { signupHeaderText, signupSubmitText } from "../strings";
 import React, { useState } from 'react';
 import axios from 'axios';
+import Cookies from 'js-cookie';
 const SignupPage = () => {
     return (
         <div className="flex h-screen w-screen bg-slate-200">
@@ -19,13 +20,14 @@ const SignupForm = () => {
     const handleSubmit = (event) => {
 
         event.preventDefault();
-        // if (validateForm()) {
+        if (validateForm()) {
+            console.log('signing up...')
+            //signUp();
 
-        //     signUp();
+        }
 
-        // }
+
         getAccount();
-
     };
 
     const validateForm = () => {
@@ -58,7 +60,14 @@ const SignupForm = () => {
 
         axios.post('http://localhost:8000/applicants/signup/', data)
             .then((response) => {
-                console.log(response);
+
+
+                const token = response.data['access'];
+                console.log('token sent: ');
+                console.log(token);
+
+                axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+                getAccount();
             })
             .catch((error) => {
                 console.log(error);
@@ -67,7 +76,7 @@ const SignupForm = () => {
 
     const getAccount = () => {
         axios.defaults.withCredentials = true;
-        axios.post('http://localhost:8000/applicants/account/', { withCredentials: true }).then((response) => {
+        axios.post('http://localhost:8000/applicants/account/',).then((response) => {
             console.log(response);
         })
             .catch((error) => {
