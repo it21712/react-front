@@ -1,8 +1,13 @@
 import { signupHeaderText, signupSubmitText } from "../strings";
 import React, { useState } from 'react';
-import axios from 'axios';
-import Cookies from 'js-cookie';
+//import axios from 'axios';
+import { APPLICANT_SIGNUP_URL, BACKEND_URL } from "../backend/urls";
+import useRefreshToken from "../hooks/useRefreshToken";
+import axios, { axiosPrivate } from "../backend/axios";
 const SignupPage = () => {
+
+
+
     return (
         <div className="flex h-screen w-screen bg-slate-200">
             <SignupForm />
@@ -12,22 +17,23 @@ const SignupPage = () => {
 
 const SignupForm = () => {
 
+    const refresh = useRefreshToken();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [emailError, setEmailError] = useState('');
     const [passwordError, setPasswordError] = useState('');
-
+    const backendUrl = process.env.REACT_APP_BACKEND;
     const handleSubmit = (event) => {
 
         event.preventDefault();
         if (validateForm()) {
             console.log('signing up...')
-            //signUp();
+            signUp();
 
         }
 
 
-        getAccount();
+
     };
 
     const validateForm = () => {
@@ -58,15 +64,8 @@ const SignupForm = () => {
             'password': password,
         };
 
-        axios.post('http://localhost:8000/applicants/signup/', data)
+        axios.post(APPLICANT_SIGNUP_URL, data)
             .then((response) => {
-
-
-                const token = response.data['access'];
-                console.log('token sent: ');
-                console.log(token);
-
-                axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
                 getAccount();
             })
             .catch((error) => {
@@ -74,15 +73,14 @@ const SignupForm = () => {
             });
     };
 
-    const getAccount = () => {
-        axios.defaults.withCredentials = true;
-        axios.post('http://localhost:8000/applicants/account/',).then((response) => {
-            console.log(response);
-        })
-            .catch((error) => {
-                console.log(error);
-            });
+    const getAccount = (event) => {
+        event.preventDefault();
+
+        axiosPrivate.post('/applicants/account/').then((response) => {
+            console.log(response.data);
+        });
     }
+
 
     return (
         <form noValidate="true" onSubmit={handleSubmit} className="flex flex-col flex-wrap items-center m-auto w-[400px]  bg-white shadow-2xl shadow-slate-400 px-8 pb-20">
@@ -109,6 +107,10 @@ const SignupForm = () => {
                 type="submit" className="w-full my-16 p-3 bg-orange-400 transition ease-in-out duration:700 hover:bg-orange-500">{signupSubmitText}</button>
         </form>
     );
+}
+
+const VerifyEmailForm = () => {
+
 }
 
 export default SignupPage;
