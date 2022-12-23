@@ -3,7 +3,9 @@ import React, { useState } from 'react';
 //import axios from 'axios';
 import { APPLICANT_SIGNUP_URL, BACKEND_URL } from "../backend/urls";
 import useRefreshToken from "../hooks/useRefreshToken";
-import axios, { axiosPrivate } from "../backend/axios";
+import axios from "../backend/axios";
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
+import useAuth from "../hooks/useAuth";
 const SignupPage = () => {
 
 
@@ -16,6 +18,8 @@ const SignupPage = () => {
 }
 
 const SignupForm = () => {
+    const { setAuth } = useAuth();
+    const axiosPrivate = useAxiosPrivate();
 
     const refresh = useRefreshToken();
     const [email, setEmail] = useState('');
@@ -66,7 +70,9 @@ const SignupForm = () => {
 
         axios.post(APPLICANT_SIGNUP_URL, data)
             .then((response) => {
-                getAccount();
+                const accessToken = response?.data?.access;
+
+                setAuth({ accessToken });
             })
             .catch((error) => {
                 console.log(error);
