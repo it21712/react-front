@@ -4,3 +4,4 @@ export const committeeRoute = '/committee';
 export const signupRoute = '/signup';
 export const loginRoute = '/login';
 export const verifyEmailRoute = '/verify';
+export const profileRoute = '/profile';

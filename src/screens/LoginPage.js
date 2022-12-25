@@ -1,5 +1,5 @@
 import { Link, useNavigate, useLocation, Navigate } from "react-router-dom";
-import { homeRoute } from "../routes";
+import { applicantsRoute, homeRoute, profileRoute } from "../routes";
 import { loginHeaderText, loginSubmitText } from "../strings";
 import axios from "../backend/axios";
 import useAuth from "../hooks/useAuth";
@@ -102,7 +102,7 @@ const LoginForm = () => {
             {passwordError && <div className={'text-red-500 text-sm font-bold mt-2 mb-6'}>{passwordError}</div>}
             <button
                 type="submit" className="w-full my-16 p-3 bg-orange-400 transition ease-in-out duration:700 hover:bg-orange-500">{loginSubmitText}</button>
-            {loggedIn && <Navigate to={homeRoute} replace />}
+            {loggedIn && <Navigate to={applicantsRoute + profileRoute} replace />}
         </form>
     );
 }
