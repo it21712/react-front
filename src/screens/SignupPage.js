@@ -1,18 +1,20 @@
-import { signupHeaderText, signupSubmitText } from "../strings";
+import { signupHeaderText, signupSubmitText, verifyEmailDesc, verifyEmailText } from "../strings";
 import React, { useState } from 'react';
-//import axios from 'axios';
-import { APPLICANT_SIGNUP_URL, BACKEND_URL } from "../backend/urls";
-import useRefreshToken from "../hooks/useRefreshToken";
+
+import { APPLICANT_SIGNUP_URL, VERIFY_EMAIL_URL } from "../backend/urls";
+
 import axios from "../backend/axios";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import useAuth from "../hooks/useAuth";
+import { Navigate } from "react-router-dom";
+import { verifyEmailRoute } from "../routes";
+
+
 const SignupPage = () => {
-
-
 
     return (
         <div className="flex h-screen w-screen bg-slate-200">
-            <SignupForm />
+            <SignupForm></SignupForm>
         </div>
     );
 }
@@ -21,23 +23,18 @@ const SignupForm = () => {
     const { setAuth } = useAuth();
     const axiosPrivate = useAxiosPrivate();
 
-    const refresh = useRefreshToken();
+    const [verify, setVerify] = useState(false);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [emailError, setEmailError] = useState('');
     const [passwordError, setPasswordError] = useState('');
-    const backendUrl = process.env.REACT_APP_BACKEND;
-    const handleSubmit = (event) => {
 
+    const handleSubmit = (event) => {
         event.preventDefault();
         if (validateForm()) {
-            console.log('signing up...')
             signUp();
-
+            setVerify(true);
         }
-
-
-
     };
 
     const validateForm = () => {
@@ -59,7 +56,7 @@ const SignupForm = () => {
             errorCount++;
         }
 
-        return errorCount == 0;
+        return errorCount === 0;
     };
 
     const signUp = () => {
@@ -79,17 +76,9 @@ const SignupForm = () => {
             });
     };
 
-    const getAccount = (event) => {
-        event.preventDefault();
-
-        axiosPrivate.post('/applicants/account/').then((response) => {
-            console.log(response.data);
-        });
-    }
-
 
     return (
-        <form noValidate="true" onSubmit={handleSubmit} className="flex flex-col flex-wrap items-center m-auto w-[400px]  bg-white shadow-2xl shadow-slate-400 px-8 pb-20">
+        <form noValidate={true} onSubmit={handleSubmit} className="flex flex-col flex-wrap items-center m-auto w-[400px]  bg-white shadow-2xl shadow-slate-400 px-8 pb-20">
             <h2 className="py-14 text-lg text-gray-800">{signupHeaderText}</h2>
             <input
                 type="email"
@@ -111,12 +100,11 @@ const SignupForm = () => {
             {passwordError && <div className={'text-red-500 text-sm font-bold mt-2 mb-6'}>{passwordError}</div>}
             <button
                 type="submit" className="w-full my-16 p-3 bg-orange-400 transition ease-in-out duration:700 hover:bg-orange-500">{signupSubmitText}</button>
+            {verify && <Navigate to={verifyEmailRoute} replace={true}></Navigate>}
         </form>
     );
 }
 
-const VerifyEmailForm = () => {
 
-}
 
 export default SignupPage;

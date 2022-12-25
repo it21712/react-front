@@ -5,3 +5,7 @@ export const evaluatorText = 'Αξιολογητής (Σύνδεση με SSO)';
 export const applicantText = 'Αιτών';
 export const signupHeaderText = 'Δημιουργία λογαριασμού';
 export const signupSubmitText = 'Εγγραφή';
+export const loginHeaderText = 'Παρακαλώ εισάγετε τα στοιχεία σας';
+export const loginSubmitText = 'Σύνδεση';
+export const verifyEmailText = 'Εκκρεμεί επιβεβαίωση του email σας';
+export const verifyEmailDesc = 'Παρακαλούμε ακολουθήστε τον σύνδεσμο που έχει σταλεί στο email που καταχωρήσατε για να επιβεβαιώσετε τον λογαριασμό σας και να συνδεθείτε'; 

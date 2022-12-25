@@ -8,14 +8,13 @@ const useAxiosPrivate = () => {
     const { auth } = useAuth();
 
     useEffect(() => {
-        console.log('access token received:');
-        console.log(auth?.accessToken);
+
         const requestIntercept = axiosPrivate.interceptors.request.use(
             config => {
                 if (!config.headers['Authorization']) {
-                    console.log('auth header missing');
+
                     config.headers['Authorization'] = `Bearer ${auth?.accessToken}`;
-                    console.log('auth header updated to: ' + config.headers['Authorization']);
+
                 }
                 return config;
             }, (error) => Promise.reject(error)
@@ -29,7 +28,7 @@ const useAxiosPrivate = () => {
                     prevRequest.sent = true;
                     const newAccessToken = await refresh();
                     prevRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
-                    console.log('prev request to be resent: ' + prevRequest);
+
                     return axiosPrivate(prevRequest);
                 }
                 return Promise.reject(error);
