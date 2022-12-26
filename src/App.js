@@ -6,6 +6,7 @@ import SignupPage from './screens/SignupPage';
 import VerifyEmailPage from './screens/VerifyEmailPage';
 import LoginPage from './screens/LoginPage';
 import ApplicantPage from './screens/ApplicantPage';
+
 function App() {
   return (
     <div className='App'>
@@ -16,6 +17,7 @@ function App() {
         <Route path={committeeRoute + signupRoute} element={<SignupPage />} />
         <Route path={verifyEmailRoute} element={<VerifyEmailPage />} />
         <Route path={applicantsRoute + profileRoute} element={<ApplicantPage />} />
+
       </Routes>
     </div>
 

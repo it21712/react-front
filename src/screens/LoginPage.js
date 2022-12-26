@@ -13,7 +13,9 @@ const LoginPage = () => {
 
 
     return (
-        <LoginForm />
+        <div className="flex h-screen w-screen bg-slate-200">
+            <LoginForm />
+        </div>
     );
 }
 

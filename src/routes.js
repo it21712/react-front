@@ -5,3 +5,4 @@ export const signupRoute = '/signup';
 export const loginRoute = '/login';
 export const verifyEmailRoute = '/verify';
 export const profileRoute = '/profile';
+export const logoutRoute = '/logout';

@@ -1,4 +1,4 @@
-import { signupHeaderText, signupSubmitText, verifyEmailDesc, verifyEmailText } from "../strings";
+import { alreadyHaveAccountText, clickHereLoginText, signupHeaderText, signupSubmitText, verifyEmailDesc, verifyEmailText } from "../strings";
 import React, { useState } from 'react';
 
 import { APPLICANT_SIGNUP_URL, VERIFY_EMAIL_URL } from "../backend/urls";
@@ -7,7 +7,7 @@ import axios from "../backend/axios";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import useAuth from "../hooks/useAuth";
 import { Navigate } from "react-router-dom";
-import { verifyEmailRoute } from "../routes";
+import { loginRoute, verifyEmailRoute } from "../routes";
 
 
 const SignupPage = () => {
@@ -29,6 +29,8 @@ const SignupForm = () => {
     const [emailError, setEmailError] = useState('');
     const [passwordError, setPasswordError] = useState('');
 
+    const [login, setLogin] = useState(false);
+
     const handleSubmit = (event) => {
         event.preventDefault();
         if (validateForm()) {
@@ -36,6 +38,10 @@ const SignupForm = () => {
             setVerify(true);
         }
     };
+
+    const handleLoginClick = () => {
+        setLogin(true);
+    }
 
     const validateForm = () => {
         setEmailError('');
@@ -100,8 +106,15 @@ const SignupForm = () => {
             {passwordError && <div className={'text-red-500 text-sm font-bold mt-2 mb-6'}>{passwordError}</div>}
             <button
                 type="submit" className="w-full my-16 p-3 bg-orange-400 transition ease-in-out duration:700 hover:bg-orange-500">{signupSubmitText}</button>
+
+            <div className="cursor-pointer" onClick={handleLoginClick}>
+                <h2 className="text-md text-gray-500">{alreadyHaveAccountText}</h2>
+                <h2 className="text-md text-gray-500">{clickHereLoginText}</h2>
+            </div>
+
             {verify && <Navigate to={verifyEmailRoute} replace={true}></Navigate>}
-        </form>
+            {login && <Navigate to={loginRoute} replace={false}></Navigate>}
+        </form >
     );
 }
 
