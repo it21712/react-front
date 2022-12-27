@@ -1,16 +1,18 @@
 import { appTitle } from "../strings";
 import useAuth from "../hooks/useAuth";
-import useAxiosPrivate from "../hooks/useAxiosPrivate";
+import useAxiosPrivate, { useAxiosRole } from "../hooks/useAxiosPrivate";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import { LOGOUT_URL } from "../backend/urls";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { homeRoute } from "../routes";
 const ApplicantPage = () => {
     const { auth, setAuth } = useAuth();
     const axiosPrivate = useAxiosPrivate();
     const [logout, setLogout] = useState(false);
+    const axiosRole = useAxiosRole();
+
 
     const handleLogout = () => {
         if (auth?.email) {

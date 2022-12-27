@@ -85,7 +85,6 @@ const LoginForm = ({ email, setEmail, loggedIn, setLoggedIn }) => {
                 setAuth({ accessToken, email, isVerified, group });
                 setLoggedIn(true);
 
-                //TODO save email, group, isVerified in localstorage
             }).catch((error) => {
                 console.log(error);
             });

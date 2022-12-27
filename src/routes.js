@@ -6,3 +6,4 @@ export const loginRoute = '/login';
 export const verifyEmailRoute = '/verify';
 export const profileRoute = '/profile';
 export const logoutRoute = '/logout';
+export const unauthorizedRoute = '/unauthorized';

@@ -2,6 +2,8 @@ import { axiosPrivate } from "../backend/axios";
 import { useEffect } from "react";
 import useRefreshToken from "./useRefreshToken";
 import useAuth from "./useAuth";
+import { useNavigate } from "react-router-dom";
+import { unauthorizedRoute } from "../routes";
 
 const useAxiosPrivate = () => {
     const refresh = useRefreshToken();
@@ -44,6 +46,30 @@ const useAxiosPrivate = () => {
         }
 
     }, [auth, refresh])
+    return axiosPrivate;
+}
+
+
+export const useAxiosRole = () => {
+    const axiosPrivate = useAxiosPrivate();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const responseIntercept = axiosPrivate.interceptors.response.use(
+            response => response,
+            async (error) => {
+                if (error?.response?.status === 401) {
+                    navigate(unauthorizedRoute);
+                }
+
+                return Promise.reject(error);
+            }
+        );
+
+        return () => {
+            axiosPrivate.interceptors.response.eject(responseIntercept);
+        }
+    }, []);
     return axiosPrivate;
 }
 
