@@ -1,6 +1,6 @@
 import { Link, useNavigate, useLocation, Navigate } from "react-router-dom";
-import { applicantsRoute, homeRoute, profileRoute } from "../routes";
-import { authErrorText, loginHeaderText, loginSubmitText } from "../strings";
+import { applicantsRoute, homeRoute, profileRoute, signupRoute } from "../routes";
+import { authErrorText, clickHereSignupText, createAccountText, loginHeaderText, loginSubmitText } from "../strings";
 import axios from "../backend/axios";
 import useAuth from "../hooks/useAuth";
 import { LOGIN_URL } from "../backend/urls";
@@ -9,8 +9,9 @@ const LoginPage = () => {
 
     const navigate = useNavigate();
     const location = useLocation();
-    const from = location.state?.from?.pathName || homeRoute;
-    console.log(from);
+    const from = location.state.from || homeRoute;
+
+
     const [loggedIn, setLoggedIn] = useState(false);
     const [email, setEmail] = useState('');
 
@@ -22,16 +23,21 @@ const LoginPage = () => {
 
     });
 
+
+    const handleSignupClick = () => {
+        navigate(applicantsRoute + signupRoute);
+    }
+
     return (
         <div className="flex h-screen w-screen bg-slate-200">
-            <LoginForm email={email} setEmail={setEmail} setLoggedIn={setLoggedIn} />
+            <LoginForm email={email} setEmail={setEmail} setLoggedIn={setLoggedIn} handleSignupClick={handleSignupClick} />
         </div>
     );
 }
 
 
 
-const LoginForm = ({ email, setEmail, loggedIn, setLoggedIn }) => {
+const LoginForm = ({ email, setEmail, loggedIn, setLoggedIn, handleSignupClick }) => {
     const { setAuth } = useAuth();
 
 
@@ -90,6 +96,7 @@ const LoginForm = ({ email, setEmail, loggedIn, setLoggedIn }) => {
             });
     }
 
+
     return (
         <form noValidate={true} onSubmit={handleSubmit} className="flex flex-col flex-wrap items-center m-auto w-[400px]  bg-white shadow-2xl shadow-slate-400 px-8 pb-20">
             <h2 className="py-14 text-lg text-gray-800">{loginHeaderText}</h2>
@@ -114,7 +121,11 @@ const LoginForm = ({ email, setEmail, loggedIn, setLoggedIn }) => {
             {passwordError && <div className={'text-red-500 text-sm font-bold mt-2 mb-6'}>{passwordError}</div>}
             <button
                 type="submit" className="w-full my-16 p-3 bg-orange-400 transition ease-in-out duration:700 hover:bg-orange-500">{loginSubmitText}</button>
-            {/* {loggedIn && <Navigate to={applicantsRoute + profileRoute} replace />} */}
+
+            <div className="cursor-pointer" onClick={handleSignupClick}>
+                <h2 className="text-md text-gray-500">{createAccountText}</h2>
+                <h2 className="text-md text-gray-500">{clickHereSignupText}</h2>
+            </div>
         </form>
     );
 }

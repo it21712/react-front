@@ -3,7 +3,7 @@ import { applicantText, appLoginMethodText, appTitle, evaluatorText, welcomeText
 import RoleButton from '../components/RoleButton';
 import { FaUniversity, FaFolderOpen } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
-import { applicantsRoute, committeeRoute, signupRoute } from '../routes';
+import { applicantsRoute, committeeRoute, profileRoute } from '../routes';
 
 
 
@@ -13,8 +13,7 @@ const WelcomePage = () => {
     const navigate = useNavigate();
 
     const navigateTo = (localUrl) => {
-        console.log(localUrl);
-        navigate(localUrl);
+        navigate(localUrl, { state: localUrl, replace: true });
     }
 
 
@@ -31,8 +30,8 @@ const WelcomePage = () => {
                 <h3 className='font-bold text-2xl invisible sm:visible text-gray-800 px-8'>{welcomeText}</h3>
                 <h3 className='font-normal text-xl invisible sm:visible text-gray-800 py-6'>{appLoginMethodText}</h3>
                 <div className='flex justify-center space-x-8 py-8'>
-                    <RoleButton icon={<FaFolderOpen size='45' className='text-stone-500 transition ease-in-out duration-300 group-hover:text-white' />} text={applicantText} onClick={() => navigateTo(applicantsRoute + signupRoute)} />
-                    <RoleButton icon={<FaUniversity size='45' className='text-stone-500 transition ease-in-out duration-300 group-hover:text-white' />} text={evaluatorText} onClick={() => navigateTo(committeeRoute + signupRoute)} />
+                    <RoleButton icon={<FaFolderOpen size='45' className='text-stone-500 transition ease-in-out duration-300 group-hover:text-white' />} text={applicantText} onClick={() => navigateTo(applicantsRoute + profileRoute)} />
+                    <RoleButton icon={<FaUniversity size='45' className='text-stone-500 transition ease-in-out duration-300 group-hover:text-white' />} text={evaluatorText} onClick={() => navigateTo(committeeRoute + profileRoute)} />
 
                 </div>
 
