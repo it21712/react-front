@@ -4,29 +4,38 @@ import { loginHeaderText, loginSubmitText } from "../strings";
 import axios from "../backend/axios";
 import useAuth from "../hooks/useAuth";
 import { LOGIN_URL } from "../backend/urls";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 const LoginPage = () => {
 
     const navigate = useNavigate();
     const location = useLocation();
     const from = location.state?.from?.pathName || homeRoute;
 
+    const [loggedIn, setLoggedIn] = useState(false);
+    const [email, setEmail] = useState('');
+
+    useEffect(() => {
+        if (loggedIn) {
+            localStorage.setItem('email', email);
+            navigate(from, { replace: true });
+        }
+
+    }, [loggedIn]);
 
     return (
         <div className="flex h-screen w-screen bg-slate-200">
-            <LoginForm />
+            <LoginForm email={email} setEmail={setEmail} setLoggedIn={setLoggedIn} />
         </div>
     );
 }
 
 
 
-const LoginForm = () => {
-
+const LoginForm = ({ email, setEmail, loggedIn, setLoggedIn }) => {
     const { setAuth } = useAuth();
 
-    const [loggedIn, setLoggedIn] = useState(false);
-    const [email, setEmail] = useState('');
+
+
     const [password, setPassword] = useState('');
     const [emailError, setEmailError] = useState('');
     const [passwordError, setPasswordError] = useState('');
@@ -61,7 +70,7 @@ const LoginForm = () => {
     };
 
 
-    const login = () => {
+    const login = async () => {
         const data = {
             'email': email,
             'password': password
@@ -75,6 +84,7 @@ const LoginForm = () => {
                 console.log(accessToken)
                 setAuth({ accessToken, email, isVerified, group });
                 setLoggedIn(true);
+
                 //TODO save email, group, isVerified in localstorage
             }).catch((error) => {
                 console.log(error);
@@ -104,7 +114,7 @@ const LoginForm = () => {
             {passwordError && <div className={'text-red-500 text-sm font-bold mt-2 mb-6'}>{passwordError}</div>}
             <button
                 type="submit" className="w-full my-16 p-3 bg-orange-400 transition ease-in-out duration:700 hover:bg-orange-500">{loginSubmitText}</button>
-            {loggedIn && <Navigate to={applicantsRoute + profileRoute} replace />}
+            {/* {loggedIn && <Navigate to={applicantsRoute + profileRoute} replace />} */}
         </form>
     );
 }

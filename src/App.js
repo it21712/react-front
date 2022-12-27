@@ -6,23 +6,29 @@ import SignupPage from './screens/SignupPage';
 import VerifyEmailPage from './screens/VerifyEmailPage';
 import LoginPage from './screens/LoginPage';
 import ApplicantPage from './screens/ApplicantPage';
+import Layout from './routes/Layout';
+import RequireAuth from './routes/RequireAuth';
 
 
 function App() {
+
   return (
-    <div className='App'>
-      <Routes>
+    <Routes>
+      <Route path='/' element={<Layout />}>
+        {/*Public routes*/}
         <Route path={homeRoute} element={<WelcomePage />} />
-        <Route path={loginRoute} element={<LoginPage />} />
         <Route path={applicantsRoute + signupRoute} element={<SignupPage />} />
-        <Route path={committeeRoute + signupRoute} element={<SignupPage />} />
+        <Route path={loginRoute} element={<LoginPage />} />
         <Route path={verifyEmailRoute} element={<VerifyEmailPage />} />
-        <Route path={applicantsRoute + profileRoute} element={<ApplicantPage />} />
 
-      </Routes>
-    </div>
+        {/*Protected routes*/}
+        <Route element={<RequireAuth />}>
+          <Route path={applicantsRoute + profileRoute} element={<ApplicantPage />} />
 
+        </Route>
 
+      </Route>
+    </Routes>
   );
 }
 

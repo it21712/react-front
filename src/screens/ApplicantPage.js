@@ -11,11 +11,13 @@ const ApplicantPage = () => {
     const { auth, setAuth } = useAuth();
     const axiosPrivate = useAxiosPrivate();
     const [logout, setLogout] = useState(false);
+
     const handleLogout = () => {
-        if (auth.accessToken) {
+        if (auth?.email) {
             axiosPrivate.post(LOGOUT_URL);
             setAuth({});
             setLogout(true);
+            localStorage.removeItem('email');
         }
     }
 
