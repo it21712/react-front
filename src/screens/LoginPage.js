@@ -1,6 +1,6 @@
 import { Link, useNavigate, useLocation, Navigate } from "react-router-dom";
 import { applicantsRoute, homeRoute, profileRoute } from "../routes";
-import { loginHeaderText, loginSubmitText } from "../strings";
+import { authErrorText, loginHeaderText, loginSubmitText } from "../strings";
 import axios from "../backend/axios";
 import useAuth from "../hooks/useAuth";
 import { LOGIN_URL } from "../backend/urls";
@@ -39,6 +39,7 @@ const LoginForm = ({ email, setEmail, loggedIn, setLoggedIn }) => {
     const [password, setPassword] = useState('');
     const [emailError, setEmailError] = useState('');
     const [passwordError, setPasswordError] = useState('');
+    const [authError, setAuthError] = useState('');
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -86,13 +87,15 @@ const LoginForm = ({ email, setEmail, loggedIn, setLoggedIn }) => {
                 setLoggedIn(true);
 
             }).catch((error) => {
-                console.log(error);
+                setAuthError(authErrorText);
+                //console.log(error);
             });
     }
 
     return (
         <form noValidate={true} onSubmit={handleSubmit} className="flex flex-col flex-wrap items-center m-auto w-[400px]  bg-white shadow-2xl shadow-slate-400 px-8 pb-20">
             <h2 className="py-14 text-lg text-gray-800">{loginHeaderText}</h2>
+            {authError && <div className='text-red-500 text-sm font-bold'> {authError}</div>}
             <input
                 type="email"
                 placeholder="Email address"

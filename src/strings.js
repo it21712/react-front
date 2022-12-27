@@ -10,4 +10,5 @@ export const loginSubmitText = 'Σύνδεση';
 export const verifyEmailText = 'Εκκρεμεί επιβεβαίωση του email σας';
 export const verifyEmailDesc = 'Παρακαλούμε ακολουθήστε τον σύνδεσμο που έχει σταλεί στο email που καταχωρήσατε για να επιβεβαιώσετε τον λογαριασμό σας και να συνδεθείτε';
 export const alreadyHaveAccountText = 'Έχετε ήδη λογαριασμό?';
-export const clickHereLoginText = 'Πατήστε εδώ για να συνδεθείτε'; 
+export const clickHereLoginText = 'Πατήστε εδώ για να συνδεθείτε';
+export const authErrorText = 'Τα παρακάτω στοιχεία δεν είναι σωστά. Παρακαλώ ξαναπροσπαθήστε';
