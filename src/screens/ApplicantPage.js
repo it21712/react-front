@@ -13,7 +13,6 @@ const ApplicantPage = () => {
     const [logout, setLogout] = useState(false);
     const axiosRole = useAxiosRole();
 
-
     const handleLogout = () => {
         if (auth?.email) {
             axiosPrivate.post(LOGOUT_URL);
@@ -23,11 +22,19 @@ const ApplicantPage = () => {
         }
     }
 
+    const handleAccount = () => {
+        axiosRole.get('/applicants/account/').then((response) => {
+            console.log(response.status);
+        }).catch((error) => {
+            console.log(error);
+        })
+    }
+
     return (
         <div className="flex flex-col h-screen">
             <div className="flex bg-gray-800 shadow-md fixed w-full z-10 top-0 h-16 px-3 justify-between items-center">
                 <h3 className='font-normal invisible sm:visible text-white my-auto'>{appTitle}</h3>
-                <ProfileButton email={auth.email} handleLogout={handleLogout} />
+                <ProfileButton email={auth.email} handleLogout={handleAccount} />
             </div>
 
             {logout && <Navigate to={homeRoute} replace />}

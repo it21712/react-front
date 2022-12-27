@@ -10,7 +10,7 @@ const LoginPage = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const from = location.state?.from?.pathName || homeRoute;
-
+    console.log(from);
     const [loggedIn, setLoggedIn] = useState(false);
     const [email, setEmail] = useState('');
 

@@ -12,3 +12,4 @@ export const verifyEmailDesc = 'Παρακαλούμε ακολουθήστε τ
 export const alreadyHaveAccountText = 'Έχετε ήδη λογαριασμό?';
 export const clickHereLoginText = 'Πατήστε εδώ για να συνδεθείτε';
 export const authErrorText = 'Τα παρακάτω στοιχεία δεν είναι σωστά. Παρακαλώ ξαναπροσπαθήστε';
+export const unverifiedMessage = 'Unverified';
