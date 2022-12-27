@@ -1,11 +1,12 @@
 import './App.css';
 import WelcomePage from './screens/WelcomePage';
 import { Route, Routes } from 'react-router-dom';
-import { homeRoute, applicantsRoute, loginRoute, signupRoute, committeeRoute, verifyEmailRoute, profileRoute } from './routes';
+import { homeRoute, applicantsRoute, loginRoute, signupRoute, committeeRoute, verifyEmailRoute, profileRoute, logoutRoute } from './routes';
 import SignupPage from './screens/SignupPage';
 import VerifyEmailPage from './screens/VerifyEmailPage';
 import LoginPage from './screens/LoginPage';
 import ApplicantPage from './screens/ApplicantPage';
+
 
 function App() {
   return (
