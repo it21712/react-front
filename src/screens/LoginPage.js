@@ -20,7 +20,7 @@ const LoginPage = () => {
             navigate(from, { replace: true });
         }
 
-    }, [loggedIn]);
+    });
 
     return (
         <div className="flex h-screen w-screen bg-slate-200">
@@ -80,15 +80,13 @@ const LoginForm = ({ email, setEmail, loggedIn, setLoggedIn }) => {
         axios.post(LOGIN_URL, data)
             .then((response) => {
                 const accessToken = response?.data?.access;
-                const isVerified = response?.data?.is_verified;
-                const group = response?.data?.group;
+
                 console.log(accessToken)
-                setAuth({ accessToken, email, isVerified, group });
+                setAuth({ accessToken, email });
                 setLoggedIn(true);
 
             }).catch((error) => {
                 setAuthError(authErrorText);
-                //console.log(error);
             });
     }
 
