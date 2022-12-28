@@ -41,8 +41,11 @@ const ApplicantPage = () => {
                 <h3 className='font-normal invisible sm:visible text-white my-auto'>{appTitle}</h3>
                 
             </div>
-
-            <SidebarDrawer email={auth?.email}/>
+            <div className='flex h-full w-screen'>
+                <SidebarDrawer email={auth?.email}/>
+                <UserDetailsFragment/>
+            </div>
+            
             
 
             {logout && <Navigate to={homeRoute} replace />}
@@ -67,21 +70,22 @@ const ProfileButton = ({ email, handleLogout }) => {
 
 const SidebarDrawer = ({email}) => {
     return (
-        <div className='flex h-screen'>
+        <div className='flex h-screen w-[23%]'>
                 {/* <div className='flex flex-col transition -translate-x-[80%] ease-in duration:700 w-[23%] hover:translate-x-0 bg-gray-800 mt-16 items-center px-6'>            */}
-                <div className='flex flex-col w-[23%] bg-gray-800 mt-16 px-6'>
+                <div className='flex flex-col bg-gray-800 mt-16 px-6 w-full'>
                     <div className='mt-6 mx-auto'>
                         <ProfileAvatar/>
                     </div>
-                    <div className='border-b-[2px] border-white w-full mx-auto mb-10'>
+                    <div className='border-b-[1px] border-white w-full mx-auto mb-10'>
                         <h2 className='text-white font-bold mt-2 mb-2'>{email}</h2>
                     </div>
-                    
+                    <div>
                     <SidebarAction content={accountDetails} icon={faList}/>
                     <SidebarAction content={invitationsText} icon={faEnvelope}/>
-                   
                     <SidebarAction content={contactText} icon={faAt}/>
                     <SidebarAction content={logoutText} icon={faArrowRightFromBracket}/>
+                    </div>
+                    
                 </div>
             </div>
     );
@@ -101,6 +105,15 @@ const SidebarAction = ({content, handleClick, icon}) => {
         <FontAwesomeIcon icon={icon} color='white'/>
         <h2 className='text-white pl-4'>{content}</h2>
     </div>);
+}
+
+
+const UserDetailsFragment = () => {
+    return (
+        <div className='bg-gray-200 w-[77%] h-full'>
+
+        </div>
+    );
 }
 
 export default ApplicantPage;
