@@ -31,3 +31,4 @@ export const tkText = 'Ταχυδρομικός Κώδικας';
 export const roadNumberText = 'Αριθμός';
 export const countryText = 'Χώρα';
 export const profilePicText = 'Φωτογραφία Προφίλ';
+export const detailsSubmitText = 'Αποθήκευση';
