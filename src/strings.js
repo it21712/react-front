@@ -32,3 +32,6 @@ export const roadNumberText = 'Αριθμός';
 export const countryText = 'Χώρα';
 export const profilePicText = 'Φωτογραφία Προφίλ';
 export const detailsSubmitText = 'Αποθήκευση';
+export const requiredFieldText = 'Αυτό το πεδίο είναι υποχρεωτικό';
+export const onlyLettersFieldText = 'Αυτό το πεδίο πρέπει να περιέχει μόνο γράμματα';
+export const emailValidatorText = 'Με έγκυρη διεύθυνση ηλεκτρονικού ταχυδρομίου';

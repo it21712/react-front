@@ -4,7 +4,7 @@ import useAxiosPrivate, { useAxiosRole } from "../hooks/useAxiosPrivate";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRightFromBracket, faList, faEnvelope, faAt } from "@fortawesome/free-solid-svg-icons";
 import { LOGOUT_URL } from "../backend/urls";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { homeRoute } from "../routes";
 import UserDetailsFragment, { ProfileAvatar } from "../components/UserDetailsFragment";
@@ -13,6 +13,25 @@ import UserDetailsFragment, { ProfileAvatar } from "../components/UserDetailsFra
 const ApplicantPage = () => {
 
 
+    const fileInput = useRef(null);
+    const [imageUrl, setImageUrl] = useState('');
+
+    const handleFileSelect = () => {
+        const file = fileInput.current.files[0];
+        const reader = new FileReader();
+        reader.onload = () => {
+            setImageUrl(reader.result);
+            //localStorage.setItem('imageUrl', reader.result);
+            //TODO send to server
+        };
+        reader.readAsDataURL(file);
+    };
+
+
+    const handleFormSubmit = (event) => {
+
+    };
+
     return (
         <div className="flex flex-col h-screen">
             <div className="flex bg-gray-800 shadow-md fixed w-full z-10 top-0 h-16 px-3 justify-start items-center">
@@ -20,8 +39,8 @@ const ApplicantPage = () => {
             </div>
 
             <div className='flex h-full w-screen'>
-                <SidebarDrawer />
-                <UserDetailsFragment />
+                <SidebarDrawer imageUrl={imageUrl} />
+                <UserDetailsFragment fileRef={fileInput} handleFileSelect={handleFileSelect} imageUrl={imageUrl} handleSubmit={handleFormSubmit} />
             </div>
 
         </div>
@@ -29,7 +48,7 @@ const ApplicantPage = () => {
 
 }
 
-const SidebarDrawer = () => {
+const SidebarDrawer = ({ imageUrl }) => {
 
     const { auth, setAuth } = useAuth();
     const axiosPrivate = useAxiosPrivate();
@@ -52,7 +71,7 @@ const SidebarDrawer = () => {
             {/* <div className='flex flex-col transition -translate-x-[80%] ease-in duration:700 w-[23%] hover:translate-x-0 bg-gray-800 mt-16 items-center px-6'>            */}
             <div className='flex flex-col bg-gray-800 mt-16 px-6 w-full h-full'>
                 <div className='mt-6 mx-auto w-12 h-12'>
-                    <ProfileAvatar />
+                    <ProfileAvatar pic={imageUrl} />
                 </div>
                 <div className='border-b-[1px] border-white w-full mx-auto mb-10'>
                     <h2 className='text-white font-bold mt-2 mb-2'>{auth?.email}</h2>

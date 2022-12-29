@@ -1,64 +1,99 @@
+import { useState } from "react";
 import { addressText, cellPhoneText, cityText, countryText, dateOfBirthText, detailsSubmitText, firstNameText, lastNameText, phoneText, roadNameText, roadNumberText, tkText } from "../strings";
+import { EmailFieldValidator, RequiredFieldValidator, TextOnlyValidator } from "../validators/Validators";
 
 
 export const ProfileAvatar = ({ pic }) => {
+    //const cachedImageUrl = localStorage.getItem('imageUrl');
+
     return (
         <div className='flex w-full h-full items-center justify-center '>
-            <img src='/unknown_avatar.png' alt='unknown' className='w-full h-full object-cover rounded-full'></img>
+            <img src={!pic ? '/unknown_avatar.png' : pic} alt='unknown' className='w-full h-full object-cover rounded-full'></img>
         </div>
     );
 }
 
-const UserDetailsFragment = () => {
+const UserDetailsFragment = ({ imageUrl, fileRef, handleFileSelect, handleSubmit }) => {
 
-    const InputField = ({ type, id }) => {
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [email, setEmail] = useState('');
+    const [birthDate, setBirthDate] = useState('');
+    const [phone, setPhone] = useState('');
+    const [cellPhone, setCellPhone] = useState('');
+    const [country, setCountry] = useState('');
+    const [city, setCity] = useState('');
+    const [road, setRoad] = useState('');
+    const [roadNum, setRoadNum] = useState('');
+    const [tk, setTk] = useState('');
+
+    const [validate, setValidate] = useState(false);
+    const InputField = ({ type, id, onChange }) => {
         return (
-            <input type={type} id={id} className='w-full py-3 px-3 border-2 rounded-sm text-gray-700 leading-tight mt-2 focus:outline-none'></input>
+            <input type={type} id={id} onChange={onChange} className='w-full py-3 px-3 border-2 rounded-sm text-gray-700 leading-tight mt-2 focus:outline-none'></input>
         );
     }
 
+
+    const handleFormSubmit = (event) => {
+        event.preventDefault();
+        //validate form
+        setValidate(true);
+        console.log('submit');
+        handleSubmit();
+    }
+
+
+
     return (
-        <div className='flex bg-gray-200 w-full h-screen mt-16 justify-center'>
-            <form className='mt-6 flex flex-col w-[40%]'>
+        <div className='flex bg-gray-200 w-full h-full mt-16 justify-center overflow-scroll'>
+            <form noValidate={true} onSubmit={handleFormSubmit} className='mt-6 flex flex-col w-[40%]'>
                 <div className='flex items-center mt-6 mb-12'>
                     <div className='w-24 h-24 shadow-lg shadow-stone-400 rounded-full mr-4'>
-                        <ProfileAvatar />
+                        <ProfileAvatar pic={imageUrl} />
                     </div>
 
-                    <input type='file' id='profilePic' className='file:bg-gray-700 file:p-2 file:text-white file:rounded-md file:border-none file:cursor-pointer file:drop-shadow-md file:shadow-stone-400 file:mr-4 file:transition file:duration:500 file:ease-in-out hover:file:-translate-y-2 py-2 pl-4 rounded-sm text-gray-700' />
+                    <input type='file' ref={fileRef} onChange={handleFileSelect} id='profilePic' className='file:bg-gray-700 file:p-2 file:text-white file:rounded-md file:border-none file:cursor-pointer file:drop-shadow-md file:shadow-stone-400 file:mr-4 file:transition file:duration:500 file:ease-in-out hover:file:-translate-y-2 py-2 pl-4 rounded-sm text-gray-700' />
                 </div>
 
                 <div className='flex'>
 
                     <div className='flex flex-col items-start pr-6 w-full'>
                         <h2>{firstNameText}</h2>
-                        <InputField type='text' id='firstName' />
+                        <InputField type='text' id='firstName' onChange={(event) => setFirstName(event.target.value)} />
+                        {validate && <h2 className='text-red-500 text-sm font-bold'>{TextOnlyValidator(firstName)}</h2>}
+
                     </div>
                     <div className='flex flex-col items-start w-full'>
                         <h2>{lastNameText}</h2>
-                        <InputField type='text' id='lastName' />
+                        <InputField type='text' id='lastName' onChange={(event) => setLastName(event.target.value)} />
+                        {validate && <h2 className='text-red-500 text-sm font-bold'>{TextOnlyValidator(lastName)}</h2>}
                     </div>
                 </div>
 
                 <div className='flex flex-col items-start mt-6'>
                     <h2>Email</h2>
-                    <InputField type='email' id='email' />
+                    <InputField type='email' id='email' onChange={(event) => setEmail(event.target.value)} />
+                    {validate && <h2 className='text-red-500 text-sm font-bold'>{EmailFieldValidator(email)}</h2>}
                 </div>
 
                 <div className='flex flex-col items-start mt-6'>
                     <h2>{dateOfBirthText}</h2>
-                    <InputField type='date' id='birthDate' />
+                    <InputField type='date' id='birthDate' onChange={(event) => setBirthDate(event.target.value)} />
+                    {validate && <h2 className='text-red-500 text-sm font-bold'>{RequiredFieldValidator(birthDate)}</h2>}
                 </div>
 
                 <div className='flex mt-6'>
                     <div className='w-full flex flex-col items-start pr-6'>
                         <h2>{phoneText}</h2>
-                        <InputField type='number' id='phone' />
+                        <InputField type='number' id='phone' onChange={(event) => setPhone(event.target.value)} />
+
                     </div>
 
                     <div className='w-full flex flex-col items-start'>
                         <h2>{cellPhoneText}</h2>
-                        <InputField type='number' id='cellPhone' />
+                        <InputField type='number' id='cellPhone' onChange={(event) => setCellPhone(event.target.value)} />
+                        {validate && <h2 className='text-red-500 text-sm font-bold'>{RequiredFieldValidator(cellPhone)}</h2>}
                     </div>
 
                 </div>
@@ -66,28 +101,33 @@ const UserDetailsFragment = () => {
                 <div className='flex'>
                     <div className='flex flex-col justify-start items-start mt-6 pr-6 w-full'>
                         <h2>{countryText}</h2>
-                        <InputField type='text' id='country' />
+                        <InputField type='text' id='country' onChange={(event) => setCountry(event.target.value)} />
+                        {validate && <h2 className='text-red-500 text-sm font-bold'>{RequiredFieldValidator(country)}</h2>}
                     </div>
 
                     <div className='flex flex-col items-start mt-6 w-full'>
                         <h2>{cityText}</h2>
-                        <InputField type='text' id='city' />
+                        <InputField type='text' id='city' onChange={(event) => setCity(event.target.value)} />
+                        {validate && <h2 className='text-red-500 text-sm font-bold'>{RequiredFieldValidator(city)}</h2>}
                     </div>
                 </div>
                 <div className='flex flex-col items-start mt-3'>
-                    <h1 className='text-lg mb-3 mt-3'>{addressText}</h1>
+                    {/* <h1 className='text-lg mb-3 mt-3'>{addressText}</h1> */}
                     <div className='flex items-center w-full'>
                         <div className='flex flex-col items-start pr-4 w-full justify-start'>
                             <h2>{roadNameText}</h2>
-                            <InputField type='text' id='roadName' />
+                            <InputField type='text' id='roadName' onChange={(event) => setRoad(event.target.value)} />
+                            {validate && <h2 className='text-red-500 text-sm font-bold'>{RequiredFieldValidator(road)}</h2>}
                         </div>
                         <div className='flex flex-col items-start pr-4 w-full'>
                             <h2>{roadNumberText}</h2>
-                            <InputField type='number' id='roadNumber' />
+                            <InputField type='number' id='roadNumber' onChange={(event) => setRoadNum(event.target.value)} />
+                            {validate && <h2 className='text-red-500 text-sm font-bold'>{RequiredFieldValidator(roadNum)}</h2>}
                         </div>
                         <div className='flex flex-col items-start w-full'>
                             <h2>{tkText}</h2>
-                            <InputField type='number' id='tk' />
+                            <InputField type='number' id='tk' onChange={(event) => setTk(event.target.value)} />
+                            {validate && <h2 className='text-red-500 text-sm font-bold'>{RequiredFieldValidator(tk)}</h2>}
                         </div>
                     </div>
 
