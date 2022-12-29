@@ -46,7 +46,7 @@ const UserDetailsFragment = ({ imageUrl, fileRef, handleFileSelect, handleSubmit
 
 
     return (
-        <div className='flex bg-gray-200 w-full h-full mt-16 justify-center overflow-scroll'>
+        <div className='flex bg-gray-200 w-full h-full mt-16 justify-center overflow-y-scroll'>
             <form noValidate={true} onSubmit={handleFormSubmit} className='mt-6 flex flex-col w-[40%]'>
                 <div className='flex items-center mt-6 mb-12'>
                     <div className='w-24 h-24 shadow-lg shadow-stone-400 rounded-full mr-4'>

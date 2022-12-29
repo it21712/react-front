@@ -38,10 +38,14 @@ const ApplicantPage = () => {
                 <h3 className='font-normal invisible sm:visible text-white my-auto'>{appTitle}</h3>
             </div>
 
-            <div className='flex h-full w-screen'>
+            <div className='flex h-screen w-screen'>
+
                 <SidebarDrawer imageUrl={imageUrl} />
+
                 <UserDetailsFragment fileRef={fileInput} handleFileSelect={handleFileSelect} imageUrl={imageUrl} handleSubmit={handleFormSubmit} />
+
             </div>
+
 
         </div>
     );
