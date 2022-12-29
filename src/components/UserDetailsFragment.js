@@ -46,9 +46,9 @@ const UserDetailsFragment = ({ imageUrl, fileRef, handleFileSelect, handleSubmit
 
 
     return (
-        <div className='flex bg-gray-200 w-full h-full mt-16 justify-center overflow-y-scroll'>
-            <form noValidate={true} onSubmit={handleFormSubmit} className='mt-6 flex flex-col w-[40%]'>
-                <div className='flex items-center mt-6 mb-12'>
+        <div className='flex bg-gray-200 w-full h-full justify-center overflow-y-scroll'>
+            <form noValidate={true} onSubmit={handleFormSubmit} className='flex flex-col w-[40%]'>
+                <div className='flex items-center mt-6 mb-10'>
                     <div className='w-24 h-24 shadow-lg shadow-stone-400 rounded-full mr-4'>
                         <ProfileAvatar pic={imageUrl} />
                     </div>
@@ -132,7 +132,7 @@ const UserDetailsFragment = ({ imageUrl, fileRef, handleFileSelect, handleSubmit
                     </div>
 
                 </div>
-                <button type="submit" className="text-white mx-auto w-[50%] my-16 p-3 bg-gray-700 duration:700 hover:bg-gray-800 shadow-xl shadow-gray-400 transition-all duration:500 ease-in-out hover:rounded-lg hover:-translate-y-2">{detailsSubmitText}</button>
+                <button type="submit" className="text-white mx-auto w-[50%] p-3 mt-8 bg-gray-700 duration:700 hover:bg-gray-800 shadow-xl shadow-gray-400 transition-all duration:500 ease-in-out hover:rounded-lg hover:-translate-y-2">{detailsSubmitText}</button>
 
 
 

@@ -34,9 +34,9 @@ const ApplicantPage = () => {
 
     return (
         <div className="flex flex-col h-screen">
-            <div className="flex bg-gray-800 shadow-md fixed w-full z-10 top-0 h-16 px-3 justify-start items-center">
+            {/* <div className="flex bg-gray-800 shadow-md fixed w-full z-10 top-0 h-16 px-3 justify-start items-center">
                 <h3 className='font-normal invisible sm:visible text-white my-auto'>{appTitle}</h3>
-            </div>
+            </div> */}
 
             <div className='flex h-screen w-screen'>
 
@@ -73,7 +73,7 @@ const SidebarDrawer = ({ imageUrl }) => {
     return (
         <div className='hidden h-screen w-[23%] md:flex '>
             {/* <div className='flex flex-col transition -translate-x-[80%] ease-in duration:700 w-[23%] hover:translate-x-0 bg-gray-800 mt-16 items-center px-6'>            */}
-            <div className='flex flex-col bg-gray-800 mt-16 px-6 w-full h-full'>
+            <div className='flex flex-col bg-gray-800 px-6 w-full h-full'>
                 <div className='mt-6 mx-auto w-12 h-12'>
                     <ProfileAvatar pic={imageUrl} />
                 </div>
