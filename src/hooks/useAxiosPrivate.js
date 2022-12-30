@@ -84,7 +84,7 @@ export const useAxiosRole = () => {
                     prevRequest.sent = true;
                     const newAccessToken = await refresh();
                     prevRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
-
+                    console.log(newAccessToken);
                     return axiosPrivate(prevRequest);
                 } else if (error?.response?.status === 403 && error?.response?.data['detail'] === unverifiedMessage) {
                     navigate(verifyEmailRoute);
@@ -102,27 +102,5 @@ export const useAxiosRole = () => {
     return axiosPrivate;
 }
 
-// export const useAxiosRole = () => {
-//     const navigate = useNavigate();
-
-//     useEffect(() => {
-//         const responseIntercept = axiosPrivate.interceptors.response.use(
-//             response => response,
-//             async (error) => {
-
-//                 if (error?.response?.status === 401) {
-//                     navigate(unauthorizedRoute);
-//                 }
-
-//                 return Promise.reject(error);
-//             }
-//         );
-
-//         return () => {
-//             axiosPrivate.interceptors.response.eject(responseIntercept);
-//         }
-//     }, []);
-//     return axiosPrivate;
-// }
 
 export default useAxiosPrivate;

@@ -5,9 +5,12 @@ const AuthContext = createContext({});
 
 export const AuthProvider = ({ children }) => {
     const email = localStorage.getItem('email');
+    const imageUrl = null;
     const [auth, setAuth] = useState({
-        email: email
+        email: email,
+        imageUrl: null
     });
+
 
 
 

@@ -13,34 +13,16 @@ import SignupPage from "./SignupPage";
 
 const ApplicantPage = () => {
 
-
-    const fileInput = useRef(null);
-    const [imageUrl, setImageUrl] = useState('');
-
-    const handleFileSelect = () => {
-        const file = fileInput.current.files[0];
-        const reader = new FileReader();
-        reader.onload = () => {
-            setImageUrl(reader.result);
-            //localStorage.setItem('imageUrl', reader.result);
-            //TODO send to server
-        };
-        reader.readAsDataURL(file);
-    };
-
-
-    const handleFormSubmit = () => {
-
-    };
+    const { auth, setAuth } = useAuth();
 
     return (
         <div className="flex flex-col h-screen">
 
             <div className='flex h-screen w-screen'>
 
-                <SidebarDrawer imageUrl={imageUrl} />
+                <SidebarDrawer imageUrl={auth?.imageUrl} email={auth?.email} />
 
-                <UserDetailsFragment fileRef={fileInput} handleFileSelect={handleFileSelect} imageUrl={imageUrl} handleSubmit={handleFormSubmit} />
+                <UserDetailsFragment email={auth?.email} />
 
             </div>
 
@@ -50,16 +32,15 @@ const ApplicantPage = () => {
 
 }
 
-const SidebarDrawer = ({ imageUrl }) => {
+const SidebarDrawer = ({ imageUrl, email, setAuth }) => {
 
-    const { auth, setAuth } = useAuth();
+   
     const axiosPrivate = useAxiosPrivate();
     const [logout, setLogout] = useState(false);
     const axiosRole = useAxiosRole();
     const navigate = useNavigate();
-
     const handleLogout = () => {
-        if (auth?.email) {
+        if (email) {
             axiosPrivate.post(LOGOUT_URL);
             setAuth({});
             setLogout(true);
@@ -73,10 +54,10 @@ const SidebarDrawer = ({ imageUrl }) => {
             {/* <div className='flex flex-col transition -translate-x-[80%] ease-in duration:700 w-[23%] hover:translate-x-0 bg-gray-800 mt-16 items-center px-6'>            */}
             <div className='flex flex-col bg-gray-800 px-6 w-full h-full'>
                 <div className='mt-6 mx-auto w-12 h-12'>
-                    <ProfileAvatar pic={imageUrl} />
+                    <ProfileAvatar picUrl={imageUrl} />
                 </div>
                 <div className='border-b-[1px] border-white w-full mx-auto mb-10'>
-                    <h2 className='text-white font-bold mt-2 mb-2'>{auth?.email}</h2>
+                    <h2 className='text-white font-bold mt-2 mb-2'>{email}</h2>
                 </div>
                 <div>
                     <SidebarAction content={accountDetails} icon={faList} />
