@@ -8,6 +8,7 @@ import { useEffect, useState, useRef } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { homeRoute } from "../routes";
 import UserDetailsFragment, { ProfileAvatar } from "../components/UserDetailsFragment";
+import SignupPage from "./SignupPage";
 
 
 const ApplicantPage = () => {
@@ -28,7 +29,7 @@ const ApplicantPage = () => {
     };
 
 
-    const handleFormSubmit = (event) => {
+    const handleFormSubmit = () => {
 
     };
 
@@ -41,7 +42,7 @@ const ApplicantPage = () => {
             <div className='flex h-screen w-screen'>
 
                 <SidebarDrawer imageUrl={imageUrl} />
-
+                
                 <UserDetailsFragment fileRef={fileInput} handleFileSelect={handleFileSelect} imageUrl={imageUrl} handleSubmit={handleFormSubmit} />
 
             </div>

@@ -15,18 +15,6 @@ export const ProfileAvatar = ({ pic }) => {
 
 const UserDetailsFragment = ({ imageUrl, fileRef, handleFileSelect, handleSubmit }) => {
 
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
-    const [email, setEmail] = useState('');
-    const [birthDate, setBirthDate] = useState('');
-    const [phone, setPhone] = useState('');
-    const [cellPhone, setCellPhone] = useState('');
-    const [country, setCountry] = useState('');
-    const [city, setCity] = useState('');
-    const [road, setRoad] = useState('');
-    const [roadNum, setRoadNum] = useState('');
-    const [tk, setTk] = useState('');
-
     const [validate, setValidate] = useState(false);
     const InputField = ({ type, id, onChange, value }) => {
         console.log(value);
@@ -44,11 +32,22 @@ const UserDetailsFragment = ({ imageUrl, fileRef, handleFileSelect, handleSubmit
         handleSubmit();
     }
 
+    const DetailsForm = () => {
+        const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [email, setEmail] = useState('');
+    const [birthDate, setBirthDate] = useState('');
+    const [phone, setPhone] = useState('');
+    const [cellPhone, setCellPhone] = useState('');
+    const [country, setCountry] = useState('');
+    const [city, setCity] = useState('');
+    const [road, setRoad] = useState('');
+    const [roadNum, setRoadNum] = useState('');
+    const [tk, setTk] = useState('');
 
-
-    return (
-        <div className='flex bg-gray-200 w-full h-full justify-center overflow-y-scroll'>
-            <form noValidate={true} onSubmit={handleFormSubmit} className='flex flex-col w-[40%]'>
+    
+        return (
+            <form noValidate={true} onSubmit={handleFormSubmit} className='flex flex-col md:w-[60%] w-[90%]'>
                 <div className='flex items-center mt-6 mb-10'>
                     <div className='w-24 h-24 shadow-lg shadow-stone-400 rounded-full mr-4'>
                         <ProfileAvatar pic={imageUrl} />
@@ -134,12 +133,16 @@ const UserDetailsFragment = ({ imageUrl, fileRef, handleFileSelect, handleSubmit
 
                 </div>
                 <button type="submit" className="text-white mx-auto w-[50%] p-3 mt-8 bg-gray-700 duration:700 hover:bg-gray-800 shadow-xl shadow-gray-400 transition-all duration:500 ease-in-out hover:rounded-lg hover:-translate-y-2">{detailsSubmitText}</button>
-
-
-
             </form>
+        );
+    }
+
+    return (
+        <div className='flex bg-gray-200 w-full h-full justify-center overflow-y-scroll'>
+           <DetailsForm/>
         </div>
     );
+
 }
 
 export default UserDetailsFragment;
