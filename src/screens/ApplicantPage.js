@@ -35,14 +35,11 @@ const ApplicantPage = () => {
 
     return (
         <div className="flex flex-col h-screen">
-            {/* <div className="flex bg-gray-800 shadow-md fixed w-full z-10 top-0 h-16 px-3 justify-start items-center">
-                <h3 className='font-normal invisible sm:visible text-white my-auto'>{appTitle}</h3>
-            </div> */}
 
             <div className='flex h-screen w-screen'>
 
                 <SidebarDrawer imageUrl={imageUrl} />
-                
+
                 <UserDetailsFragment fileRef={fileInput} handleFileSelect={handleFileSelect} imageUrl={imageUrl} handleSubmit={handleFormSubmit} />
 
             </div>

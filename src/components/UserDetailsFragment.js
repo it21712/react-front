@@ -34,18 +34,18 @@ const UserDetailsFragment = ({ imageUrl, fileRef, handleFileSelect, handleSubmit
 
     const DetailsForm = () => {
         const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
-    const [email, setEmail] = useState('');
-    const [birthDate, setBirthDate] = useState('');
-    const [phone, setPhone] = useState('');
-    const [cellPhone, setCellPhone] = useState('');
-    const [country, setCountry] = useState('');
-    const [city, setCity] = useState('');
-    const [road, setRoad] = useState('');
-    const [roadNum, setRoadNum] = useState('');
-    const [tk, setTk] = useState('');
+        const [lastName, setLastName] = useState('');
+        const [email, setEmail] = useState('');
+        const [birthDate, setBirthDate] = useState('');
+        const [phone, setPhone] = useState('');
+        const [cellPhone, setCellPhone] = useState('');
+        const [country, setCountry] = useState('');
+        const [city, setCity] = useState('');
+        const [road, setRoad] = useState('');
+        const [roadNum, setRoadNum] = useState('');
+        const [tk, setTk] = useState('');
 
-    
+
         return (
             <form noValidate={true} onSubmit={handleFormSubmit} className='flex flex-col md:w-[60%] w-[90%]'>
                 <div className='flex items-center mt-6 mb-10'>
@@ -139,7 +139,7 @@ const UserDetailsFragment = ({ imageUrl, fileRef, handleFileSelect, handleSubmit
 
     return (
         <div className='flex bg-gray-200 w-full h-full justify-center overflow-y-scroll'>
-           <DetailsForm/>
+            <DetailsForm />
         </div>
     );
 
