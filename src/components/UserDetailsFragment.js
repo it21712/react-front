@@ -2,7 +2,7 @@ import { useState, useRef } from "react";
 import useAuth from "../hooks/useAuth";
 import { cellPhoneText, cityText, countryText, dateOfBirthText, detailsSubmitText, firstNameText, lastNameText, phoneText, roadNameText, roadNumberText, tkText } from "../strings";
 import { EmailFieldValidator, RequiredFieldValidator, TextOnlyValidator, WordOnlyValidator } from "../validators/Validators";
-import useAxiosPrivate from "../hooks/useAxiosPrivate";
+import useAxiosPrivate, { useAxiosRole } from "../hooks/useAxiosPrivate";
 
 export const ProfileAvatar = ({ picUrl }) => {
     //const cachedImageUrl = localStorage.getItem('imageUrl');
@@ -16,7 +16,8 @@ export const ProfileAvatar = ({ picUrl }) => {
 
 const UserDetailsFragment = ({ email }) => {
     const axiosPrivate = useAxiosPrivate();
-    const {auth ,setAuth} = useAuth();
+    const axiosRole = useAxiosRole();
+    const { auth, setAuth } = useAuth();
     const InputField = ({ type, id, onChange, value, readOnly }) => {
         return (
             <input type={type} id={id} value={value} readOnly={readOnly} onChange={onChange} className='w-full py-3 px-3 border-2 rounded-sm text-gray-700 leading-tight mt-2 focus:outline-none'></input>
@@ -29,7 +30,7 @@ const UserDetailsFragment = ({ email }) => {
 
         const [firstName, setFirstName] = useState('');
         const [lastName, setLastName] = useState('');
-       
+
         const [birthDate, setBirthDate] = useState('');
         const [phone, setPhone] = useState('');
         const [cellPhone, setCellPhone] = useState('');
@@ -41,7 +42,7 @@ const UserDetailsFragment = ({ email }) => {
 
         const [firstNameError, setFirstNameError] = useState(null);
         const [lastNameError, setLastNameError] = useState(null);
-       
+
         const [birthDateError, setBirthDateError] = useState(null);
         const [cellPhoneError, setCellPhoneError] = useState(null);
         const [countryError, setCountryError] = useState(null);
@@ -56,36 +57,36 @@ const UserDetailsFragment = ({ email }) => {
             const file = fileInput.current.files[0];
             const reader = new FileReader();
             reader.onload = () => {
-                
+
                 setAuth(prev => {
-                    return {...prev, imageUrl: reader.result}
+                    return { ...prev, imageUrl: reader.result }
 
                 });
-                
+
             };
             reader.readAsDataURL(file);
         };
 
         const sendDetails = () => {
             const data = {
-                'firstName' : firstName,
-                'lastName' : lastName,
-                'birthDate' : birthDate,
-                'phone' : phone,
-                'cellPhone' : cellPhone,
-                'country' : country,
-                'city' : city,
-                'road' : road,
-                'roadNumber' : roadNum,
+                'firstName': firstName,
+                'lastName': lastName,
+                'birthDate': birthDate,
+                'phone': phone,
+                'cellPhone': cellPhone,
+                'country': country,
+                'city': city,
+                'road': road,
+                'roadNumber': roadNum,
                 'tk': tk,
-                'profilePic' : auth?.imageUrl,
+                'profilePic': auth?.imageUrl,
             }
-            
-            axiosPrivate.post('/applicants/details/', data);
+
+            axiosRole.post('/applicants/account/', data);
         }
 
         const validateForm = () => {
-            
+
             const fe = WordOnlyValidator(firstName);
             const le = WordOnlyValidator(lastName);
             const be = RequiredFieldValidator(birthDate);
@@ -106,20 +107,20 @@ const UserDetailsFragment = ({ email }) => {
             setRoadNumError(rne);
             setTkError(te);
 
-            if(fe || le || be || ce || coe
+            if (fe || le || be || ce || coe
                 || cie || re || rne || te) return false;
 
             return true;
         }
 
-       
+
         const handleFormSubmit = (event) => {
             event.preventDefault();
-            
-            if(validateForm())
+
+            if (validateForm())
                 sendDetails(event);
         }
-       
+
 
         return (
             <form noValidate={true} onSubmit={handleFormSubmit} className='flex flex-col md:w-[60%] w-[90%]'>
@@ -137,8 +138,8 @@ const UserDetailsFragment = ({ email }) => {
                         <h2>{firstNameText}</h2>
                         <InputField type='text' value={firstName} id='firstName' onChange={(event) => setFirstName(event.target.value)} />
                         <h2 className='text-red-500 text-sm font-bold'>{firstNameError ? firstNameError : ''}</h2>
-                       
-                        
+
+
                     </div>
                     <div className='flex flex-col items-start w-full'>
                         <h2>{lastNameText}</h2>
@@ -150,7 +151,7 @@ const UserDetailsFragment = ({ email }) => {
                 <div className='flex flex-col items-start mt-6'>
                     <h2>Email</h2>
                     <InputField type='email' id='email' value={email} readOnly={true} />
-                   
+
                 </div>
 
                 <div className='flex flex-col items-start mt-6'>
