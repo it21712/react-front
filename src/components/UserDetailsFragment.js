@@ -3,6 +3,7 @@ import useAuth from "../hooks/useAuth";
 import { cellPhoneText, cityText, countryText, dateOfBirthText, detailsSubmitText, firstNameText, lastNameText, phoneText, roadNameText, roadNumberText, tkText } from "../strings";
 import { EmailFieldValidator, RequiredFieldValidator, TextOnlyValidator, WordOnlyValidator } from "../validators/Validators";
 import useAxiosPrivate, { useAxiosRole } from "../hooks/useAxiosPrivate";
+import { APPLICANT_DETAILS_URL } from "../backend/urls";
 
 export const ProfileAvatar = ({ picUrl }) => {
     //const cachedImageUrl = localStorage.getItem('imageUrl');
@@ -82,7 +83,7 @@ const UserDetailsFragment = ({ email }) => {
                 'profilePic': auth?.imageUrl,
             }
 
-            axiosRole.post('/applicants/account/', data);
+            axiosRole.post(APPLICANT_DETAILS_URL, data);
         }
 
         const validateForm = () => {
