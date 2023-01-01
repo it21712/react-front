@@ -72,15 +72,15 @@ const UserDetailsFragment = ({ email }) => {
             const data = {
                 'firstName': firstName,
                 'lastName': lastName,
-                'birthDate': birthDate,
+                'birth_date': birthDate,
                 'phone': phone,
-                'cellPhone': cellPhone,
+                'cell_phone': cellPhone,
                 'country': country,
                 'city': city,
                 'road': road,
-                'roadNumber': roadNum,
-                'tk': tk,
-                'profilePic': auth?.imageUrl,
+                'road_number': roadNum,
+                'postal_code': tk,
+                'profile_pic': auth?.imageUrl,
             }
 
             axiosRole.post(APPLICANT_DETAILS_URL, data);
