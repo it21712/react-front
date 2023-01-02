@@ -5,7 +5,6 @@ import useAuth from "./useAuth";
 import { useNavigate } from "react-router-dom";
 import { unauthorizedRoute, verifyEmailRoute } from "../routes";
 import { unverifiedMessage } from "../strings";
-import VerifyEmailPage from "../screens/VerifyEmailPage";
 
 const useAxiosPrivate = () => {
     const refresh = useRefreshToken();
@@ -101,6 +100,4 @@ export const useAxiosRole = () => {
     }, [auth, refresh])
     return axiosPrivate;
 }
-
-
 export default useAxiosPrivate;

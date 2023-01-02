@@ -20,7 +20,7 @@ const ApplicantPage = () => {
 
             <div className='flex h-screen w-screen'>
 
-                <SidebarDrawer imageUrl={auth?.imageUrl} email={auth?.email} />
+                <SidebarDrawer imageUrl={auth?.imageUrl} email={auth?.email} setAuth={setAuth} />
 
                 <UserDetailsFragment email={auth?.email} />
 
@@ -34,7 +34,7 @@ const ApplicantPage = () => {
 
 const SidebarDrawer = ({ imageUrl, email, setAuth }) => {
 
-   
+
     const axiosPrivate = useAxiosPrivate();
     const [logout, setLogout] = useState(false);
     const axiosRole = useAxiosRole();
@@ -43,8 +43,9 @@ const SidebarDrawer = ({ imageUrl, email, setAuth }) => {
         if (email) {
             axiosPrivate.post(LOGOUT_URL);
             setAuth({});
-            setLogout(true);
             localStorage.removeItem('email');
+            setLogout(true);
+
             navigate(homeRoute, { replace: true });
         }
     }
@@ -56,8 +57,8 @@ const SidebarDrawer = ({ imageUrl, email, setAuth }) => {
                 <div className='mt-6 mx-auto w-12 h-12'>
                     <ProfileAvatar picUrl={imageUrl} />
                 </div>
-                <div className='border-b-[1px] border-white w-full mx-auto mb-10'>
-                    <h2 className='text-white font-bold mt-2 mb-2'>{email}</h2>
+                <div className='border-b-[1px] border-white w-full mx-auto'>
+                    <h2 className='text-white font-bold'>{email}</h2>
                 </div>
                 <div>
                     <SidebarAction content={accountDetails} icon={faList} />
@@ -67,6 +68,7 @@ const SidebarDrawer = ({ imageUrl, email, setAuth }) => {
                 </div>
 
             </div>
+            {/* {logout && <Navigate to={homeRoute} replace={true} />} */}
         </div>
     );
 }
@@ -75,7 +77,7 @@ const SidebarDrawer = ({ imageUrl, email, setAuth }) => {
 
 const SidebarAction = ({ content, handleClick, icon }) => {
     return (
-        <div className='flex items-center mb-8 cursor-pointer transition ease-in-out duration:500 hover:-translate-y-2' onClick={handleClick}>
+        <div className='flex p-3 mt-6 items-center cursor-pointer transition ease-in-out duration:500 hover:bg-gray-600' onClick={handleClick}>
             <FontAwesomeIcon icon={icon} color='white' />
             <h2 className='text-white pl-4'>{content}</h2>
         </div>);

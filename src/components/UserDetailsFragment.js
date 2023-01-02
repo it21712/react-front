@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import useAuth from "../hooks/useAuth";
 import { cellPhoneText, cityText, countryText, dateOfBirthText, detailsSubmitText, firstNameText, lastNameText, phoneText, roadNameText, roadNumberText, tkText } from "../strings";
 import { EmailFieldValidator, RequiredFieldValidator, TextOnlyValidator, WordOnlyValidator } from "../validators/Validators";
@@ -39,6 +39,8 @@ const UserDetailsFragment = ({ email }) => {
         const [city, setCity] = useState('');
         const [road, setRoad] = useState('');
         const [roadNum, setRoadNum] = useState('');
+        const [profilePic, setProfilePic] = useState({});
+        const [profilePicUrl, setProfilePicUrl] = useState('');
         const [tk, setTk] = useState('');
 
         const [firstNameError, setFirstNameError] = useState(null);
@@ -54,19 +56,29 @@ const UserDetailsFragment = ({ email }) => {
         const fileInput = useRef(null);
 
 
-        const handleFileSelect = () => {
-            const file = fileInput.current.files[0];
-            const reader = new FileReader();
-            reader.onload = () => {
+        // const handleFileSelect = () => {
+        //     const file = fileInput.current.files[0];
+        //     const reader = new FileReader();
+        //     reader.onload = () => {
 
-                setAuth(prev => {
-                    return { ...prev, imageUrl: reader.result }
+        //         setAuth(prev => {
+        //             return { ...prev, imageUrl: reader.result }
 
-                });
+        //         });
 
-            };
-            reader.readAsDataURL(file);
-        };
+        //     };
+        //     reader.readAsDataURL(file);
+        // };
+
+        const handleFileSelect = (e) => {
+            const url = URL.createObjectURL(e.target.files[0]);
+            setProfilePicUrl(url);
+            setProfilePic(e.target.files[0]);
+
+            // setAuth(prev => {
+            //     return { ...prev, imageUrl: url }
+            // });
+        }
 
         const sendDetails = () => {
             const data = {
@@ -80,10 +92,22 @@ const UserDetailsFragment = ({ email }) => {
                 'road': road,
                 'road_number': roadNum,
                 'postal_code': tk,
-                'profile_pic': auth?.imageUrl,
+                'profile_pic': profilePic,
             }
 
-            axiosRole.post(APPLICANT_DETAILS_URL, data);
+            //convert data to form data and send request with Content-Type:multipart/form-data headers
+            let form_data = new FormData();
+            for (const [key, value] of Object.entries(data)) {
+                console.log(key);
+                console.log(value);
+                if (key === 'profile_pic') {
+                    console.log(profilePic);
+                    form_data.append('profile_pic', value, value.name);
+                }
+                form_data.append(key, value);
+            }
+
+            axiosRole.post(APPLICANT_DETAILS_URL, form_data, { headers: { 'Content-Type': 'multipart/form-data' } });
         }
 
         const validateForm = () => {
@@ -123,14 +147,15 @@ const UserDetailsFragment = ({ email }) => {
         }
 
 
+
         return (
             <form noValidate={true} onSubmit={handleFormSubmit} className='flex flex-col md:w-[60%] w-[90%]'>
                 <div className='flex items-center mt-6 mb-10'>
                     <div className='w-24 h-24 shadow-lg shadow-stone-400 rounded-full mr-4'>
-                        <ProfileAvatar picUrl={auth?.imageUrl} />
+                        <ProfileAvatar picUrl={profilePicUrl} />
                     </div>
 
-                    <input type='file' ref={fileInput} onChange={handleFileSelect} id='profilePic' className='file:bg-gray-700 file:p-2 file:text-white file:rounded-md file:border-none file:cursor-pointer file:drop-shadow-md file:shadow-stone-400 file:mr-4 file:transition file:duration:500 file:ease-in-out hover:file:-translate-y-2 py-2 pl-4 rounded-sm text-gray-700' />
+                    <input type='file' accept='image/*' id='profilePic' onChange={handleFileSelect} className='file:bg-gray-700 file:p-2 file:text-white file:rounded-md file:border-none file:cursor-pointer file:drop-shadow-md file:shadow-stone-400 file:mr-4 file:transition file:duration:500 file:ease-in-out hover:file:-translate-y-2 py-2 pl-4 rounded-sm text-gray-700' />
                 </div>
 
                 <div className='flex'>
