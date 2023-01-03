@@ -5,6 +5,7 @@ import useAuth from "./useAuth";
 import { useNavigate } from "react-router-dom";
 import { unauthorizedRoute, verifyEmailRoute } from "../routes";
 import { unverifiedMessage } from "../strings";
+import Cookies from "js-cookie";
 
 const useAxiosPrivate = () => {
     const refresh = useRefreshToken();
@@ -16,7 +17,7 @@ const useAxiosPrivate = () => {
 
 
             config => {
-
+                config.headers['X-CSRFToken'] = `${Cookies.get('csrftoken')}`;
                 if (!config.headers['Authorization']) {
 
                     config.headers['Authorization'] = `Bearer ${auth?.accessToken}`;
@@ -63,7 +64,7 @@ export const useAxiosRole = () => {
 
 
             config => {
-
+                config.headers['X-CSRFToken'] = `${Cookies.get('csrftoken')}`;
                 if (!config.headers['Authorization']) {
 
                     config.headers['Authorization'] = `Bearer ${auth?.accessToken}`;
@@ -100,4 +101,12 @@ export const useAxiosRole = () => {
     }, [auth, refresh])
     return axiosPrivate;
 }
+
+export const useApplicantDetails = () => {
+    const axiosRole = useAxiosRole();
+    const detailsStr = localStorage.getItem('details');
+
+
+}
+
 export default useAxiosPrivate;

@@ -54,11 +54,11 @@ const SidebarDrawer = ({ imageUrl, email, setAuth }) => {
         <div className='hidden h-screen w-[23%] md:flex '>
             {/* <div className='flex flex-col transition -translate-x-[80%] ease-in duration:700 w-[23%] hover:translate-x-0 bg-gray-800 mt-16 items-center px-6'>            */}
             <div className='flex flex-col bg-gray-800 px-6 w-full h-full'>
-                <div className='mt-6 mx-auto w-12 h-12'>
+                {/* <div className='mt-6 mx-auto w-12 h-12'>
                     <ProfileAvatar picUrl={imageUrl} />
-                </div>
-                <div className='border-b-[1px] border-white w-full mx-auto'>
-                    <h2 className='text-white font-bold'>{email}</h2>
+                </div> */}
+                <div className='border-b-[1px] border-white w-full mx-auto mt-12'>
+                    <h2 className='text-white font-bold text-lg mb-2'>{email}</h2>
                 </div>
                 <div>
                     <SidebarAction content={accountDetails} icon={faList} />
@@ -68,7 +68,6 @@ const SidebarDrawer = ({ imageUrl, email, setAuth }) => {
                 </div>
 
             </div>
-            {/* {logout && <Navigate to={homeRoute} replace={true} />} */}
         </div>
     );
 }
@@ -77,7 +76,7 @@ const SidebarDrawer = ({ imageUrl, email, setAuth }) => {
 
 const SidebarAction = ({ content, handleClick, icon }) => {
     return (
-        <div className='flex p-3 mt-6 items-center cursor-pointer transition ease-in-out duration:500 hover:bg-gray-600' onClick={handleClick}>
+        <div className='flex p-3 mt-6 items-center cursor-pointer transition ease-in-out duration:500 hover:bg-gray-600 hover:translate-x-2' onClick={handleClick}>
             <FontAwesomeIcon icon={icon} color='white' />
             <h2 className='text-white pl-4'>{content}</h2>
         </div>);

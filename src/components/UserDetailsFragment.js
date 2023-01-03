@@ -4,9 +4,27 @@ import { cellPhoneText, cityText, countryText, dateOfBirthText, detailsSubmitTex
 import { EmailFieldValidator, RequiredFieldValidator, TextOnlyValidator, WordOnlyValidator } from "../validators/Validators";
 import useAxiosPrivate, { useAxiosRole } from "../hooks/useAxiosPrivate";
 import { APPLICANT_DETAILS_URL } from "../backend/urls";
+import Cookies from "js-cookie";
 
 export const ProfileAvatar = ({ picUrl }) => {
-    //const cachedImageUrl = localStorage.getItem('imageUrl');
+
+    // const [picStorage, setPicStorage] = useState(localStorage.getItem('profilePic'));
+
+    // useEffect(() => {
+    //     // window.onstorage = (event) => {
+    //     //     console.log(event.key, event.newValue);
+    //     // };
+    //     const handleStorageChange = (event) => {
+    //         console.log(event);
+    //         if (event.key === 'profilePic') {
+    //             console.log('changed');
+    //             setPicStorage(event.newValue);
+    //         }
+    //     };
+    //     //window.addEventListener('storage', handleStorageChange);
+    //     window.onstorage = handleStorageChange;
+    //     return () => window.removeEventListener('storage', handleStorageChange);
+    // }, []);
 
     return (
         <div className='flex w-full h-full items-center justify-center '>
@@ -53,31 +71,17 @@ const UserDetailsFragment = ({ email }) => {
         const [roadError, setRoadError] = useState(null);
         const [roadNumError, setRoadNumError] = useState(null);
         const [tkError, setTkError] = useState(null);
-        const fileInput = useRef(null);
-
-
-        // const handleFileSelect = () => {
-        //     const file = fileInput.current.files[0];
-        //     const reader = new FileReader();
-        //     reader.onload = () => {
-
-        //         setAuth(prev => {
-        //             return { ...prev, imageUrl: reader.result }
-
-        //         });
-
-        //     };
-        //     reader.readAsDataURL(file);
-        // };
 
         const handleFileSelect = (e) => {
             const url = URL.createObjectURL(e.target.files[0]);
             setProfilePicUrl(url);
+            localStorage.setItem('profilePic', url);
+            window.dispatchEvent(new Event("storage"));
             setProfilePic(e.target.files[0]);
 
             // setAuth(prev => {
             //     return { ...prev, imageUrl: url }
-            // });
+            // }, [email]);
         }
 
         const sendDetails = () => {
@@ -106,8 +110,13 @@ const UserDetailsFragment = ({ email }) => {
                 }
                 form_data.append(key, value);
             }
-
-            axiosRole.post(APPLICANT_DETAILS_URL, form_data, { headers: { 'Content-Type': 'multipart/form-data' } });
+            console.log(Cookies.get('csrftoken'));
+            axiosRole.post(APPLICANT_DETAILS_URL, form_data, { headers: { 'Content-Type': 'multipart/form-data' } })
+                .then((response) => {
+                    if (response.status === 201) {
+                        localStorage.setItem('details', JSON.stringify(data));
+                    }
+                });
         }
 
         const validateForm = () => {
@@ -245,6 +254,7 @@ const UserDetailsFragment = ({ email }) => {
             <DetailsForm />
         </div>
     );
+
 
 }
 
