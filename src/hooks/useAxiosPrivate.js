@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { unauthorizedRoute, verifyEmailRoute } from "../routes";
 import { unverifiedMessage } from "../strings";
 import Cookies from "js-cookie";
+import { APPLICANT_DETAILS_URL } from "../backend/urls";
 
 const useAxiosPrivate = () => {
     const refresh = useRefreshToken();
@@ -105,6 +106,16 @@ export const useAxiosRole = () => {
 export const useApplicantDetails = () => {
     const axiosRole = useAxiosRole();
     const detailsStr = localStorage.getItem('details');
+    //get details from api
+    if (!detailsStr) {
+        const response = axiosRole.get(APPLICANT_DETAILS_URL);
+        if (response.status === 200)
+            return response.data;
+
+        return {};
+    }
+
+    return JSON.parse(detailsStr);
 
 
 }

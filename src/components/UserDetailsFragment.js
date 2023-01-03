@@ -2,33 +2,15 @@ import { useState, useRef, useEffect } from "react";
 import useAuth from "../hooks/useAuth";
 import { cellPhoneText, cityText, countryText, dateOfBirthText, detailsSubmitText, firstNameText, lastNameText, phoneText, roadNameText, roadNumberText, tkText } from "../strings";
 import { EmailFieldValidator, RequiredFieldValidator, TextOnlyValidator, WordOnlyValidator } from "../validators/Validators";
-import useAxiosPrivate, { useAxiosRole } from "../hooks/useAxiosPrivate";
+import useAxiosPrivate, { useApplicantDetails, useAxiosRole } from "../hooks/useAxiosPrivate";
 import { APPLICANT_DETAILS_URL } from "../backend/urls";
 import Cookies from "js-cookie";
 
 export const ProfileAvatar = ({ picUrl }) => {
 
-    // const [picStorage, setPicStorage] = useState(localStorage.getItem('profilePic'));
-
-    // useEffect(() => {
-    //     // window.onstorage = (event) => {
-    //     //     console.log(event.key, event.newValue);
-    //     // };
-    //     const handleStorageChange = (event) => {
-    //         console.log(event);
-    //         if (event.key === 'profilePic') {
-    //             console.log('changed');
-    //             setPicStorage(event.newValue);
-    //         }
-    //     };
-    //     //window.addEventListener('storage', handleStorageChange);
-    //     window.onstorage = handleStorageChange;
-    //     return () => window.removeEventListener('storage', handleStorageChange);
-    // }, []);
-
     return (
         <div className='flex w-full h-full items-center justify-center '>
-            <img src={!picUrl ? '/unknown_avatar.png' : picUrl} alt='unknown' className='w-full h-full object-cover rounded-full'></img>
+            <img src={!picUrl ? '/unknown_avatar.png' : picUrl} alt='profile pic' className='w-full h-full object-cover rounded-full'></img>
         </div>
     );
 }
@@ -49,7 +31,7 @@ const UserDetailsFragment = ({ email }) => {
 
         const [firstName, setFirstName] = useState('');
         const [lastName, setLastName] = useState('');
-
+        const applicantDetails = useApplicantDetails();
         const [birthDate, setBirthDate] = useState('');
         const [phone, setPhone] = useState('');
         const [cellPhone, setCellPhone] = useState('');
@@ -76,14 +58,15 @@ const UserDetailsFragment = ({ email }) => {
             const url = URL.createObjectURL(e.target.files[0]);
             setProfilePicUrl(url);
             localStorage.setItem('profilePic', url);
-            window.dispatchEvent(new Event("storage"));
-            setProfilePic(e.target.files[0]);
 
-            // setAuth(prev => {
-            //     return { ...prev, imageUrl: url }
-            // }, [email]);
         }
+        const sendDetails2 = () => {
+            axiosRole.get('/applicants/profile/', { responseType: 'blob' }).then(response => {
+                const url = URL.createObjectURL(response.data);
+                setProfilePicUrl(url);
+            });
 
+        }
         const sendDetails = () => {
             const data = {
                 'firstName': firstName,
@@ -152,7 +135,8 @@ const UserDetailsFragment = ({ email }) => {
             event.preventDefault();
 
             if (validateForm())
-                sendDetails(event);
+                //sendDetails(event);
+                axiosRole.get(APPLICANT_DETAILS_URL).then((response) => console.log(response.data))
         }
 
 
