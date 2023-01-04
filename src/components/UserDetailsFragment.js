@@ -5,7 +5,7 @@ import { EmailFieldValidator, RequiredFieldValidator, TextOnlyValidator, WordOnl
 import useAxiosPrivate, { useAxiosRole } from "../hooks/useAxiosPrivate";
 import { APPLICANT_DETAILS_URL, APPLICANT_PROFILEPIC_URL } from "../backend/urls";
 import Cookies from "js-cookie";
-import { GetApplicantProfilePic } from "../backend/calls";
+
 
 export const ProfileAvatar = ({ picUrl }) => {
 
@@ -18,9 +18,10 @@ export const ProfileAvatar = ({ picUrl }) => {
 
 const UserDetailsFragment = ({ email }) => {
 
+
     const getDetails = () => {
         const detailsStr = localStorage.getItem('details');
-        let data = {};
+        let data = undefined;
         if (!detailsStr) {
             axiosRole.get(APPLICANT_DETAILS_URL).then((response) => {
                 if (response.status === 200) {
@@ -30,6 +31,7 @@ const UserDetailsFragment = ({ email }) => {
                 }
 
             }).catch((error) => console.log(error));
+
             return data;
         }
         else
@@ -40,8 +42,7 @@ const UserDetailsFragment = ({ email }) => {
     const { auth, setAuth } = useAuth();
 
     const details = getDetails();
-    const [showForm, setShowForm] = useState(details === {});
-    //setShowForm(details === {});
+    const [showForm, setShowForm] = useState(details === undefined);
     const InputField = ({ type, id, onChange, value, readOnly }) => {
         return (
             <input type={type} id={id} value={value} readOnly={readOnly} onChange={onChange} className='w-full py-3 px-3 border-2 rounded-sm text-gray-700 leading-tight mt-2 focus:outline-none'></input>
@@ -85,6 +86,7 @@ const UserDetailsFragment = ({ email }) => {
         const handleFileSelect = (e) => {
             const url = URL.createObjectURL(e.target.files[0]);
             setProfilePicUrl(url);
+            setProfilePic(e.target.files[0]);
             localStorage.setItem('profilePic', url);
 
         }
@@ -163,8 +165,7 @@ const UserDetailsFragment = ({ email }) => {
             event.preventDefault();
 
             if (validateForm())
-                //sendDetails(event);
-                axiosRole.get(APPLICANT_DETAILS_URL).then((response) => console.log(response.data))
+                sendDetails(event);
         }
 
 

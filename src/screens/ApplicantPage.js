@@ -4,11 +4,11 @@ import useAxiosPrivate, { useAxiosRole } from "../hooks/useAxiosPrivate";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRightFromBracket, faList, faEnvelope, faAt } from "@fortawesome/free-solid-svg-icons";
 import { LOGOUT_URL } from "../backend/urls";
-import { useEffect, useState, useRef } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { homeRoute } from "../routes";
-import UserDetailsFragment, { ProfileAvatar } from "../components/UserDetailsFragment";
-import SignupPage from "./SignupPage";
+import UserDetailsFragment from "../components/UserDetailsFragment";
+
 
 
 const ApplicantPage = () => {
@@ -40,12 +40,14 @@ const SidebarDrawer = ({ imageUrl, email, setAuth }) => {
     const axiosRole = useAxiosRole();
     const navigate = useNavigate();
     const handleLogout = () => {
+
         if (email) {
             axiosPrivate.post(LOGOUT_URL);
             setAuth({});
             localStorage.removeItem('email');
-            setLogout(true);
 
+            localStorage.removeItem('details');
+            setLogout(true);
             navigate(homeRoute, { replace: true });
         }
     }
