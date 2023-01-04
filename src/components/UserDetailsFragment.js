@@ -51,7 +51,13 @@ const UserDetailsFragment = ({ email }) => {
 
     const InfoField = ({ value }) => {
         return (
-            <h2 className='py-3 text-gray-700 mt-2'>{value}</h2>
+            <h2 className=' text-gray-700 mt-2 text-lg font-normal'>{value}</h2>
+        );
+    }
+
+    const InfoHeader = ({ value }) => {
+        return (
+            <h1 className='text-2xl font-bold text-gray-900'>{value}</h1>
         );
     }
 
@@ -90,13 +96,7 @@ const UserDetailsFragment = ({ email }) => {
             localStorage.setItem('profilePic', url);
 
         }
-        const sendDetails2 = () => {
-            axiosRole.get('/applicants/profile/', { responseType: 'blob' }).then(response => {
-                const url = URL.createObjectURL(response.data);
-                setProfilePicUrl(url);
-            });
 
-        }
         const sendDetails = () => {
             const data = {
                 'firstName': firstName,
@@ -128,6 +128,7 @@ const UserDetailsFragment = ({ email }) => {
                 .then((response) => {
                     if (response.status === 201) {
                         localStorage.setItem('details', JSON.stringify(data));
+                        setShowForm(false);
                     }
                 });
         }
@@ -274,72 +275,72 @@ const UserDetailsFragment = ({ email }) => {
         return (
             <div className='flex flex-col md:w-[60%] w-[90%]'>
                 <div className='flex items-center mt-6 mb-10'>
-                    <div className='w-24 h-24 shadow-lg shadow-stone-400 rounded-full mr-4'>
+                    <div className='w-32 h-32 shadow-lg shadow-stone-400 rounded-full mr-4'>
                         <ProfileAvatar picUrl={profilePicUrl} />
                     </div>
                 </div>
 
                 <div className='flex'>
 
-                    <div className='flex flex-col items-start pr-6 w-full'>
-                        <h2>{firstNameText}</h2>
+                    <div className='flex flex-col items-start pr-6 w-[20%]'>
+                        <InfoHeader value={firstNameText} />
                         <InfoField value={data.firstName} />
                     </div>
-                    <div className='flex flex-col items-start w-full'>
-                        <h2>{lastNameText}</h2>
+                    <div className='flex flex-col items-start w-[20%]'>
+                        <InfoHeader value={lastNameText} />
                         <InfoField value={data.lastName} />
                     </div>
-                    <div className='flex flex-col items-start w-full'>
-                        <h2>{dateOfBirthText}</h2>
+                    <div className='flex flex-col items-start w-[40%]'>
+                        <InfoHeader value={dateOfBirthText} />
                         <InfoField value={data.birth_date} />
                     </div>
                 </div>
 
-                <div className='flex flex-col items-start mt-6'>
-                    <h2>Email</h2>
+                <div className='flex flex-col items-start mt-16'>
+                    <InfoHeader value='Email' />
                     <InfoField value={auth?.email} />
 
                 </div>
 
 
 
-                <div className='flex mt-6'>
-                    <div className='w-full flex flex-col items-start pr-6'>
-                        <h2>{phoneText}</h2>
+                <div className='flex mt-16'>
+                    <div className='w-[30%] flex flex-col items-start pr-6'>
+                        <InfoHeader value={phoneText} />
                         <InfoField value={data.phone} />
 
                     </div>
 
-                    <div className='w-full flex flex-col items-start'>
-                        <h2>{cellPhoneText}</h2>
+                    <div className='w-[40%] flex flex-col items-start'>
+                        <InfoHeader value={cellPhoneText} />
                         <InfoField value={data.cell_phone} />
                     </div>
 
                 </div>
 
-                <div className='flex'>
-                    <div className='flex flex-col justify-start items-start mt-6 pr-6 w-full'>
-                        <h2>{countryText}</h2>
+                <div className='flex mt-10'>
+                    <div className='flex flex-col justify-start items-start mt-6 pr-6 w-[30%]'>
+                        <InfoHeader value={countryText} />
                         <InfoField value={data.country} />
                     </div>
 
-                    <div className='flex flex-col items-start mt-6 w-full'>
-                        <h2>{cityText}</h2>
+                    <div className='flex flex-col items-start mt-6 w-[30%]'>
+                        <InfoHeader value={cityText} />
                         <InfoField value={data.city} />
                     </div>
                 </div>
-                <div className='flex flex-col items-start mt-3'>
+                <div className='flex flex-col items-start mt-16'>
                     <div className='flex items-center w-full'>
-                        <div className='flex flex-col items-start pr-4 w-full justify-start'>
-                            <h2>{roadNameText}</h2>
+                        <div className='flex flex-col items-start pr-4 w-[30%] justify-start'>
+                            <InfoHeader value={roadNameText} />
                             <InfoField value={data.road} />
                         </div>
-                        <div className='flex flex-col items-start pr-4 w-full'>
-                            <h2>{roadNumberText}</h2>
+                        <div className='flex flex-col items-start pr-4 w-[30%]'>
+                            <InfoHeader value={roadNumberText} />
                             <InfoField value={data.road_number} />
                         </div>
-                        <div className='flex flex-col items-start w-full'>
-                            <h2>{tkText}</h2>
+                        <div className='flex flex-col items-start w-[30%]'>
+                            <InfoHeader value={tkText} />
                             <InfoField value={data.postal_code} />
                         </div>
                     </div>

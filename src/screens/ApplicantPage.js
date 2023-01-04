@@ -45,7 +45,7 @@ const SidebarDrawer = ({ imageUrl, email, setAuth }) => {
             axiosPrivate.post(LOGOUT_URL);
             setAuth({});
             localStorage.removeItem('email');
-
+            localStorage.removeItem('profilePic');
             localStorage.removeItem('details');
             setLogout(true);
             navigate(homeRoute, { replace: true });
