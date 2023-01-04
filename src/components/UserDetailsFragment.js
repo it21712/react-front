@@ -37,7 +37,7 @@ const UserDetailsFragment = ({ email }) => {
     }
     const axiosPrivate = useAxiosPrivate();
     const axiosRole = useAxiosRole();
-    const { auth, setAuth } = useAuth();
+    const { auth } = useAuth();
 
 
     useEffect(() => {
