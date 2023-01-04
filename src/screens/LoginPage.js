@@ -120,7 +120,7 @@ const LoginForm = ({ email, setEmail, loggedIn, setLoggedIn, handleSignupClick }
             </input>
             {passwordError && <div className={'text-red-500 text-sm font-bold mt-2 mb-6'}>{passwordError}</div>}
             <button
-                type="submit" className="w-full my-16 p-3 bg-orange-400 transition ease-in-out duration:700 hover:bg-orange-500">{loginSubmitText}</button>
+                type="submit" className="w-full my-16 p-3 bg-gray-800 transition ease-in-out duration:700 hover:bg-gray-700 text-white">{loginSubmitText}</button>
 
             <div className="cursor-pointer" onClick={handleSignupClick}>
                 <h2 className="text-md text-gray-500">{createAccountText}</h2>
