@@ -1,11 +1,11 @@
 import { useState, useRef, useEffect } from "react";
 import useAuth from "../hooks/useAuth";
 import { cellPhoneText, cityText, countryText, dateOfBirthText, detailsSubmitText, firstNameText, lastNameText, phoneText, roadNameText, roadNumberText, tkText } from "../strings";
-import { EmailFieldValidator, RequiredFieldValidator, TextOnlyValidator, WordOnlyValidator } from "../validators/Validators";
+import { RequiredFieldValidator, TextOnlyValidator, WordOnlyValidator } from "../validators/Validators";
 import useAxiosPrivate, { useAxiosRole } from "../hooks/useAxiosPrivate";
 import { APPLICANT_DETAILS_URL, APPLICANT_PROFILEPIC_URL } from "../backend/urls";
 import Cookies from "js-cookie";
-
+import { FaPen } from "react-icons/fa";
 
 export const ProfileAvatar = ({ picUrl }) => {
 
@@ -274,10 +274,16 @@ const UserDetailsFragment = ({ email }) => {
         }, []);
 
         return (
-            <div className='flex flex-col md:w-[60%] w-[90%]'>
-                <div className='flex items-center mt-6 mb-10'>
+            <div className='flex flex-col md:w-[70%] w-[90%]'>
+                <div className='flex items-center mt-6 mb-10 justify-between'>
                     <div className='w-32 h-32 shadow-lg shadow-stone-400 rounded-full mr-4'>
                         <ProfileAvatar picUrl={profilePicUrl} />
+                    </div>
+                    <div className='flex w-12 h-12 bg-gray-700 rounded-full drop-shadow-xl shadow-gray-700 mt-12 mr-32 cursor-pointer transition ease-in-out duration-200 hover:bg-gray-500'>
+                        <div className='m-auto'>
+                            <FaPen color='white' />
+                        </div>
+
                     </div>
                 </div>
 
@@ -345,6 +351,10 @@ const UserDetailsFragment = ({ email }) => {
                             <InfoField value={data.postal_code} />
                         </div>
                     </div>
+
+                </div>
+
+                <div className='flex justify-end mt-6 w-full'>
 
                 </div>
             </div>
