@@ -18,31 +18,32 @@ export const ProfileAvatar = ({ picUrl }) => {
 
 const UserDetailsFragment = ({ email }) => {
 
+    const [details, setDetails] = useState(undefined);
 
     const getDetails = () => {
         const detailsStr = localStorage.getItem('details');
-        let data = undefined;
-        if (!detailsStr) {
+
+        if (detailsStr === null) {
             axiosRole.get(APPLICANT_DETAILS_URL).then((response) => {
                 if (response.status === 200) {
-                    console.log(response.data);
                     localStorage.setItem('details', JSON.stringify(response.data));
-                    data = response.data;
+                    setDetails(response.data);
                 }
 
             }).catch((error) => console.log(error));
 
-            return data;
         }
-        else
-            return JSON.parse(detailsStr);
+        setDetails(JSON.parse(detailsStr));
     }
     const axiosPrivate = useAxiosPrivate();
     const axiosRole = useAxiosRole();
     const { auth, setAuth } = useAuth();
 
-    const details = getDetails();
-    const [showForm, setShowForm] = useState(details === undefined);
+
+    useEffect(() => {
+        getDetails();
+    }, []);
+
     const InputField = ({ type, id, onChange, value, readOnly }) => {
         return (
             <input type={type} id={id} value={value} readOnly={readOnly} onChange={onChange} className='w-full py-3 px-3 border-2 rounded-sm text-gray-700 leading-tight mt-2 focus:outline-none'></input>
@@ -128,7 +129,7 @@ const UserDetailsFragment = ({ email }) => {
                 .then((response) => {
                     if (response.status === 201) {
                         localStorage.setItem('details', JSON.stringify(data));
-                        setShowForm(false);
+                        setDetails(data);
                     }
                 });
         }
@@ -352,7 +353,7 @@ const UserDetailsFragment = ({ email }) => {
 
     return (
         <div className='flex bg-gray-200 w-full h-full justify-center overflow-y-scroll'>
-            {showForm ? <DetailsForm /> : <DetailSheet data={details} />}
+            {!details ? <DetailsForm /> : <DetailSheet data={details} />}
         </div>
     );
 
