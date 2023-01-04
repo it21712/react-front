@@ -279,7 +279,7 @@ const UserDetailsFragment = ({ email }) => {
                     <div className='w-32 h-32 shadow-lg shadow-stone-400 rounded-full mr-4'>
                         <ProfileAvatar picUrl={profilePicUrl} />
                     </div>
-                    <div className='flex w-12 h-12 bg-gray-700 rounded-full drop-shadow-xl shadow-gray-700 mt-12 mr-32 cursor-pointer transition ease-in-out duration-200 hover:bg-gray-500'>
+                    <div className='flex w-12 h-12 bg-gray-700 rounded-full drop-shadow-xl shadow-gray-700 mt-12 mr-32 cursor-pointer transition-all ease-in-out duration-500 hover:bg-gray-600 hover:w-14 hover:h-14'>
                         <div className='m-auto'>
                             <FaPen color='white' />
                         </div>
