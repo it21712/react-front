@@ -373,80 +373,83 @@ const UserDetailsFragment = ({ email }) => {
         }, []);
 
         return (
-            <div className='flex flex-col md:w-[70%] w-[90%]'>
+            <div className='w-full h-full '>
+                <div className='flex flex-col lg:w-[60%] w-[90%] pl-12'>
 
-                <div className='flex items-center justify-start mt-6'>
-                    <div className='w-20 h-20 p-1 bg-white shadow-lg shadow-stone-400 rounded-full mr-6 sm:w-32 sm:h-32'>
-                        <ProfileAvatar picUrl={profilePicUrl} />
-                    </div>
-                    <div className='flex-1 flex-col mb-6 justify-start items-start'>
-                        <div className='flex justify-start items-start'>
-                            <InfoHeader value={data.firstName} css='mr-2' />
-                            <InfoHeader value={data.lastName} />
+                    <div className='flex items-center justify-start mt-6'>
+                        <div className='w-20 h-20 p-1 bg-white shadow-lg shadow-stone-400 rounded-full mr-6 sm:w-32 sm:h-32'>
+                            <ProfileAvatar picUrl={profilePicUrl} />
                         </div>
-                        <InfoField value={auth?.email} css='flex justify-start' />
-                    </div>
-                    <div className='flex-2 justify-end'>
-                        <div className='flex w-12 h-12 bg-gray-700 rounded-full drop-shadow-xl shadow-gray-700 mt-12 mr-32 cursor-pointer transition-all ease-in-out duration-500 hover:bg-gray-600 hover:w-14 hover:h-14'>
-                            <div className='m-auto'>
-                                <FaPen color='white' />
+                        <div className='flex-1 flex-col mb-6 justify-start items-start'>
+                            <div className='flex justify-start items-start'>
+                                <InfoHeader value={data.firstName} css='mr-2' />
+                                <InfoHeader value={data.lastName} />
                             </div>
+                            <InfoField value={auth?.email} css='flex justify-start' />
+                        </div>
+                        <div className='flex-2 justify-end'>
+                            <div className='flex w-12 h-12 bg-gray-700 rounded-full drop-shadow-xl shadow-gray-700 mt-12 mr-32 cursor-pointer transition-all ease-in-out duration-500 hover:bg-gray-600 hover:w-14 hover:h-14'>
+                                <div className='m-auto'>
+                                    <FaPen color='white' />
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    <div className='flex mt-16 justify-start items-start'>
+
+                        <div className='flex flex-col w-[40%] items-start justify-start'>
+                            <InfoHeader value={phoneText} />
+                            <InfoField value={data.phone} />
 
                         </div>
-                    </div>
 
-                </div>
-
-
-                <div className='flex mt-16 justify-start items-start'>
-
-                    <div className='flex flex-col w-[40%] items-start justify-start'>
-                        <InfoHeader value={phoneText} />
-                        <InfoField value={data.phone} />
-
-                    </div>
-
-                    <div className='flex flex-col w-[50%] items-start justify-start'>
-                        <InfoHeader value={cellPhoneText} />
-                        <InfoField value={data.cell_phone} />
-                    </div>
-
-
-                </div>
-
-                <div className='flex mt-10'>
-                    <div className='flex flex-col justify-start items-start mt-6 pr-6 w-[30%]'>
-                        <InfoHeader value={countryText} />
-                        <InfoField value={data.country} />
-                    </div>
-
-                    <div className='flex flex-col items-start mt-6 w-[30%]'>
-                        <InfoHeader value={cityText} />
-                        <InfoField value={data.city} />
-                    </div>
-                </div>
-                <div className='flex flex-col items-start mt-16'>
-                    <div className='flex items-center w-full'>
-                        <div className='flex flex-col items-start pr-4 w-[30%] justify-start'>
-                            <InfoHeader value={roadNameText} />
-                            <InfoField value={data.road} />
+                        <div className='flex flex-col w-[50%] items-start justify-start'>
+                            <InfoHeader value={cellPhoneText} />
+                            <InfoField value={data.cell_phone} />
                         </div>
-                        <div className='flex flex-col items-start pr-4 w-[30%]'>
-                            <InfoHeader value={roadNumberText} />
-                            <InfoField value={data.road_number} />
+
+
+                    </div>
+
+                    <div className='flex mt-10'>
+                        <div className='flex flex-col justify-start items-start mt-6 pr-6 w-[30%]'>
+                            <InfoHeader value={countryText} />
+                            <InfoField value={data.country} />
                         </div>
-                        <div className='flex flex-col items-start w-[30%]'>
-                            <InfoHeader value={tkText} />
-                            <InfoField value={data.postal_code} />
+
+                        <div className='flex flex-col items-start mt-6 w-[30%]'>
+                            <InfoHeader value={cityText} />
+                            <InfoField value={data.city} />
                         </div>
                     </div>
+                    <div className='flex flex-col items-start mt-16'>
+                        <div className='flex items-center w-full'>
+                            <div className='flex flex-col items-start pr-4 w-[30%] justify-start'>
+                                <InfoHeader value={roadNameText} />
+                                <InfoField value={data.road} />
+                            </div>
+                            <div className='flex flex-col items-start pr-4 w-[30%]'>
+                                <InfoHeader value={roadNumberText} />
+                                <InfoField value={data.road_number} />
+                            </div>
+                            <div className='flex flex-col items-start w-[30%]'>
+                                <InfoHeader value={tkText} />
+                                <InfoField value={data.postal_code} />
+                            </div>
+                        </div>
 
-                </div>
+                    </div>
 
-                <div className='flex justify-end mt-6 w-full'>
+                    <div className='flex justify-end mt-6 w-full'>
 
+                    </div>
                 </div>
             </div>
+
         );
     }
 
