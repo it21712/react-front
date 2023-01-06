@@ -8,6 +8,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { homeRoute } from "../routes";
 import UserDetailsFragment from "../components/UserDetailsFragment";
+import { TabProvider } from "../context/TabProvider";
+import useTab from "../hooks/useTab";
 
 
 
@@ -15,15 +17,16 @@ const ApplicantPage = () => {
 
     const { auth, setAuth } = useAuth();
 
+
+
     return (
         <div className="flex flex-col h-screen">
 
             <div className='flex h-screen w-screen'>
-
-                <SidebarDrawer imageUrl={auth?.imageUrl} email={auth?.email} setAuth={setAuth} />
-
-                <UserDetailsFragment email={auth?.email} />
-
+                <TabProvider>
+                    <SidebarDrawer imageUrl={auth?.imageUrl} email={auth?.email} setAuth={setAuth} />
+                    <UserDetailsFragment email={auth?.email} />
+                </TabProvider>
             </div>
 
 
@@ -34,16 +37,12 @@ const ApplicantPage = () => {
 
 const SidebarDrawer = ({ imageUrl, email, setAuth }) => {
 
-    const [selectedIndex, setSelectedIndex] = useState(0);
     const axiosPrivate = useAxiosPrivate();
     const [logout, setLogout] = useState(false);
     const axiosRole = useAxiosRole();
     const navigate = useNavigate();
 
-    const _onActionClicked = (index, handleClick) => {
-        setSelectedIndex(index);
-        handleClick();
-    }
+
 
     const handleLogout = () => {
 
@@ -69,13 +68,10 @@ const SidebarDrawer = ({ imageUrl, email, setAuth }) => {
                     <h2 className='text-white font-bold text-lg mb-2'>{email}</h2>
                 </div>
                 <div>
-                    <SidebarAction id={0} content={accountDetails} icon={faList} handleClick={() => {
-                        setSelectedIndex(0);
-                    }} selectedIndex={selectedIndex} />
-                    <SidebarAction id={1} content={invitationsText} icon={faEnvelope}
-                        handleClick={() => { setSelectedIndex(1); }} selectedIndex={selectedIndex} />
-                    <SidebarAction id={2} content={contactText} icon={faAt} handleClick={() => { setSelectedIndex(2); }} selectedIndex={selectedIndex} />
-                    <SidebarAction id={3} content={logoutText} icon={faArrowRightFromBracket} handleClick={() => { _onActionClicked(3, handleLogout) }} selectedIndex={selectedIndex} />
+                    <SidebarAction id={0} content={accountDetails} icon={faList} />
+                    <SidebarAction id={1} content={invitationsText} icon={faEnvelope} />
+                    <SidebarAction id={2} content={contactText} icon={faAt} />
+                    <SidebarAction id={3} content={logoutText} icon={faArrowRightFromBracket} />
                 </div>
 
             </div>
@@ -85,12 +81,15 @@ const SidebarDrawer = ({ imageUrl, email, setAuth }) => {
 
 
 
-const SidebarAction = ({ id, content, handleClick, icon, selectedIndex = 0 }) => {
-
+const SidebarAction = ({ id, content, handleClick = () => { }, icon }) => {
+    const { tab, setTab } = useTab();
     const selectedClassName = 'flex p-3 mt-6 items-center cursor-pointer transition ease-in-out duration:500 bg-gray-600 translate-x-4'
     const neutralClassName = 'flex p-3 mt-6 items-center cursor-pointer transition ease-in-out duration:500 hover:bg-gray-600 hover:translate-x-2';
     return (
-        <div className={id === selectedIndex ? selectedClassName : neutralClassName} onClick={handleClick}>
+        <div className={id === tab ? selectedClassName : neutralClassName} onClick={() => {
+            setTab(id);
+            handleClick();
+        }}>
             <FontAwesomeIcon icon={icon} color='white' />
             <h2 className='text-white pl-4'>{content}</h2>
         </div>);
