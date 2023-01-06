@@ -103,27 +103,5 @@ export const useAxiosRole = () => {
     return axiosPrivate;
 }
 
-export const useApplicantDetails = () => {
-    const axiosRole = useAxiosRole();
-    const detailsStr = localStorage.getItem('details');
-
-    //get details from api
-    if (!detailsStr) {
-        const response = axiosRole.get(APPLICANT_DETAILS_URL);
-        if (response.status === 200) {
-            console.log(response.data);
-            localStorage.setItem('details', JSON.stringify(response.data));
-            return response.data;
-        }
-
-
-
-        return {};
-    }
-
-    return JSON.parse(detailsStr);
-
-
-}
 
 export default useAxiosPrivate;

@@ -50,15 +50,15 @@ const UserDetailsFragment = ({ email }) => {
         );
     }
 
-    const InfoField = ({ value }) => {
+    const InfoField = ({ value, css }) => {
         return (
-            <h2 className=' text-gray-700 mt-2 text-lg font-normal'>{value}</h2>
+            <h2 className={'text-gray-700 mt-2 text-lg font-normal ' + css}>{value}</h2>
         );
     }
 
-    const InfoHeader = ({ value }) => {
+    const InfoHeader = ({ value, css }) => {
         return (
-            <h1 className='text-2xl font-bold text-gray-900'>{value}</h1>
+            <h1 className={'text-2xl font-bold text-gray-900 ' + css}>{value}</h1>
         );
     }
 
@@ -116,15 +116,14 @@ const UserDetailsFragment = ({ email }) => {
             //convert data to form data and send request with Content-Type:multipart/form-data headers
             let form_data = new FormData();
             for (const [key, value] of Object.entries(data)) {
-                console.log(key);
-                console.log(value);
+
                 if (key === 'profile_pic') {
-                    console.log(profilePic);
+
                     form_data.append('profile_pic', value, value.name);
                 }
                 form_data.append(key, value);
             }
-            console.log(Cookies.get('csrftoken'));
+
             axiosRole.post(APPLICANT_DETAILS_URL, form_data, { headers: { 'Content-Type': 'multipart/form-data' } })
                 .then((response) => {
                     if (response.status === 201) {
@@ -239,7 +238,7 @@ const UserDetailsFragment = ({ email }) => {
                     </div>
                 </div>
                 <div className='flex flex-col items-start mt-3'>
-                    {/* <h1 className='text-lg mb-3 mt-3'>{addressText}</h1> */}
+
                     <div className='flex items-center w-full'>
                         <div className='flex flex-col items-start pr-4 w-full justify-start'>
                             <h2>{roadNameText}</h2>
@@ -263,7 +262,7 @@ const UserDetailsFragment = ({ email }) => {
             </form>
         );
     }
-    const DetailSheet = ({ data }) => {
+    const DetailSheet2 = ({ data }) => {
 
         const [profilePicUrl, setProfilePicUrl] = useState('');
         useEffect(() => {
@@ -312,16 +311,106 @@ const UserDetailsFragment = ({ email }) => {
 
 
                 <div className='flex mt-16'>
-                    <div className='w-[30%] flex flex-col items-start pr-6'>
+
+                    <div className='w-[40%] flex flex-col items-start pr-6'>
                         <InfoHeader value={phoneText} />
                         <InfoField value={data.phone} />
 
                     </div>
 
-                    <div className='w-[40%] flex flex-col items-start'>
+                    <div className='w-[60%] flex flex-col items-start'>
                         <InfoHeader value={cellPhoneText} />
                         <InfoField value={data.cell_phone} />
                     </div>
+
+
+                </div>
+
+                <div className='flex mt-10'>
+                    <div className='flex flex-col justify-start items-start mt-6 pr-6 w-[30%]'>
+                        <InfoHeader value={countryText} />
+                        <InfoField value={data.country} />
+                    </div>
+
+                    <div className='flex flex-col items-start mt-6 w-[30%]'>
+                        <InfoHeader value={cityText} />
+                        <InfoField value={data.city} />
+                    </div>
+                </div>
+                <div className='flex flex-col items-start mt-16'>
+                    <div className='flex items-center w-full'>
+                        <div className='flex flex-col items-start pr-4 w-[30%] justify-start'>
+                            <InfoHeader value={roadNameText} />
+                            <InfoField value={data.road} />
+                        </div>
+                        <div className='flex flex-col items-start pr-4 w-[30%]'>
+                            <InfoHeader value={roadNumberText} />
+                            <InfoField value={data.road_number} />
+                        </div>
+                        <div className='flex flex-col items-start w-[30%]'>
+                            <InfoHeader value={tkText} />
+                            <InfoField value={data.postal_code} />
+                        </div>
+                    </div>
+
+                </div>
+
+                <div className='flex justify-end mt-6 w-full'>
+
+                </div>
+            </div>
+        );
+    }
+
+    const DetailSheet = ({ data }) => {
+
+        const [profilePicUrl, setProfilePicUrl] = useState('');
+        useEffect(() => {
+            axiosPrivate.get(APPLICANT_PROFILEPIC_URL, { responseType: 'blob' }).then((response) => {
+                const url = URL.createObjectURL(response.data);
+                setProfilePicUrl(url);
+            });
+        }, []);
+
+        return (
+            <div className='flex flex-col md:w-[70%] w-[90%]'>
+
+                <div className='flex items-center justify-start mt-6'>
+                    <div className='w-20 h-20 p-1 bg-white shadow-lg shadow-stone-400 rounded-full mr-6 sm:w-32 sm:h-32'>
+                        <ProfileAvatar picUrl={profilePicUrl} />
+                    </div>
+                    <div className='flex-1 flex-col mb-6 justify-start items-start'>
+                        <div className='flex justify-start items-start'>
+                            <InfoHeader value={data.firstName} css='mr-2' />
+                            <InfoHeader value={data.lastName} />
+                        </div>
+                        <InfoField value={auth?.email} css='flex justify-start' />
+                    </div>
+                    <div className='flex-2 justify-end'>
+                        <div className='flex w-12 h-12 bg-gray-700 rounded-full drop-shadow-xl shadow-gray-700 mt-12 mr-32 cursor-pointer transition-all ease-in-out duration-500 hover:bg-gray-600 hover:w-14 hover:h-14'>
+                            <div className='m-auto'>
+                                <FaPen color='white' />
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div className='flex mt-16 justify-start items-start'>
+
+                    <div className='flex flex-col w-[40%] items-start justify-start'>
+                        <InfoHeader value={phoneText} />
+                        <InfoField value={data.phone} />
+
+                    </div>
+
+                    <div className='flex flex-col w-[50%] items-start justify-start'>
+                        <InfoHeader value={cellPhoneText} />
+                        <InfoField value={data.cell_phone} />
+                    </div>
+
 
                 </div>
 
