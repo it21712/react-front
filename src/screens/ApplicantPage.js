@@ -71,7 +71,7 @@ const SidebarDrawer = ({ imageUrl, email, setAuth }) => {
                     <SidebarAction id={0} content={accountDetails} icon={faList} />
                     <SidebarAction id={1} content={invitationsText} icon={faEnvelope} />
                     <SidebarAction id={2} content={contactText} icon={faAt} />
-                    <SidebarAction id={3} content={logoutText} icon={faArrowRightFromBracket} />
+                    <SidebarAction id={3} content={logoutText} icon={faArrowRightFromBracket} handleClick={handleLogout} />
                 </div>
 
             </div>
