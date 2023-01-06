@@ -34,11 +34,17 @@ const ApplicantPage = () => {
 
 const SidebarDrawer = ({ imageUrl, email, setAuth }) => {
 
-
+    const [selectedIndex, setSelectedIndex] = useState(0);
     const axiosPrivate = useAxiosPrivate();
     const [logout, setLogout] = useState(false);
     const axiosRole = useAxiosRole();
     const navigate = useNavigate();
+
+    const _onActionClicked = (index, handleClick) => {
+        setSelectedIndex(index);
+        handleClick();
+    }
+
     const handleLogout = () => {
 
         if (email) {
@@ -63,10 +69,13 @@ const SidebarDrawer = ({ imageUrl, email, setAuth }) => {
                     <h2 className='text-white font-bold text-lg mb-2'>{email}</h2>
                 </div>
                 <div>
-                    <SidebarAction content={accountDetails} icon={faList} />
-                    <SidebarAction content={invitationsText} icon={faEnvelope} />
-                    <SidebarAction content={contactText} icon={faAt} />
-                    <SidebarAction content={logoutText} icon={faArrowRightFromBracket} handleClick={handleLogout} />
+                    <SidebarAction id={0} content={accountDetails} icon={faList} handleClick={() => {
+                        setSelectedIndex(0);
+                    }} selectedIndex={selectedIndex} />
+                    <SidebarAction id={1} content={invitationsText} icon={faEnvelope}
+                        handleClick={() => { setSelectedIndex(1); }} selectedIndex={selectedIndex} />
+                    <SidebarAction id={2} content={contactText} icon={faAt} handleClick={() => { setSelectedIndex(2); }} selectedIndex={selectedIndex} />
+                    <SidebarAction id={3} content={logoutText} icon={faArrowRightFromBracket} handleClick={() => { _onActionClicked(3, handleLogout) }} selectedIndex={selectedIndex} />
                 </div>
 
             </div>
@@ -76,9 +85,12 @@ const SidebarDrawer = ({ imageUrl, email, setAuth }) => {
 
 
 
-const SidebarAction = ({ content, handleClick, icon }) => {
+const SidebarAction = ({ id, content, handleClick, icon, selectedIndex = 0 }) => {
+
+    const selectedClassName = 'flex p-3 mt-6 items-center cursor-pointer transition ease-in-out duration:500 bg-gray-600 translate-x-4'
+    const neutralClassName = 'flex p-3 mt-6 items-center cursor-pointer transition ease-in-out duration:500 hover:bg-gray-600 hover:translate-x-2';
     return (
-        <div className='flex p-3 mt-6 items-center cursor-pointer transition ease-in-out duration:500 hover:bg-gray-600 hover:translate-x-2' onClick={handleClick}>
+        <div className={id === selectedIndex ? selectedClassName : neutralClassName} onClick={handleClick}>
             <FontAwesomeIcon icon={icon} color='white' />
             <h2 className='text-white pl-4'>{content}</h2>
         </div>);
