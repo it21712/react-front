@@ -113,7 +113,7 @@ const SignupForm = () => {
             </div>
 
             {verify && <Navigate to={verifyEmailRoute} replace={true}></Navigate>}
-            {login && <Navigate to={loginRoute} replace={false}></Navigate>}
+            {login && <Navigate to={loginRoute} replace={false}></Navigate>}    
         </form >
     );
 }

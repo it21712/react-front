@@ -9,6 +9,7 @@ import ApplicantPage from './screens/ApplicantPage';
 import Layout from './routes/Layout';
 import RequireAuth from './routes/RequireAuth';
 import UnauthorizedPage from './screens/UnauthorizedPage';
+import { TabProvider } from './context/TabProvider';
 
 
 function App() {

@@ -10,29 +10,35 @@ import { homeRoute } from "../routes";
 import UserDetailsFragment from "../components/UserDetailsFragment";
 import { TabProvider } from "../context/TabProvider";
 import useTab from "../hooks/useTab";
-
+import WelcomePage from "./WelcomePage";
 
 
 const ApplicantPage = () => {
 
     const { auth, setAuth } = useAuth();
 
-
-
+    const screens = [<UserDetailsFragment email={auth?.email} />];
     return (
         <div className="flex flex-col h-screen">
 
             <div className='flex h-screen w-screen'>
                 <TabProvider>
                     <SidebarDrawer imageUrl={auth?.imageUrl} email={auth?.email} setAuth={setAuth} />
-                    <UserDetailsFragment email={auth?.email} />
+                    <ApplicantsFragment screens={screens} />
                 </TabProvider>
+
+
             </div>
 
 
         </div>
     );
 
+}
+
+const ApplicantsFragment = ({ screens }) => {
+    const { tab } = useTab();
+    return (<>{screens[tab]}</>);
 }
 
 const SidebarDrawer = ({ imageUrl, email, setAuth }) => {
