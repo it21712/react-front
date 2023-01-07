@@ -1,4 +1,4 @@
-import { accountDetails, addressText, appTitle, cellPhoneText, cityText, contactText, countryText, dateOfBirthText, detailsSubmitText, firstNameText, invitationsText, lastNameText, logoutText, phoneText, roadNameText, roadNumberText, tkText } from "../strings";
+import { accountDetails, contactText, invitationsText, logoutText, } from "../strings";
 import useAuth from "../hooks/useAuth";
 import useAxiosPrivate, { useAxiosRole } from "../hooks/useAxiosPrivate";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -10,7 +10,7 @@ import { homeRoute } from "../routes";
 import UserDetailsFragment from "../components/UserDetailsFragment";
 import { TabProvider } from "../context/TabProvider";
 import useTab from "../hooks/useTab";
-import WelcomePage from "./WelcomePage";
+
 
 
 const ApplicantPage = () => {

@@ -1,11 +1,11 @@
 import { useState, useRef, useEffect } from "react";
 import useAuth from "../hooks/useAuth";
-import { cellPhoneText, cityText, countryText, dateOfBirthText, detailsSubmitText, firstNameText, lastNameText, phoneText, roadNameText, roadNumberText, tkText } from "../strings";
+import { cellPhoneText, cityText, contactText, countryText, dateOfBirthText, detailsSubmitText, firstNameText, lastNameText, phoneText, roadNameText, roadNumberText, tkText } from "../strings";
 import { RequiredFieldValidator, TextOnlyValidator, WordOnlyValidator } from "../validators/Validators";
 import useAxiosPrivate, { useAxiosRole } from "../hooks/useAxiosPrivate";
 import { APPLICANT_DETAILS_URL, APPLICANT_PROFILEPIC_URL } from "../backend/urls";
 import Cookies from "js-cookie";
-import { FaPen } from "react-icons/fa";
+import { FaPen, FaEnvelope, FaPhone, FaMobile } from "react-icons/fa";
 
 export const ProfileAvatar = ({ picUrl }) => {
 
@@ -52,7 +52,7 @@ const UserDetailsFragment = ({ email }) => {
 
     const InfoField = ({ value, css }) => {
         return (
-            <h2 className={'text-gray-700 mt-2 text-lg font-normal ' + css}>{value}</h2>
+            <h2 className={'text-gray-700 text-lg font-normal ' + css}>{value}</h2>
         );
     }
 
@@ -362,7 +362,7 @@ const UserDetailsFragment = ({ email }) => {
         );
     }
 
-    const DetailSheet = ({ data }) => {
+    const DetailSheet1 = ({ data }) => {
 
         const [profilePicUrl, setProfilePicUrl] = useState('');
         useEffect(() => {
@@ -445,6 +445,56 @@ const UserDetailsFragment = ({ email }) => {
                     </div>
 
                     <div className='flex justify-end mt-6 w-full'>
+
+                    </div>
+                </div>
+            </div>
+
+        );
+    }
+
+    const DetailSheet = ({ data }) => {
+
+        const [profilePicUrl, setProfilePicUrl] = useState('');
+        useEffect(() => {
+            axiosPrivate.get(APPLICANT_PROFILEPIC_URL, { responseType: 'blob' }).then((response) => {
+                const url = URL.createObjectURL(response.data);
+                setProfilePicUrl(url);
+            });
+        }, []);
+        const residenceText = data.country + ', ' + data.city + ', ' + data.road + ' ' + data.road_number + ', T.K ' + data.postal_code;
+        return (
+            <div className='w-full h-full'>
+                <div className='flex flex-col md:w-[70%] w-[90%] h-full mx-auto drop-shadow-xl'>
+                    <div className='flex flex-col w-full h-[60%] mt-12'>
+                        <div className='flex w-full h-[30%] bg-gradient-to-r from-orange-200 to-orange-300 justify-start items-end rounded-t-xl' />
+
+                        <div className='flex flex-col items-start pl-6 bg-white rounded-b-xl pb-6'>
+                            <div className='-translate-y-1/2 '>
+                                <div className='w-24 h-24 p-1 bg-white shadow-lg shadow-stone-400 sm:w-32 sm:h-32 rounded-full mr-6 '>
+                                    <ProfileAvatar picUrl={profilePicUrl} />
+                                </div>
+                            </div>
+                            <div className='flex justify-start items-start'>
+                                <InfoHeader value={data.firstName} css='mr-2' />
+                                <InfoHeader value={data.lastName} />
+                            </div>
+                            <InfoField value={residenceText} css='flex justify-start' />
+                            <h2 className='flex justify-start mt-6 font-medium text-lg mb-2' >{contactText}</h2>
+                            <div className='flex justify-start items-center mb-2'>
+                                <FaEnvelope color='' />
+                                <InfoField value={auth?.email} css='flex ml-2 justify-start' />
+                            </div>
+                            <div className='flex justify-start items-center mb-2'>
+                                <FaPhone color='' />
+                                <InfoField value={data.phone} css='flex ml-2 justify-start' />
+                            </div>
+
+                            <div className='flex justify-start items-center mb-2'>
+                                <FaMobile color='' />
+                                <InfoField value={data.cell_phone} css='flex ml-2 justify-start' />
+                            </div>
+                        </div>
 
                     </div>
                 </div>
