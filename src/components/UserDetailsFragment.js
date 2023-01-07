@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import useAuth from "../hooks/useAuth";
-import { cellPhoneText, cityText, contactText, countryText, dateOfBirthText, detailsSubmitText, firstNameText, lastNameText, phoneText, roadNameText, roadNumberText, tkText } from "../strings";
+import { cellPhoneText, cityText, contactText, countryText, dateOfBirthText, detailsSubmitText, firstNameText, lastNameText, phoneText, roadNameText, roadNumberText, tkText, uploadedFilesText } from "../strings";
 import { RequiredFieldValidator, TextOnlyValidator, WordOnlyValidator } from "../validators/Validators";
 import useAxiosPrivate, { useAxiosRole } from "../hooks/useAxiosPrivate";
 import { APPLICANT_DETAILS_URL, APPLICANT_PROFILEPIC_URL } from "../backend/urls";
@@ -19,7 +19,7 @@ export const ProfileAvatar = ({ picUrl }) => {
 const UserDetailsFragment = ({ email }) => {
 
     const [details, setDetails] = useState(undefined);
-
+    const [editDetails, setEditDetails] = useState(false);
     const getDetails = () => {
         const detailsStr = localStorage.getItem('details');
 
@@ -45,6 +45,7 @@ const UserDetailsFragment = ({ email }) => {
     }, []);
 
     const InputField = ({ type, id, onChange, value, readOnly }) => {
+
         return (
             <input type={type} id={id} value={value} readOnly={readOnly} onChange={onChange} className='w-full py-3 px-3 border-2 rounded-sm text-gray-700 leading-tight mt-2 focus:outline-none'></input>
         );
@@ -262,196 +263,6 @@ const UserDetailsFragment = ({ email }) => {
             </form>
         );
     }
-    const DetailSheet2 = ({ data }) => {
-
-        const [profilePicUrl, setProfilePicUrl] = useState('');
-        useEffect(() => {
-            axiosPrivate.get(APPLICANT_PROFILEPIC_URL, { responseType: 'blob' }).then((response) => {
-                const url = URL.createObjectURL(response.data);
-                setProfilePicUrl(url);
-            });
-        }, []);
-
-        return (
-            <div className='flex flex-col md:w-[70%] w-[90%]'>
-                <div className='flex items-center mt-6 mb-10 justify-between'>
-                    <div className='w-32 h-32 shadow-lg shadow-stone-400 rounded-full mr-4'>
-                        <ProfileAvatar picUrl={profilePicUrl} />
-                    </div>
-                    <div className='flex w-12 h-12 bg-gray-700 rounded-full drop-shadow-xl shadow-gray-700 mt-12 mr-32 cursor-pointer transition-all ease-in-out duration-500 hover:bg-gray-600 hover:w-14 hover:h-14'>
-                        <div className='m-auto'>
-                            <FaPen color='white' />
-                        </div>
-
-                    </div>
-                </div>
-
-                <div className='flex'>
-
-                    <div className='flex flex-col items-start pr-6 w-[20%]'>
-                        <InfoHeader value={firstNameText} />
-                        <InfoField value={data.firstName} />
-                    </div>
-                    <div className='flex flex-col items-start w-[20%]'>
-                        <InfoHeader value={lastNameText} />
-                        <InfoField value={data.lastName} />
-                    </div>
-                    <div className='flex flex-col items-start w-[40%]'>
-                        <InfoHeader value={dateOfBirthText} />
-                        <InfoField value={data.birth_date} />
-                    </div>
-                </div>
-
-                <div className='flex flex-col items-start mt-16'>
-                    <InfoHeader value='Email' />
-                    <InfoField value={auth?.email} />
-
-                </div>
-
-
-
-                <div className='flex mt-16'>
-
-                    <div className='w-[40%] flex flex-col items-start pr-6'>
-                        <InfoHeader value={phoneText} />
-                        <InfoField value={data.phone} />
-
-                    </div>
-
-                    <div className='w-[60%] flex flex-col items-start'>
-                        <InfoHeader value={cellPhoneText} />
-                        <InfoField value={data.cell_phone} />
-                    </div>
-
-
-                </div>
-
-                <div className='flex mt-10'>
-                    <div className='flex flex-col justify-start items-start mt-6 pr-6 w-[30%]'>
-                        <InfoHeader value={countryText} />
-                        <InfoField value={data.country} />
-                    </div>
-
-                    <div className='flex flex-col items-start mt-6 w-[30%]'>
-                        <InfoHeader value={cityText} />
-                        <InfoField value={data.city} />
-                    </div>
-                </div>
-                <div className='flex flex-col items-start mt-16'>
-                    <div className='flex items-center w-full'>
-                        <div className='flex flex-col items-start pr-4 w-[30%] justify-start'>
-                            <InfoHeader value={roadNameText} />
-                            <InfoField value={data.road} />
-                        </div>
-                        <div className='flex flex-col items-start pr-4 w-[30%]'>
-                            <InfoHeader value={roadNumberText} />
-                            <InfoField value={data.road_number} />
-                        </div>
-                        <div className='flex flex-col items-start w-[30%]'>
-                            <InfoHeader value={tkText} />
-                            <InfoField value={data.postal_code} />
-                        </div>
-                    </div>
-
-                </div>
-
-                <div className='flex justify-end mt-6 w-full'>
-
-                </div>
-            </div>
-        );
-    }
-
-    const DetailSheet1 = ({ data }) => {
-
-        const [profilePicUrl, setProfilePicUrl] = useState('');
-        useEffect(() => {
-            axiosPrivate.get(APPLICANT_PROFILEPIC_URL, { responseType: 'blob' }).then((response) => {
-                const url = URL.createObjectURL(response.data);
-                setProfilePicUrl(url);
-            });
-        }, []);
-
-        return (
-            <div className='w-full h-full '>
-                <div className='flex flex-col lg:w-[60%] w-[90%] pl-12'>
-
-                    <div className='flex items-center justify-start mt-6'>
-                        <div className='w-20 h-20 p-1 bg-white shadow-lg shadow-stone-400 rounded-full mr-6 sm:w-32 sm:h-32'>
-                            <ProfileAvatar picUrl={profilePicUrl} />
-                        </div>
-                        <div className='flex-1 flex-col mb-6 justify-start items-start'>
-                            <div className='flex justify-start items-start'>
-                                <InfoHeader value={data.firstName} css='mr-2' />
-                                <InfoHeader value={data.lastName} />
-                            </div>
-                            <InfoField value={auth?.email} css='flex justify-start' />
-                        </div>
-                        <div className='flex-2 justify-end'>
-                            <div className='flex w-12 h-12 bg-gray-700 rounded-full drop-shadow-xl shadow-gray-700 mt-12 mr-32 cursor-pointer transition-all ease-in-out duration-500 hover:bg-gray-600 hover:w-14 hover:h-14'>
-                                <div className='m-auto'>
-                                    <FaPen color='white' />
-                                </div>
-
-                            </div>
-                        </div>
-
-                    </div>
-
-
-                    <div className='flex mt-16 justify-start items-start'>
-
-                        <div className='flex flex-col w-[40%] items-start justify-start'>
-                            <InfoHeader value={phoneText} />
-                            <InfoField value={data.phone} />
-
-                        </div>
-
-                        <div className='flex flex-col w-[50%] items-start justify-start'>
-                            <InfoHeader value={cellPhoneText} />
-                            <InfoField value={data.cell_phone} />
-                        </div>
-
-
-                    </div>
-
-                    <div className='flex mt-10'>
-                        <div className='flex flex-col justify-start items-start mt-6 pr-6 w-[30%]'>
-                            <InfoHeader value={countryText} />
-                            <InfoField value={data.country} />
-                        </div>
-
-                        <div className='flex flex-col items-start mt-6 w-[30%]'>
-                            <InfoHeader value={cityText} />
-                            <InfoField value={data.city} />
-                        </div>
-                    </div>
-                    <div className='flex flex-col items-start mt-16'>
-                        <div className='flex items-center w-full'>
-                            <div className='flex flex-col items-start pr-4 w-[30%] justify-start'>
-                                <InfoHeader value={roadNameText} />
-                                <InfoField value={data.road} />
-                            </div>
-                            <div className='flex flex-col items-start pr-4 w-[30%]'>
-                                <InfoHeader value={roadNumberText} />
-                                <InfoField value={data.road_number} />
-                            </div>
-                            <div className='flex flex-col items-start w-[30%]'>
-                                <InfoHeader value={tkText} />
-                                <InfoField value={data.postal_code} />
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <div className='flex justify-end mt-6 w-full'>
-
-                    </div>
-                </div>
-            </div>
-
-        );
-    }
 
     const DetailSheet = ({ data }) => {
 
@@ -462,25 +273,31 @@ const UserDetailsFragment = ({ email }) => {
                 setProfilePicUrl(url);
             });
         }, []);
+
+        const handleEditDetails = () => {
+            setEditDetails(true);
+        }
         const residenceText = data.country + ', ' + data.city + ', ' + data.road + ' ' + data.road_number + ', T.K ' + data.postal_code;
         return (
             <div className='w-full h-full'>
                 <div className='flex flex-col md:w-[70%] w-[90%] h-full mx-auto drop-shadow-xl'>
-                    <div className='flex flex-col w-full h-[60%] mt-12'>
-                        <div className='flex w-full h-[30%] bg-gradient-to-r from-orange-200 to-orange-300 justify-start items-end rounded-t-xl' />
+                    <div className='flex flex-col w-full h-full mt-12'>
+                        <div className='flex w-full h-[15%] bg-gradient-to-r from-orange-200 to-orange-300 justify-start items-end rounded-t-xl' />
 
                         <div className='flex flex-col items-start pl-6 bg-white rounded-b-xl pb-6'>
-                            <div className='-translate-y-1/2 '>
-                                <div className='w-24 h-24 p-1 bg-white shadow-lg shadow-stone-400 sm:w-32 sm:h-32 rounded-full mr-6 '>
+                            <div className='-translate-y-1/2 flex justify-between w-full'>
+                                <div className='w-24 h-24 p-1 bg-white shadow-lg shadow-stone-400   sm:w-32 sm:h-32 rounded-full mr-6 '>
                                     <ProfileAvatar picUrl={profilePicUrl} />
                                 </div>
+                                <div className='pr-6 translate-y-[100%] cursor-pointer' onClick={handleEditDetails}><FaPen fontSize={20} /></div>
                             </div>
+
                             <div className='flex justify-start items-start'>
                                 <InfoHeader value={data.firstName} css='mr-2' />
                                 <InfoHeader value={data.lastName} />
                             </div>
                             <InfoField value={residenceText} css='flex justify-start' />
-                            <h2 className='flex justify-start mt-6 font-medium text-lg mb-2' >{contactText}</h2>
+                            <h2 className='flex justify-start mt-12 font-medium text-xl mb-6' >{contactText}</h2>
                             <div className='flex justify-start items-center mb-2'>
                                 <FaEnvelope color='' />
                                 <InfoField value={auth?.email} css='flex ml-2 justify-start' />
@@ -490,14 +307,17 @@ const UserDetailsFragment = ({ email }) => {
                                 <InfoField value={data.phone} css='flex ml-2 justify-start' />
                             </div>
 
-                            <div className='flex justify-start items-center mb-2'>
+                            <div className='flex justify-start items-center mb-12'>
                                 <FaMobile color='' />
                                 <InfoField value={data.cell_phone} css='flex ml-2 justify-start' />
                             </div>
+
+                            <h2 className='flex justify-start mt-12 font-normal text-xl mb-6' >{uploadedFilesText}</h2>
                         </div>
 
                     </div>
                 </div>
+
             </div>
 
         );
@@ -505,7 +325,7 @@ const UserDetailsFragment = ({ email }) => {
 
     return (
         <div className='flex bg-gray-200 w-full h-full justify-center overflow-y-scroll'>
-            {!details ? <DetailsForm /> : <DetailSheet data={details} />}
+            {!details || editDetails ? <DetailsForm /> : <DetailSheet data={details} />}
         </div>
     );
 

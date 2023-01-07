@@ -36,3 +36,4 @@ export const requiredFieldText = 'Αυτό το πεδίο είναι υποχρ
 export const onlyLettersFieldText = 'Αυτό το πεδίο πρέπει να περιέχει μόνο γράμματα';
 export const emailValidatorText = 'Μη έγκυρη διεύθυνση ηλεκτρονικού ταχυδρομίου';
 export const wordsOnlyText = 'Αυτό το πεδίο δεν μπορεί να περιέχει κενά';
+export const uploadedFilesText = 'Ανεβασμένα αρχεία';
