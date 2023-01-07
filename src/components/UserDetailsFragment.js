@@ -1,10 +1,9 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useLayoutEffect } from "react";
 import useAuth from "../hooks/useAuth";
 import { cellPhoneText, cityText, contactText, countryText, dateOfBirthText, detailsSubmitText, firstNameText, lastNameText, phoneText, roadNameText, roadNumberText, tkText, uploadedFilesText } from "../strings";
 import { RequiredFieldValidator, TextOnlyValidator, WordOnlyValidator } from "../validators/Validators";
 import useAxiosPrivate, { useAxiosRole } from "../hooks/useAxiosPrivate";
 import { APPLICANT_DETAILS_URL, APPLICANT_PROFILEPIC_URL } from "../backend/urls";
-import Cookies from "js-cookie";
 import { FaPen, FaEnvelope, FaPhone, FaMobile } from "react-icons/fa";
 
 export const ProfileAvatar = ({ picUrl }) => {
@@ -22,7 +21,6 @@ const UserDetailsFragment = ({ email }) => {
     const [editDetails, setEditDetails] = useState(false);
     const getDetails = () => {
         const detailsStr = localStorage.getItem('details');
-
         if (detailsStr === null) {
             axiosRole.get(APPLICANT_DETAILS_URL).then((response) => {
                 if (response.status === 200) {
@@ -38,7 +36,6 @@ const UserDetailsFragment = ({ email }) => {
     const axiosPrivate = useAxiosPrivate();
     const axiosRole = useAxiosRole();
     const { auth } = useAuth();
-
 
     useEffect(() => {
         getDetails();
@@ -66,19 +63,25 @@ const UserDetailsFragment = ({ email }) => {
 
     const DetailsForm = () => {
 
-        const [firstName, setFirstName] = useState('');
-        const [lastName, setLastName] = useState('');
+        const blobUrl = new Blob([localStorage.getItem('profilePic')], { type: 'image/*' });
+        const file = new File([blobUrl], 'profile');
+        const fileInput = useRef();
 
-        const [birthDate, setBirthDate] = useState('');
-        const [phone, setPhone] = useState('');
-        const [cellPhone, setCellPhone] = useState('');
-        const [country, setCountry] = useState('');
-        const [city, setCity] = useState('');
-        const [road, setRoad] = useState('');
-        const [roadNum, setRoadNum] = useState('');
-        const [profilePic, setProfilePic] = useState({});
-        const [profilePicUrl, setProfilePicUrl] = useState('');
-        const [tk, setTk] = useState('');
+
+        const [firstName, setFirstName] = useState(details?.firstName || '');
+        const [lastName, setLastName] = useState(details?.lastName || '');
+
+        const [birthDate, setBirthDate] = useState(details?.birth_date || '');
+        const [phone, setPhone] = useState(details?.phone || '');
+        const [cellPhone, setCellPhone] = useState(details?.cell_phone || '');
+        const [country, setCountry] = useState(details?.country || '');
+        const [city, setCity] = useState(details?.city || '');
+        const [road, setRoad] = useState(details?.road || '');
+        const [roadNum, setRoadNum] = useState(details?.road_number || '');
+        const [profilePic, setProfilePic] = useState(file || {});
+
+        const [profilePicUrl, setProfilePicUrl] = useState(localStorage.getItem('profilePic') || '');
+        const [tk, setTk] = useState(details?.postal_code || '');
 
         const [firstNameError, setFirstNameError] = useState(null);
         const [lastNameError, setLastNameError] = useState(null);
@@ -92,10 +95,12 @@ const UserDetailsFragment = ({ email }) => {
         const [tkError, setTkError] = useState(null);
 
         const handleFileSelect = (e) => {
+
             const url = URL.createObjectURL(e.target.files[0]);
             setProfilePicUrl(url);
             setProfilePic(e.target.files[0]);
             localStorage.setItem('profilePic', url);
+
 
         }
 
@@ -113,6 +118,15 @@ const UserDetailsFragment = ({ email }) => {
                 'postal_code': tk,
                 'profile_pic': profilePic,
             }
+
+            //check if is update function
+
+            if (details.id) {
+                data.id = details.id;
+            }
+
+            console.log('To be sent: ');
+            console.log(data);
 
             //convert data to form data and send request with Content-Type:multipart/form-data headers
             let form_data = new FormData();
@@ -170,16 +184,18 @@ const UserDetailsFragment = ({ email }) => {
                 sendDetails(event);
         }
 
+        function handleAvatarClick(event) {
+            fileInput.current.click();
 
+        }
 
         return (
             <form noValidate={true} onSubmit={handleFormSubmit} className='flex flex-col md:w-[60%] w-[90%]'>
                 <div className='flex items-center mt-6 mb-10'>
-                    <div className='w-24 h-24 shadow-lg shadow-stone-400 rounded-full mr-4'>
+                    <div className='w-24 h-24 shadow-lg shadow-stone-400 rounded-full mr-4 cursor-pointer' onClick={handleAvatarClick}>
                         <ProfileAvatar picUrl={profilePicUrl} />
                     </div>
-
-                    <input type='file' accept='image/*' id='profilePic' onChange={handleFileSelect} className='file:bg-gray-700 file:p-2 file:text-white file:rounded-md file:border-none file:cursor-pointer file:drop-shadow-md file:shadow-stone-400 file:mr-4 file:transition file:duration:500 file:ease-in-out hover:file:-translate-y-2 py-2 pl-4 rounded-sm text-gray-700' />
+                    <input type='file' accept='image/*' id='profilePic' ref={fileInput} onChange={handleFileSelect} className='hidden file:bg-gray-700 file:p-2 file:text-white file:rounded-md file:border-none file:cursor-pointer file:drop-shadow-md file:shadow-stone-400 file:mr-4 file:transition file:duration:500 file:ease-in-out hover:file:-translate-y-2 py-2 pl-4 rounded-sm text-gray-700' />
                 </div>
 
                 <div className='flex'>
@@ -271,6 +287,7 @@ const UserDetailsFragment = ({ email }) => {
             axiosPrivate.get(APPLICANT_PROFILEPIC_URL, { responseType: 'blob' }).then((response) => {
                 const url = URL.createObjectURL(response.data);
                 setProfilePicUrl(url);
+                localStorage.setItem('profilePic', url);
             });
         }, []);
 
@@ -325,7 +342,8 @@ const UserDetailsFragment = ({ email }) => {
 
     return (
         <div className='flex bg-gray-200 w-full h-full justify-center overflow-y-scroll'>
-            {!details || editDetails ? <DetailsForm /> : <DetailSheet data={details} />}
+            {!details ? <DetailsForm /> : editDetails ? <DetailsForm /> : <DetailSheet data={details} />}
+            {/* {!details || editDetails ? <DetailsForm /> : <DetailSheet data={details} />} */}
         </div>
     );
 

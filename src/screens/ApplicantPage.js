@@ -3,8 +3,8 @@ import useAuth from "../hooks/useAuth";
 import useAxiosPrivate, { useAxiosRole } from "../hooks/useAxiosPrivate";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRightFromBracket, faList, faEnvelope, faAt } from "@fortawesome/free-solid-svg-icons";
-import { LOGOUT_URL } from "../backend/urls";
-import { useState } from "react";
+import { APPLICANT_DETAILS_URL, LOGOUT_URL } from "../backend/urls";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { homeRoute } from "../routes";
 import UserDetailsFragment from "../components/UserDetailsFragment";
@@ -16,8 +16,12 @@ import useTab from "../hooks/useTab";
 const ApplicantPage = () => {
 
     const { auth, setAuth } = useAuth();
+    const axiosPrivate = useAxiosPrivate();
+    const axiosRole = useAxiosRole();
 
     const screens = [<UserDetailsFragment email={auth?.email} />];
+
+
     return (
         <div className="flex flex-col h-screen">
 
