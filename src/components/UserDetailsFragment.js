@@ -25,21 +25,23 @@ const UserDetailsFragment = ({ email }) => {
             axiosRole.get(APPLICANT_DETAILS_URL).then((response) => {
                 if (response.status === 200) {
                     localStorage.setItem('details', JSON.stringify(response.data));
-                    setDetails(response.data);
+                    //setDetails(response.data);
+                    return response.data;
                 }
 
             }).catch((error) => console.log(error));
 
         }
-        setDetails(JSON.parse(detailsStr));
+        //setDetails(JSON.parse(detailsStr));
+        return JSON.parse(detailsStr);
     }
     const axiosPrivate = useAxiosPrivate();
     const axiosRole = useAxiosRole();
     const { auth } = useAuth();
 
-    useEffect(() => {
-        getDetails();
-    }, []);
+    const localDetails = getDetails();
+
+
 
     const InputField = ({ type, id, onChange, value, readOnly }) => {
 
@@ -63,25 +65,38 @@ const UserDetailsFragment = ({ email }) => {
 
     const DetailsForm = () => {
 
-        const blobUrl = new Blob([localStorage.getItem('profilePic')], { type: 'image/*' });
-        const file = new File([blobUrl], 'profile');
+        useEffect(() => {
+            axiosPrivate.get(APPLICANT_PROFILEPIC_URL, { responseType: 'arraybuffer' }).then((response) => {
+                console.log(response.data);
+                const blob = new Blob([response.data]);
+                const file = new File([blob], localStorage.getItem('profilePicName'));
+                console.log(file);
+                setProfilePic(file);
+            });
+        }, []);
+
+
+        const ds = JSON.parse(localStorage.getItem('details'));
+
         const fileInput = useRef();
 
 
-        const [firstName, setFirstName] = useState(details?.firstName || '');
-        const [lastName, setLastName] = useState(details?.lastName || '');
 
-        const [birthDate, setBirthDate] = useState(details?.birth_date || '');
-        const [phone, setPhone] = useState(details?.phone || '');
-        const [cellPhone, setCellPhone] = useState(details?.cell_phone || '');
-        const [country, setCountry] = useState(details?.country || '');
-        const [city, setCity] = useState(details?.city || '');
-        const [road, setRoad] = useState(details?.road || '');
-        const [roadNum, setRoadNum] = useState(details?.road_number || '');
-        const [profilePic, setProfilePic] = useState(file || {});
+        const [firstName, setFirstName] = useState(ds?.firstName || '');
+        const [lastName, setLastName] = useState(ds?.lastName || '');
 
-        const [profilePicUrl, setProfilePicUrl] = useState(localStorage.getItem('profilePic') || '');
-        const [tk, setTk] = useState(details?.postal_code || '');
+        const [birthDate, setBirthDate] = useState(ds?.birth_date || '');
+        const [phone, setPhone] = useState(ds?.phone || '');
+        const [cellPhone, setCellPhone] = useState(ds?.cell_phone || '');
+        const [country, setCountry] = useState(ds?.country || '');
+        const [city, setCity] = useState(ds?.city || '');
+        const [road, setRoad] = useState(ds?.road || '');
+        const [roadNum, setRoadNum] = useState(ds?.road_number || '');
+        const [profilePic, setProfilePic] = useState({});
+
+        const [profilePicUrl, setProfilePicUrl] = useState(localStorage.getItem('profilePicUrl') || '');
+
+        const [tk, setTk] = useState(ds?.postal_code || '');
 
         const [firstNameError, setFirstNameError] = useState(null);
         const [lastNameError, setLastNameError] = useState(null);
@@ -95,16 +110,23 @@ const UserDetailsFragment = ({ email }) => {
         const [tkError, setTkError] = useState(null);
 
         const handleFileSelect = (e) => {
+            const blob = new Blob([e.target.files[0]]);
+            const url = URL.createObjectURL(blob);
 
-            const url = URL.createObjectURL(e.target.files[0]);
+            //const url = URL.createObjectURL(e.target.files[0]);
             setProfilePicUrl(url);
             setProfilePic(e.target.files[0]);
-            localStorage.setItem('profilePic', url);
+            //console.log(profilePic);
+            localStorage.setItem('profilePic', e.target.files[0]);
+            localStorage.setItem('profilePicUrl', url);
+            localStorage.setItem('profilePicName', e.target.files[0].name);
 
 
         }
 
+
         const sendDetails = () => {
+
             const data = {
                 'firstName': firstName,
                 'lastName': lastName,
@@ -119,11 +141,6 @@ const UserDetailsFragment = ({ email }) => {
                 'profile_pic': profilePic,
             }
 
-            //check if is update function
-
-            if (details.id) {
-                data.id = details.id;
-            }
 
             console.log('To be sent: ');
             console.log(data);
@@ -141,7 +158,7 @@ const UserDetailsFragment = ({ email }) => {
 
             axiosRole.post(APPLICANT_DETAILS_URL, form_data, { headers: { 'Content-Type': 'multipart/form-data' } })
                 .then((response) => {
-                    if (response.status === 201) {
+                    if (response.status === 200) {
                         localStorage.setItem('details', JSON.stringify(data));
                         setDetails(data);
                     }
@@ -287,7 +304,7 @@ const UserDetailsFragment = ({ email }) => {
             axiosPrivate.get(APPLICANT_PROFILEPIC_URL, { responseType: 'blob' }).then((response) => {
                 const url = URL.createObjectURL(response.data);
                 setProfilePicUrl(url);
-                localStorage.setItem('profilePic', url);
+                localStorage.setItem('profilePicUrl', url);
             });
         }, []);
 
@@ -342,7 +359,7 @@ const UserDetailsFragment = ({ email }) => {
 
     return (
         <div className='flex bg-gray-200 w-full h-full justify-center overflow-y-scroll'>
-            {!details ? <DetailsForm /> : editDetails ? <DetailsForm /> : <DetailSheet data={details} />}
+            {!localDetails ? <DetailsForm /> : editDetails ? <DetailsForm /> : <DetailSheet data={localDetails} />}
             {/* {!details || editDetails ? <DetailsForm /> : <DetailSheet data={details} />} */}
         </div>
     );
