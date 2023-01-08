@@ -244,7 +244,10 @@ const UserDetailsFragment = ({ email }) => {
 
                 <div className='flex flex-col items-start mt-6'>
                     <h2>Email</h2>
-                    <InputField type='email' id='email' value={email} readOnly={true} />
+                    <div className='w-full' onClick={() => { console.log('click') }} >
+                        <InputField type='email' id='email' value={email} readOnly={true} />
+                    </div>
+
 
                 </div>
 
