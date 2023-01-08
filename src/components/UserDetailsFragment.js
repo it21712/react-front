@@ -220,7 +220,7 @@ const UserDetailsFragment = ({ email }) => {
         return (
             <form noValidate={true} onSubmit={handleFormSubmit} className='flex flex-col md:w-[60%] w-[90%]'>
                 <div className='flex items-center mt-6 mb-10'>
-                    <div className='w-24 h-24 shadow-lg shadow-stone-400 rounded-full mr-4 cursor-pointer' onClick={handleAvatarClick}>
+                    <div className='w-32 h-32 shadow-lg shadow-stone-400 rounded-full mr-4 cursor-pointer' onClick={handleAvatarClick}>
                         <ProfileAvatar picUrl={profilePicUrl} />
                     </div>
                     <input type='file' accept='image/*' id='profilePic' ref={fileInput} onChange={handleFileSelect} className='hidden file:bg-gray-700 file:p-2 file:text-white file:rounded-md file:border-none file:cursor-pointer file:drop-shadow-md file:shadow-stone-400 file:mr-4 file:transition file:duration:500 file:ease-in-out hover:file:-translate-y-2 py-2 pl-4 rounded-sm text-gray-700' />
@@ -330,9 +330,9 @@ const UserDetailsFragment = ({ email }) => {
             <div className='w-full h-full'>
                 <div className='flex flex-col md:w-[70%] w-[90%] h-full mx-auto drop-shadow-xl'>
                     <div className='flex flex-col w-full h-full mt-12'>
-                        <div className='flex w-full h-[15%] bg-gradient-to-r from-orange-200 to-orange-300 justify-start items-end rounded-t-xl' />
+                        <div className='flex w-full h-[15%] bg-gradient-to-r from-amber-100 to-amber-200 justify-start items-end rounded-t-3xl' />
 
-                        <div className='flex flex-col items-start pl-6 bg-white rounded-b-xl pb-6'>
+                        <div className='flex flex-col items-start pl-6 bg-white rounded-b-2xl pb-6'>
                             <div className='-translate-y-1/2 flex justify-between w-full'>
                                 <div className='w-24 h-24 p-1 bg-white shadow-lg shadow-stone-400   sm:w-32 sm:h-32 rounded-full mr-6 '>
                                     <ProfileAvatar picUrl={profilePicUrl} />
