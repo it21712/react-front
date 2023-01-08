@@ -61,6 +61,8 @@ const SidebarDrawer = ({ imageUrl, email, setAuth }) => {
             setAuth({});
             localStorage.removeItem('email');
             localStorage.removeItem('profilePic');
+            localStorage.removeItem('profilePicUrl');
+            localStorage.removeItem('profilePicName');
             localStorage.removeItem('details');
             setLogout(true);
             navigate(homeRoute, { replace: true });

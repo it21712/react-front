@@ -19,6 +19,8 @@ const UserDetailsFragment = ({ email }) => {
 
     const [details, setDetails] = useState(undefined);
     const [editDetails, setEditDetails] = useState(false);
+
+
     const getDetails = () => {
         const detailsStr = localStorage.getItem('details');
         if (detailsStr === null) {
@@ -65,15 +67,7 @@ const UserDetailsFragment = ({ email }) => {
 
     const DetailsForm = () => {
 
-        useEffect(() => {
-            axiosPrivate.get(APPLICANT_PROFILEPIC_URL, { responseType: 'arraybuffer' }).then((response) => {
-                console.log(response.data);
-                const blob = new Blob([response.data]);
-                const file = new File([blob], localStorage.getItem('profilePicName'));
-                console.log(file);
-                setProfilePic(file);
-            });
-        }, []);
+
 
 
         const ds = JSON.parse(localStorage.getItem('details'));
@@ -92,7 +86,7 @@ const UserDetailsFragment = ({ email }) => {
         const [city, setCity] = useState(ds?.city || '');
         const [road, setRoad] = useState(ds?.road || '');
         const [roadNum, setRoadNum] = useState(ds?.road_number || '');
-        const [profilePic, setProfilePic] = useState({});
+        const [profilePic, setProfilePic] = useState(undefined);
 
         const [profilePicUrl, setProfilePicUrl] = useState(localStorage.getItem('profilePicUrl') || '');
 
@@ -108,6 +102,20 @@ const UserDetailsFragment = ({ email }) => {
         const [roadError, setRoadError] = useState(null);
         const [roadNumError, setRoadNumError] = useState(null);
         const [tkError, setTkError] = useState(null);
+        //let imageFile = useRef({});
+        // useEffect(() => {
+        //     console.log(imageFile.current);
+        //     axiosPrivate.get(APPLICANT_PROFILEPIC_URL, { responseType: 'arraybuffer' }).then((response) => {
+        //         console.log(response.data);
+        //         const blob = new Blob([response.data]);
+
+        //         imageFile.current = new File([blob], localStorage.getItem('profilePicName'));
+        //         //console.log(imageFile);
+        //         setProfilePic(imageFile);
+        //     });
+
+
+        // }, [imageFile.current]);
 
         const handleFileSelect = (e) => {
             const blob = new Blob([e.target.files[0]]);
@@ -149,11 +157,13 @@ const UserDetailsFragment = ({ email }) => {
             let form_data = new FormData();
             for (const [key, value] of Object.entries(data)) {
 
-                if (key === 'profile_pic') {
+                if (key === 'profile_pic' && value) {
 
                     form_data.append('profile_pic', value, value.name);
+                    continue;
                 }
-                form_data.append(key, value);
+
+                if (value) form_data.append(key, value);
             }
 
             axiosRole.post(APPLICANT_DETAILS_URL, form_data, { headers: { 'Content-Type': 'multipart/form-data' } })
@@ -161,6 +171,7 @@ const UserDetailsFragment = ({ email }) => {
                     if (response.status === 200) {
                         localStorage.setItem('details', JSON.stringify(data));
                         setDetails(data);
+                        setEditDetails(false);
                     }
                 });
         }
@@ -302,10 +313,13 @@ const UserDetailsFragment = ({ email }) => {
         const [profilePicUrl, setProfilePicUrl] = useState('');
         useEffect(() => {
             axiosPrivate.get(APPLICANT_PROFILEPIC_URL, { responseType: 'blob' }).then((response) => {
-                const url = URL.createObjectURL(response.data);
-                setProfilePicUrl(url);
-                localStorage.setItem('profilePicUrl', url);
-            });
+                if (response.status !== 204) {
+                    const url = URL.createObjectURL(response.data);
+                    setProfilePicUrl(url);
+                    localStorage.setItem('profilePicUrl', url);
+                }
+
+            }).catch((error) => { console.log(error) });
         }, []);
 
         const handleEditDetails = () => {
