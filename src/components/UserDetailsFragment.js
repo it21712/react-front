@@ -21,29 +21,37 @@ const UserDetailsFragment = ({ email }) => {
     const [editDetails, setEditDetails] = useState(false);
 
 
+    //todo fix DetailsForm always showing up on login
     const getDetails = () => {
+
         const detailsStr = localStorage.getItem('details');
         if (detailsStr === null) {
+
             axiosRole.get(APPLICANT_DETAILS_URL).then((response) => {
+
                 if (response.status === 200) {
                     localStorage.setItem('details', JSON.stringify(response.data));
-                    //setDetails(response.data);
+                    setDetails(response.data);
+
                     return response.data;
                 }
 
             }).catch((error) => console.log(error));
 
         }
-        //setDetails(JSON.parse(detailsStr));
+        setDetails(JSON.parse(detailsStr));
+
         return JSON.parse(detailsStr);
     }
     const axiosPrivate = useAxiosPrivate();
     const axiosRole = useAxiosRole();
     const { auth } = useAuth();
 
-    const localDetails = getDetails();
 
+    useEffect(() => {
 
+        getDetails();
+    }, []);
 
     const InputField = ({ type, id, onChange, value, readOnly }) => {
 
@@ -372,13 +380,16 @@ const UserDetailsFragment = ({ email }) => {
             </div>
 
         );
+
     }
 
+
     return (
+
         <div className='flex bg-gray-200 w-full h-full justify-center overflow-y-scroll'>
-            {!localDetails ? <DetailsForm /> : editDetails ? <DetailsForm /> : <DetailSheet data={localDetails} />}
-            {/* {!details || editDetails ? <DetailsForm /> : <DetailSheet data={details} />} */}
+            {!details ? <DetailsForm /> : editDetails ? <DetailsForm /> : <DetailSheet data={details} />}
         </div>
+
     );
 
 
