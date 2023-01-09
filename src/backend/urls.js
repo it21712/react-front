@@ -5,3 +5,4 @@ export const LOGIN_URL = '/api/auth/login/';
 export const LOGOUT_URL = '/api/auth/logout/';
 export const APPLICANT_DETAILS_URL = '/applicants/details/';
 export const APPLICANT_PROFILEPIC_URL = '/applicants/profile_pic/';
+export const INVITATIONS_URL = '/invitations/';

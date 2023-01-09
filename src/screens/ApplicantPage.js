@@ -10,6 +10,7 @@ import { homeRoute } from "../routes";
 import UserDetailsFragment from "../components/UserDetailsFragment";
 import { TabProvider } from "../context/TabProvider";
 import useTab from "../hooks/useTab";
+import InvitationsFragment from "../components/InvitationsFragment";
 
 
 
@@ -19,7 +20,7 @@ const ApplicantPage = () => {
     const axiosPrivate = useAxiosPrivate();
     const axiosRole = useAxiosRole();
 
-    const screens = [<UserDetailsFragment email={auth?.email} />];
+    const screens = [<UserDetailsFragment email={auth?.email} />, <InvitationsFragment />];
 
 
     return (
