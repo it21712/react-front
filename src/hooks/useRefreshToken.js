@@ -13,8 +13,7 @@ const useRefreshToken = () => {
         });
 
         setAuth(prev => {
-            console.log(JSON.stringify(prev));
-            console.log('new token: ' + response.data.access);
+
             return { ...prev, accessToken: response.data.access }
         });
 
@@ -45,7 +44,7 @@ const useRefreshToken2 = () => {
             async (error) => {
                 const prevRequest = error?.config;
                 if (error?.response?.status === 401 && !prevRequest?.sent) {
-                    console.log('401');
+
                     return axios(prevRequest);
                 }
                 return Promise.reject(error);
@@ -62,8 +61,7 @@ const useRefreshToken2 = () => {
         });
 
         setAuth(prev => {
-            console.log(JSON.stringify(prev));
-            console.log('new token: ' + response.data.access);
+
             return { ...prev, accessToken: response.data.access }
         });
 
