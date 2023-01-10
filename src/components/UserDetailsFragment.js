@@ -323,7 +323,7 @@ const UserDetailsFragment = ({ email }) => {
 
         const [profilePicUrl, setProfilePicUrl] = useState('');
         useEffect(() => {
-            axiosPrivate.get(APPLICANT_PROFILEPIC_URL, { responseType: 'blob' }).then((response) => {
+            axiosRole.get(APPLICANT_PROFILEPIC_URL, { responseType: 'blob' }).then((response) => {
                 if (response.status !== 204) {
                     const url = URL.createObjectURL(response.data);
                     setProfilePicUrl(url);
