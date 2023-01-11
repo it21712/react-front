@@ -164,13 +164,8 @@ export const useAxiosRole = () => {
                     console.log('401');
                     //triggerLogout();
                     //navigate(unauthorizedRoute);
-                } else if (error.response?.status === 403 && !prevRequest?.sent) {
-                    prevRequest.sent = true;
-                    const newAccessToken = await refresh();
-                    prevRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
-                    console.log(newAccessToken);
-                    return axiosPrivate(prevRequest);
-                } else if (error?.response?.status === 403 && error?.response?.data['detail'] === unverifiedMessage) {
+                }
+                else if (error?.response?.status === 403 && error?.response?.data['detail'] === unverifiedMessage) {
                     navigate(verifyEmailRoute);
                 }
                 return Promise.reject(error);
