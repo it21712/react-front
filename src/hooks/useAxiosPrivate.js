@@ -20,7 +20,7 @@ const useAxiosPrivate = () => {
             config => {
 
                 config.headers['X-CSRFToken'] = `${Cookies.get('csrftoken')}`;
-                console.log(auth?.accessToken);
+
                 if (!config.headers['Authorization']) {
 
                     config.headers['Authorization'] = `Bearer ${auth?.accessToken}`;
@@ -182,7 +182,7 @@ export const useAxiosRole = () => {
             axiosPrivate.interceptors.response.eject(responseIntercept);
         }
 
-    }, [auth, refresh])
+    }, [auth, refresh]) //[auth, refresh]
     return axiosPrivate;
 }
 

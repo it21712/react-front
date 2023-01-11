@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useLayoutEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import useAuth from "../hooks/useAuth";
 import { cellPhoneText, cityText, contactText, countryText, dateOfBirthText, detailsSubmitText, firstNameText, lastNameText, phoneText, roadNameText, roadNumberText, tkText, uploadedFilesText } from "../strings";
 import { RequiredFieldValidator, TextOnlyValidator, WordOnlyValidator } from "../validators/Validators";
@@ -20,8 +20,6 @@ const UserDetailsFragment = ({ email }) => {
     const [details, setDetails] = useState(undefined);
     const [editDetails, setEditDetails] = useState(false);
 
-
-    //todo fix DetailsForm always showing up on login
     const getDetails = () => {
 
         const detailsStr = localStorage.getItem('details');
@@ -49,7 +47,7 @@ const UserDetailsFragment = ({ email }) => {
 
 
     useEffect(() => {
-
+        localStorage.removeItem('profilePicUrl');
         getDetails();
     }, []);
 
@@ -321,16 +319,17 @@ const UserDetailsFragment = ({ email }) => {
 
     const DetailSheet = ({ data }) => {
 
-        const [profilePicUrl, setProfilePicUrl] = useState('');
+        const [profilePicUrl, setProfilePicUrl] = useState(localStorage.getItem('profilePicUrl') || '');
         useEffect(() => {
-            axiosRole.get(APPLICANT_PROFILEPIC_URL, { responseType: 'blob' }).then((response) => {
-                if (response.status !== 204) {
-                    const url = URL.createObjectURL(response.data);
-                    setProfilePicUrl(url);
-                    localStorage.setItem('profilePicUrl', url);
-                }
+            if (profilePicUrl === '')
+                axiosRole.get(APPLICANT_PROFILEPIC_URL, { responseType: 'blob' }).then((response) => {
+                    if (response.status !== 204) {
+                        const url = URL.createObjectURL(response.data);
+                        setProfilePicUrl(url);
+                        localStorage.setItem('profilePicUrl', url);
+                    }
 
-            }).catch((error) => { console.log(error) });
+                }).catch((error) => { console.log(error) });
         }, []);
 
         const handleEditDetails = () => {
