@@ -2,9 +2,11 @@ import { useState, useRef, useEffect } from "react";
 import useAuth from "../hooks/useAuth";
 import { cellPhoneText, cityText, contactText, countryText, dateOfBirthText, detailsSubmitText, firstNameText, lastNameText, phoneText, roadNameText, roadNumberText, tkText, uploadedFilesText } from "../strings";
 import { RequiredFieldValidator, TextOnlyValidator, WordOnlyValidator } from "../validators/Validators";
-import useAxiosPrivate, { useAxiosRole } from "../hooks/useAxiosPrivate";
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import { APPLICANT_DETAILS_URL, APPLICANT_PROFILEPIC_URL } from "../backend/urls";
 import { FaPen, FaEnvelope, FaPhone, FaMobile } from "react-icons/fa";
+
+import useAxiosRole from "../hooks/useAxiosRole";
 
 export const ProfileAvatar = ({ picUrl }) => {
 

@@ -1,8 +1,30 @@
 import axios from "../backend/axios";
 import useAuth from "./useAuth";
-import { REFRESH_URL } from "../backend/urls";
+import { LOGOUT_URL, REFRESH_URL } from "../backend/urls";
 import { useEffect } from "react";
 import Cookies from "js-cookie";
+import useAxiosPrivate from "./useAxiosPrivate";
+
+const useRefreshToken1 = () => {
+    const { setAuth } = useAuth();
+    const refresh = async () => {
+        await axios.post(REFRESH_URL, {
+            withCredentials: true
+        }).then((response) => {
+            setAuth(prev => {
+                return { ...prev, accessToken: response.data.access }
+            });
+            return response.data.access;
+        }).catch(error => {
+            if (error.status === 401) {
+                console.log('refresh expired (useRefresh)');
+                return null;
+            }
+        });
+    }
+
+    return refresh;
+}
 
 const useRefreshToken = () => {
     const { setAuth } = useAuth();
@@ -11,7 +33,6 @@ const useRefreshToken = () => {
         const response = await axios.post(REFRESH_URL, {
             withCredentials: true
         });
-
         setAuth(prev => {
 
             return { ...prev, accessToken: response.data.access }
@@ -24,6 +45,7 @@ const useRefreshToken = () => {
 }
 const useRefreshToken2 = () => {
     const { auth, setAuth } = useAuth();
+
     useEffect(() => {
 
         const requestIntercept = axios.interceptors.request.use(
@@ -44,7 +66,8 @@ const useRefreshToken2 = () => {
             async (error) => {
                 const prevRequest = error?.config;
                 if (error?.response?.status === 401 && !prevRequest?.sent) {
-
+                    prevRequest.sent = true;
+                    console.log('refresh expired');
                     return axios(prevRequest);
                 }
                 return Promise.reject(error);

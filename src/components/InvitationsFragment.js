@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { APPLICANTS_VIEW_INVITATIONS_URL } from "../backend/urls";
-import { useAxiosRole } from "../hooks/useAxiosPrivate";
+
+import useAxiosRole from "../hooks/useAxiosRole";
 import { expirationText } from "../strings";
 
 const InvitationsFragment = () => {

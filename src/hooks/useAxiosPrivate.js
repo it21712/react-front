@@ -1,4 +1,4 @@
-import { axiosPrivate } from "../backend/axios";
+import { axios2 } from "../backend/axios";
 import { useEffect } from "react";
 import useRefreshToken from "./useRefreshToken";
 import useAuth from "./useAuth";
@@ -12,9 +12,19 @@ const useAxiosPrivate = () => {
     const refresh = useRefreshToken();
     const { auth, setAuth } = useAuth();
     const navigate = useNavigate();
+    const forceLogout = () => {
+        axios2.post(LOGOUT_URL);
+        setAuth({});
+        localStorage.removeItem('email');
+        localStorage.removeItem('profilePic');
+        localStorage.removeItem('profilePicUrl');
+        localStorage.removeItem('profilePicName');
+        localStorage.removeItem('details');
+    }
+
     useEffect(() => {
 
-        const requestIntercept = axiosPrivate.interceptors.request.use(
+        const requestIntercept = axios2.interceptors.request.use(
 
 
             config => {
@@ -30,16 +40,25 @@ const useAxiosPrivate = () => {
             }, (error) => Promise.reject(error)
         );
 
-        const responseIntercept = axiosPrivate.interceptors.response.use(
+        const responseIntercept = axios2.interceptors.response.use(
             response => response,
             async (error) => {
                 const prevRequest = error?.config;
                 if (error?.response?.status === 401 && !prevRequest?.sent) {
                     prevRequest.sent = true;
                     const newAccessToken = await refresh();
+                    if (!newAccessToken) {
+                        console.warn('redfresh expired, loggin out');
+                        forceLogout();
+                        return axios2(prevRequest);
+                    }
+
+                    console.log('got new Access ' + newAccessToken);
                     prevRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
 
-                    return axiosPrivate(prevRequest);
+
+
+                    return axios2(prevRequest);
                 }
                 // if (error?.response?.status === 403 && !prevRequest?.sent) {
 
@@ -57,12 +76,12 @@ const useAxiosPrivate = () => {
         );
 
         return () => {
-            axiosPrivate.interceptors.request.eject(requestIntercept);
-            axiosPrivate.interceptors.response.eject(responseIntercept);
+            axios2.interceptors.request.eject(requestIntercept);
+            axios2.interceptors.response.eject(responseIntercept);
         }
 
     }, [auth, refresh])
-    return axiosPrivate;
+    return axios2;
 }
 
 // export const useAxiosRole = () => {
@@ -126,23 +145,15 @@ const useAxiosPrivate = () => {
 // }
 
 export const useAxiosRole = () => {
-    const refresh = useRefreshToken();
+    //const refresh = useRefreshToken();
     const { auth, setAuth } = useAuth();
     const navigate = useNavigate();
+    //const axios2Role = axios2;
 
-    const triggerLogout = () => {
-        axiosPrivate.post(LOGOUT_URL);
-        setAuth({});
-        localStorage.removeItem('email');
-        localStorage.removeItem('profilePic');
-        localStorage.removeItem('profilePicUrl');
-        localStorage.removeItem('profilePicName');
-        localStorage.removeItem('details');
-    }
 
     useEffect(() => {
 
-        const requestIntercept = axiosPrivate.interceptors.request.use(
+        const requestIntercept = axios2.interceptors.request.use(
 
 
             config => {
@@ -156,16 +167,12 @@ export const useAxiosRole = () => {
             }, (error) => Promise.reject(error)
         );
 
-        const responseIntercept = axiosPrivate.interceptors.response.use(
+        const responseIntercept = axios2.interceptors.response.use(
             response => response,
             async (error) => {
                 const prevRequest = error?.config;
-                if (error?.response?.status === 401) {
-                    console.log('401');
-                    //triggerLogout();
-                    //navigate(unauthorizedRoute);
-                }
-                else if (error?.response?.status === 403 && error?.response?.data['detail'] === unverifiedMessage) {
+
+                if (error?.response?.status === 403 && error?.response?.data['detail'] === unverifiedMessage) {
                     navigate(verifyEmailRoute);
                 }
                 return Promise.reject(error);
@@ -173,12 +180,12 @@ export const useAxiosRole = () => {
         );
 
         return () => {
-            axiosPrivate.interceptors.request.eject(requestIntercept);
-            axiosPrivate.interceptors.response.eject(responseIntercept);
+            axios2.interceptors.request.eject(requestIntercept);
+            axios2.interceptors.response.eject(responseIntercept);
         }
 
-    }, [auth, refresh]) //[auth, refresh]
-    return axiosPrivate;
+    }, []) //[auth, refresh]
+    return axios2;
 }
 
 
