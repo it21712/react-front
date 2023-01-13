@@ -1,7 +1,7 @@
 import './App.css';
 import WelcomePage from './screens/WelcomePage';
 import { Route, Routes } from 'react-router-dom';
-import { homeRoute, applicantsRoute, loginRoute, signupRoute, committeeRoute, verifyEmailRoute, profileRoute, logoutRoute, unauthorizedRoute } from './routes';
+import { homeRoute, applicantsRoute, loginRoute, signupRoute, committeeRoute, verifyEmailRoute, profileRoute, logoutRoute, unauthorizedRoute, applicantDetailsRoute } from './routes';
 import SignupPage from './screens/SignupPage';
 import VerifyEmailPage from './screens/VerifyEmailPage';
 import LoginPage from './screens/LoginPage';
@@ -10,6 +10,7 @@ import Layout from './routes/Layout';
 import RequireAuth from './routes/RequireAuth';
 import UnauthorizedPage from './screens/UnauthorizedPage';
 import { TabProvider } from './context/TabProvider';
+import UserDetailsFragment from './components/UserDetailsFragment';
 
 
 function App() {
@@ -26,7 +27,10 @@ function App() {
 
         {/*Protected routes*/}
         <Route element={<RequireAuth />}>
-          <Route path={applicantsRoute + profileRoute} element={<ApplicantPage />} />
+          <Route path={applicantsRoute + profileRoute + '/*'} element={<ApplicantPage />} />
+          {/* <Route path={applicantsRoute + profileRoute}>
+            <Route path={applicantsRoute + profileRoute + applicantDetailsRoute} element={<UserDetailsFragment />}></Route>
+          </Route> */}
 
         </Route>
 

@@ -3,49 +3,39 @@ import useAuth from "../hooks/useAuth";
 import useAxiosPrivate, { useAxiosRole } from "../hooks/useAxiosPrivate";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRightFromBracket, faList, faEnvelope, faAt } from "@fortawesome/free-solid-svg-icons";
-import { APPLICANT_DETAILS_URL, LOGOUT_URL } from "../backend/urls";
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { homeRoute } from "../routes";
+import { LOGOUT_URL } from "../backend/urls";
+import { useState } from "react";
+import { Link, Route, Routes, useNavigate } from "react-router-dom";
+import { applicantsApplicationsRoute, applicantsInvitationsRoute, applicantDetailsRoute, applicantsRoute, homeRoute, profileRoute } from "../routes";
 import UserDetailsFragment from "../components/UserDetailsFragment";
-import { TabProvider } from "../context/TabProvider";
+
 import useTab from "../hooks/useTab";
 import InvitationsFragment from "../components/InvitationsFragment";
 import ApplicationsFragment from "../components/ApplicationsFragment";
 
 
-
 const ApplicantPage = () => {
 
     const { auth, setAuth } = useAuth();
-    const axiosPrivate = useAxiosPrivate();
-    const axiosRole = useAxiosRole();
-
-    const screens = [<UserDetailsFragment email={auth?.email} />, <ApplicationsFragment />, <InvitationsFragment />];
 
 
     return (
-        <div className="flex flex-col h-screen">
-
-            <div className='flex h-screen w-screen'>
-                <TabProvider>
-                    <SidebarDrawer imageUrl={auth?.imageUrl} email={auth?.email} setAuth={setAuth} />
-                    <ApplicantsFragment screens={screens} />
-                </TabProvider>
-
-
+        <div className='flex w-screen h-screen'>
+            <SidebarDrawer />
+            <div className='flex w-full h-full'>
+                <Routes>
+                    <Route path={applicantDetailsRoute} element={<UserDetailsFragment email={auth?.email} />}></Route>
+                    <Route path={applicantsApplicationsRoute} element={<ApplicationsFragment />}></Route>
+                    <Route path={applicantsInvitationsRoute} element={<InvitationsFragment />}></Route>
+                </Routes>
             </div>
-
-
         </div>
+
     );
 
+
 }
 
-const ApplicantsFragment = ({ screens }) => {
-    const { tab } = useTab();
-    return (<>{screens[tab]}</>);
-}
 
 const SidebarDrawer = ({ imageUrl, email, setAuth }) => {
 
@@ -54,7 +44,7 @@ const SidebarDrawer = ({ imageUrl, email, setAuth }) => {
     const axiosRole = useAxiosRole();
     const navigate = useNavigate();
 
-
+    const loc = window.location.pathname;
 
     const handleLogout = () => {
 
@@ -82,11 +72,11 @@ const SidebarDrawer = ({ imageUrl, email, setAuth }) => {
                     <h2 className='text-white font-bold text-lg mb-2'>{email}</h2>
                 </div>
                 <div>
-                    <SidebarAction id={0} content={accountDetails} icon={faList} />
-                    <SidebarAction id={1} content={applicationsText} icon={faList} />
-                    <SidebarAction id={2} content={invitationsText} icon={faEnvelope} />
-                    <SidebarAction id={3} content={contactText} icon={faAt} />
-                    <SidebarAction id={4} content={logoutText} icon={faArrowRightFromBracket} handleClick={handleLogout} />
+                    <SidebarActionTab linkTo={applicantsRoute + profileRoute + applicantDetailsRoute} content={accountDetails} icon={faList} />
+                    <SidebarActionTab linkTo={applicantsRoute + profileRoute + applicantsApplicationsRoute} content={applicationsText} icon={faList} />
+                    <SidebarActionTab linkTo={applicantsRoute + profileRoute + applicantsInvitationsRoute} content={invitationsText} icon={faEnvelope} />
+                    {/* <SidebarActionTab id={3} content={contactText} icon={faAt} />
+                    <SidebarActionTab id={4} content={logoutText} icon={faArrowRightFromBracket} handleClick={handleLogout} /> */}
                 </div>
 
             </div>
@@ -96,18 +86,18 @@ const SidebarDrawer = ({ imageUrl, email, setAuth }) => {
 
 
 
-const SidebarAction = ({ id, content, handleClick = () => { }, icon }) => {
-    const { tab, setTab } = useTab();
+const SidebarActionTab = ({ linkTo, content, handleClick = () => { }, icon }) => {
+    const loc = window.location.pathname
     const selectedClassName = 'flex p-3 mt-6 items-center cursor-pointer transition ease-in-out duration:500 bg-gray-600 translate-x-4'
     const neutralClassName = 'flex p-3 mt-6 items-center cursor-pointer transition ease-in-out duration:500 hover:bg-gray-600 hover:translate-x-2';
     return (
-        <div className={id === tab ? selectedClassName : neutralClassName} onClick={() => {
-            setTab(id);
-            handleClick();
-        }}>
+
+        <Link className={loc === linkTo ? selectedClassName : neutralClassName} to={linkTo}>
             <FontAwesomeIcon icon={icon} color='white' />
             <h2 className='text-white pl-4'>{content}</h2>
-        </div>);
+        </Link>
+
+    );
 }
 
 export default ApplicantPage;

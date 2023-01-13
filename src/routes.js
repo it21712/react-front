@@ -7,3 +7,6 @@ export const verifyEmailRoute = '/verify';
 export const profileRoute = '/profile';
 export const logoutRoute = '/logout';
 export const unauthorizedRoute = '/unauthorized';
+export const applicantDetailsRoute = '/details';
+export const applicantsApplicationsRoute = '/applications';
+export const applicantsInvitationsRoute = '/invitations';
