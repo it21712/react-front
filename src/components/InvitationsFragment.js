@@ -34,7 +34,7 @@ const InvitationsFragment = () => {
         }
 
         return (
-            <div className={`mb-20 mx-auto ${apply ? 'transition  duration-300 opacity-60 ' : 'opacity-100 '} flex flex-col md:w-[60%] w-[90%] md:h-[25%] h-[30%] bg-white rounded-t-2xl rounded-b-2xl drop-shadow-md ${apply ? 'cursor-default ' : 'cursor-pointer '} transition-all ease-in-out duration-500 hover:-translate-y-1 hover:shadow-lg`}>
+            <div className={`mb-20 mx-auto ${apply ? 'transition  duration-300 opacity-60 ' : 'opacity-100 '} flex flex-col md:w-[60%] w-[90%] md:h-[40%] h-[30%] bg-white rounded-t-2xl rounded-b-2xl drop-shadow-md ${apply ? 'cursor-default ' : 'cursor-pointer '} transition-all ease-in-out duration-500 hover:-translate-y-1 hover:shadow-lg`}>
                 <span className='flex px-6 justify-between items-center w-full h-[20%] bg-stone-300'>
                     <h1 className='text-xl font-sans font-medium text-gray-800'>{invitation.title}</h1>
                     <h2 className='text-sm text-gray-700'>{invitation.start.split('T')[0]}</h2>
@@ -60,7 +60,7 @@ const InvitationsFragment = () => {
     }
 
     return (
-        <div className='w-full h-full flex flex-col bg-gray-200'>
+        <div className='w-full h-full flex flex-col bg-gray-200 overflow-y-scroll'>
             <div className='w-full h-full mt-12'>
                 {invitations ? invitations.map((invitation) => <InvitationComponent key={invitation.id} invitation={invitation} />) : <></>}
             </div>

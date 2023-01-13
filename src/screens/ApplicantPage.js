@@ -20,9 +20,9 @@ const ApplicantPage = () => {
 
 
     return (
-        <div className='flex w-screen h-screen'>
+        <div className='flex w-full h-full'>
             <SidebarDrawer />
-            <div className='flex w-full h-full'>
+            <div className='flex w-full h-screen'>
                 <Routes>
                     <Route path={applicantDetailsRoute} element={<UserDetailsFragment email={auth?.email} />}></Route>
                     <Route path={applicantsApplicationsRoute} element={<ApplicationsFragment />}></Route>
