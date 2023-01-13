@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRightFromBracket, faList, faEnvelope, faAt } from "@fortawesome/free-solid-svg-icons";
 import { LOGOUT_URL } from "../backend/urls";
 import { useState } from "react";
-import { Link, Route, Routes, useNavigate } from "react-router-dom";
+import { Link, Route, Routes, useNavigate, } from "react-router-dom";
 import { applicantsApplicationsRoute, applicantsInvitationsRoute, applicantDetailsRoute, applicantsRoute, homeRoute, profileRoute } from "../routes";
 import UserDetailsFragment from "../components/UserDetailsFragment";
 
@@ -92,7 +92,7 @@ const SidebarActionTab = ({ linkTo, content, handleClick = () => { }, icon }) =>
     const neutralClassName = 'flex p-3 mt-6 items-center cursor-pointer transition ease-in-out duration:500 hover:bg-gray-600 hover:translate-x-2';
     return (
 
-        <Link className={loc === linkTo ? selectedClassName : neutralClassName} to={linkTo}>
+        <Link replace={true} className={loc === linkTo ? selectedClassName : neutralClassName} to={linkTo}>
             <FontAwesomeIcon icon={icon} color='white' />
             <h2 className='text-white pl-4'>{content}</h2>
         </Link>
