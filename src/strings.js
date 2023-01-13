@@ -16,6 +16,7 @@ export const clickHereSignupText = 'Πατήστε εδώ για να δημιο
 export const authErrorText = 'Τα παρακάτω στοιχεία δεν είναι σωστά. Παρακαλώ ξαναπροσπαθήστε';
 export const unverifiedMessage = 'Unverified';
 export const accountDetails = 'Τα στοιχεία μου';
+export const applicationsText = 'Οι αιτήσεις μου';
 export const invitationsText = 'Προσκλήσεις';
 export const contactText = 'Επικοινωνία';
 export const logoutText = 'Αποσύνδεση';

@@ -1,4 +1,4 @@
-import { accountDetails, contactText, invitationsText, logoutText, } from "../strings";
+import { accountDetails, applicationsText, contactText, invitationsText, logoutText, } from "../strings";
 import useAuth from "../hooks/useAuth";
 import useAxiosPrivate, { useAxiosRole } from "../hooks/useAxiosPrivate";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -11,6 +11,7 @@ import UserDetailsFragment from "../components/UserDetailsFragment";
 import { TabProvider } from "../context/TabProvider";
 import useTab from "../hooks/useTab";
 import InvitationsFragment from "../components/InvitationsFragment";
+import ApplicationsFragment from "../components/ApplicationsFragment";
 
 
 
@@ -20,7 +21,7 @@ const ApplicantPage = () => {
     const axiosPrivate = useAxiosPrivate();
     const axiosRole = useAxiosRole();
 
-    const screens = [<UserDetailsFragment email={auth?.email} />, <InvitationsFragment />];
+    const screens = [<UserDetailsFragment email={auth?.email} />, <ApplicationsFragment />, <InvitationsFragment />];
 
 
     return (
@@ -82,9 +83,10 @@ const SidebarDrawer = ({ imageUrl, email, setAuth }) => {
                 </div>
                 <div>
                     <SidebarAction id={0} content={accountDetails} icon={faList} />
-                    <SidebarAction id={1} content={invitationsText} icon={faEnvelope} />
-                    <SidebarAction id={2} content={contactText} icon={faAt} />
-                    <SidebarAction id={3} content={logoutText} icon={faArrowRightFromBracket} handleClick={handleLogout} />
+                    <SidebarAction id={1} content={applicationsText} icon={faList} />
+                    <SidebarAction id={2} content={invitationsText} icon={faEnvelope} />
+                    <SidebarAction id={3} content={contactText} icon={faAt} />
+                    <SidebarAction id={4} content={logoutText} icon={faArrowRightFromBracket} handleClick={handleLogout} />
                 </div>
 
             </div>

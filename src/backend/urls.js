@@ -6,3 +6,5 @@ export const LOGOUT_URL = '/api/auth/logout/';
 export const APPLICANT_DETAILS_URL = '/applicants/details/';
 export const APPLICANT_PROFILEPIC_URL = '/applicants/profile_pic/';
 export const APPLICANTS_VIEW_INVITATIONS_URL = '/applicants/invitations/';
+export const APPLICANTS_APPLY_URL = '/applicants/apply/';
+export const APPLICANTS_APPLICATIONS_URL = '/applicants/applications/';
