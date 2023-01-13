@@ -44,7 +44,7 @@ const ApplicationsFragment = () => {
     }
 
     return (
-        <div className='w-full h-full flex flex-col bg-gray-200'>
+        <div className='w-full h-full flex flex-col bg-gray-200 overflow-y-scroll'>
             <div className='w-full h-full mt-12'>
                 {invitations ? invitations.map((invitation) => <InvitationComponent key={invitation.id} invitation={invitation} />) : <></>}
             </div>
