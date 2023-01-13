@@ -339,10 +339,10 @@ const UserDetailsFragment = ({ email }) => {
         }
         const residenceText = data.country + ', ' + data.city + ', ' + data.road + ' ' + data.road_number + ', T.K ' + data.postal_code;
         return (
-            <div className='w-full h-full'>
+            <div className='w-full h-full'> 
                 <div className='flex flex-col md:w-[70%] w-[90%] h-full mx-auto drop-shadow-xl'>
                     <div className='flex flex-col w-full h-full mt-12'>
-                        <div className='flex w-full h-[15%] bg-gradient-to-r from-amber-100 to-amber-200 justify-start items-end rounded-t-3xl' />
+                        <div className='flex w-full h-[15%] min-h-[100px] bg-gradient-to-r from-amber-100 to-amber-200 justify-start items-end rounded-t-3xl' />
 
                         <div className='flex flex-col items-start pl-6 bg-white rounded-b-2xl pb-6'>
                             <div className='-translate-y-1/2 flex justify-between w-full'>
