@@ -21,10 +21,10 @@ const ApplicantPage = () => {
 
     return (
         <div className='flex w-full h-full'>
-            <SidebarDrawer />
+            <SidebarDrawer email={auth?.email} setAuth={setAuth}/>
             <div className='flex w-full h-screen'>
                 <Routes>
-                    <Route path={applicantDetailsRoute} element={<UserDetailsFragment email={auth?.email} />}></Route>
+                    <Route index element={<UserDetailsFragment email={auth?.email} />}></Route>
                     <Route path={applicantsApplicationsRoute} element={<ApplicationsFragment />}></Route>
                     <Route path={applicantsInvitationsRoute} element={<InvitationsFragment />}></Route>
                 </Routes>
@@ -43,7 +43,6 @@ const SidebarDrawer = ({ imageUrl, email, setAuth }) => {
     const [logout, setLogout] = useState(false);
     const axiosRole = useAxiosRole();
     const navigate = useNavigate();
-
     const loc = window.location.pathname;
 
     const handleLogout = () => {
@@ -72,11 +71,11 @@ const SidebarDrawer = ({ imageUrl, email, setAuth }) => {
                     <h2 className='text-white font-bold text-lg mb-2'>{email}</h2>
                 </div>
                 <div>
-                    <SidebarActionTab linkTo={applicantsRoute + profileRoute + applicantDetailsRoute} content={accountDetails} icon={faList} />
+                    <SidebarActionTab linkTo={applicantsRoute + profileRoute} content={accountDetails} icon={faList} />
                     <SidebarActionTab linkTo={applicantsRoute + profileRoute + applicantsApplicationsRoute} content={applicationsText} icon={faList} />
                     <SidebarActionTab linkTo={applicantsRoute + profileRoute + applicantsInvitationsRoute} content={invitationsText} icon={faEnvelope} />
-                    {/* <SidebarActionTab id={3} content={contactText} icon={faAt} />
-                    <SidebarActionTab id={4} content={logoutText} icon={faArrowRightFromBracket} handleClick={handleLogout} /> */}
+                    <SidebarActionTab id={3} content={contactText} icon={faAt} />
+                    <SidebarAction content={logoutText} icon={faArrowRightFromBracket} handleClick={handleLogout} />
                 </div>
 
             </div>
@@ -84,9 +83,17 @@ const SidebarDrawer = ({ imageUrl, email, setAuth }) => {
     );
 }
 
+const SidebarAction = ({content, icon, handleClick = () => {}}) => {
+    const neutralClassName = 'flex p-3 mt-6 items-center cursor-pointer transition ease-in-out duration:500 hover:bg-gray-600 hover:translate-x-2';
+    return (
+        <div className={neutralClassName} onClick={handleClick}>
+            <FontAwesomeIcon icon={icon} color='white' />
+            <h2 className='text-white pl-4'>{content}</h2>
+        </div>
+    );
+}
 
-
-const SidebarActionTab = ({ linkTo, content, handleClick = () => { }, icon }) => {
+const SidebarActionTab = ({ linkTo, content, icon }) => {
     const loc = window.location.pathname
     const selectedClassName = 'flex p-3 mt-6 items-center cursor-pointer transition ease-in-out duration:500 bg-gray-600 translate-x-4'
     const neutralClassName = 'flex p-3 mt-6 items-center cursor-pointer transition ease-in-out duration:500 hover:bg-gray-600 hover:translate-x-2';

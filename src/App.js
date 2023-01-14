@@ -19,7 +19,7 @@ function App() {
     <Routes>
       <Route path='/' element={<Layout />}>
         {/*Public routes*/}
-        <Route path={homeRoute} element={<WelcomePage />} />
+        <Route index path={homeRoute} element={<WelcomePage />} />
         <Route path={applicantsRoute + signupRoute} element={<SignupPage />} />
         <Route path={loginRoute} element={<LoginPage />} />
         <Route path={verifyEmailRoute} element={<VerifyEmailPage />} />
@@ -28,9 +28,7 @@ function App() {
         {/*Protected routes*/}
         <Route element={<RequireAuth />}>
           <Route path={applicantsRoute + profileRoute + '/*'} element={<ApplicantPage />} />
-          {/* <Route path={applicantsRoute + profileRoute}>
-            <Route path={applicantsRoute + profileRoute + applicantDetailsRoute} element={<UserDetailsFragment />}></Route>
-          </Route> */}
+          
 
         </Route>
 
