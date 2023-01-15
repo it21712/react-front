@@ -173,7 +173,6 @@ const UserDetailsFragment = ({ email }) => {
 
                 if (value) form_data.append(key, value);
             }
-
             axiosRole.post(APPLICANT_DETAILS_URL, form_data, { headers: { 'Content-Type': 'multipart/form-data' } })
                 .then((response) => {
                     if (response.status === 200) {
@@ -339,7 +338,7 @@ const UserDetailsFragment = ({ email }) => {
         }
         const residenceText = data.country + ', ' + data.city + ', ' + data.road + ' ' + data.road_number + ', T.K ' + data.postal_code;
         return (
-            <div className='w-full h-full'> 
+            <div className='w-full h-full'>
                 <div className='flex flex-col md:w-[70%] w-[90%] h-full mx-auto drop-shadow-xl'>
                     <div className='flex flex-col w-full h-full mt-12'>
                         <div className='flex w-full h-[15%] min-h-[100px] bg-gradient-to-r from-amber-100 to-amber-200 justify-start items-end rounded-t-3xl' />

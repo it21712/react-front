@@ -39,3 +39,6 @@ export const emailValidatorText = 'Μη έγκυρη διεύθυνση ηλεκ
 export const wordsOnlyText = 'Αυτό το πεδίο δεν μπορεί να περιέχει κενά';
 export const uploadedFilesText = 'Ανεβασμένα αρχεία';
 export const expirationText = 'Ενεργή έως:';
+export const uploadUGDsText = 'Επιλογή Πτυχίων Προπτυχιακού';
+export const uploadPGDsText = 'Επιλογή Πτυχίων Μεταπτυχιακού';
+export const uploadPHDsText = 'Επιλογή Πτυχίων Διδακτορικού';
