@@ -6,6 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { AuthProvider } from './context/AuthProvider';
 const root = ReactDOM.createRoot(document.getElementById('root'));
+
 root.render(
   <StrictMode>
     <AuthProvider>

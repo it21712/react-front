@@ -8,5 +8,6 @@ export const profileRoute = '/profile';
 export const logoutRoute = '/logout';
 export const unauthorizedRoute = '/unauthorized';
 export const applicantDetailsRoute = '/details';
+export const applicantFilesRoute = '/uploads';
 export const applicantsApplicationsRoute = '/applications';
 export const applicantsInvitationsRoute = '/invitations';

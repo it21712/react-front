@@ -9,11 +9,14 @@ import ApplicantPage from './screens/ApplicantPage';
 import Layout from './routes/Layout';
 import RequireAuth from './routes/RequireAuth';
 import UnauthorizedPage from './screens/UnauthorizedPage';
-import { TabProvider } from './context/TabProvider';
-import UserDetailsFragment from './components/UserDetailsFragment';
+import { useEffect } from 'react';
+
 
 
 function App() {
+  useEffect(() => {
+    document.title = 'Hua ELKE';
+  },[]);
 
   return (
     <Routes>

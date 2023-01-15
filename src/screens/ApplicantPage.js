@@ -1,16 +1,17 @@
-import { accountDetails, applicationsText, contactText, invitationsText, logoutText, } from "../strings";
+import { accountDetails, applicationsText, contactText, invitationsText, logoutText, uploadedFilesText, } from "../strings";
 import useAuth from "../hooks/useAuth";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowRightFromBracket, faList, faEnvelope, faAt } from "@fortawesome/free-solid-svg-icons";
+import { faArrowRightFromBracket, faList, faEnvelope, faAt, faFile, faShareFromSquare } from "@fortawesome/free-solid-svg-icons";
 import { LOGOUT_URL } from "../backend/urls";
 
 import { Link, Route, Routes, useNavigate, } from "react-router-dom";
-import { applicantsApplicationsRoute, applicantsInvitationsRoute, applicantsRoute, homeRoute, profileRoute } from "../routes";
+import { applicantFilesRoute, applicantsApplicationsRoute, applicantsInvitationsRoute, applicantsRoute, homeRoute, profileRoute } from "../routes";
 import UserDetailsFragment from "../components/UserDetailsFragment";
 
 import InvitationsFragment from "../components/InvitationsFragment";
 import ApplicationsFragment from "../components/ApplicationsFragment";
+import ApplicantFilesFragment from "../components/ApplicantFilesFragment";
 
 
 const ApplicantPage = () => {
@@ -23,9 +24,10 @@ const ApplicantPage = () => {
             <SidebarDrawer email={auth?.email} setAuth={setAuth}/>
             <div className='flex w-full h-screen'>
                 <Routes>
-                    <Route index element={<UserDetailsFragment email={auth?.email} />}></Route>
-                    <Route path={applicantsApplicationsRoute} element={<ApplicationsFragment />}></Route>
-                    <Route path={applicantsInvitationsRoute} element={<InvitationsFragment />}></Route>
+                    <Route index element={<UserDetailsFragment email={auth?.email} />} />
+                    <Route path={applicantFilesRoute} element={<ApplicantFilesFragment />} />
+                    <Route path={applicantsApplicationsRoute} element={<ApplicationsFragment />} />
+                    <Route path={applicantsInvitationsRoute} element={<InvitationsFragment />} />
                 </Routes>
             </div>
         </div>
@@ -67,9 +69,10 @@ const SidebarDrawer = ({ email, setAuth }) => {
                 </div>
                 <div>
                     <SidebarActionTab linkTo={applicantsRoute + profileRoute} content={accountDetails} icon={faList} />
-                    <SidebarActionTab linkTo={applicantsRoute + profileRoute + applicantsApplicationsRoute} content={applicationsText} icon={faList} />
+                    <SidebarActionTab linkTo={applicantsRoute + profileRoute + applicantFilesRoute} content={uploadedFilesText} icon={faFile}/>
+                    <SidebarActionTab linkTo={applicantsRoute + profileRoute + applicantsApplicationsRoute} content={applicationsText} icon={faShareFromSquare} />
                     <SidebarActionTab linkTo={applicantsRoute + profileRoute + applicantsInvitationsRoute} content={invitationsText} icon={faEnvelope} />
-                    <SidebarActionTab id={3} content={contactText} icon={faAt} />
+                    <SidebarActionTab content={contactText} icon={faAt} />
                     <SidebarAction content={logoutText} icon={faArrowRightFromBracket} handleClick={handleLogout} />
                 </div>
 
@@ -95,7 +98,7 @@ const SidebarActionTab = ({ linkTo, content, icon }) => {
     return (
 
         <Link replace={true} className={loc === linkTo ? selectedClassName : neutralClassName} to={linkTo}>
-            <FontAwesomeIcon icon={icon} color='white' />
+            <FontAwesomeIcon icon={icon} color='white'/>
             <h2 className='text-white pl-4'>{content}</h2>
         </Link>
 
