@@ -42,3 +42,7 @@ export const expirationText = 'Ενεργή έως:';
 export const uploadUGDsText = 'Επιλογή Πτυχίων Προπτυχιακού';
 export const uploadPGDsText = 'Επιλογή Πτυχίων Μεταπτυχιακού';
 export const uploadPHDsText = 'Επιλογή Πτυχίων Διδακτορικού';
+export const UGDsText = 'Πτυχία Προπτυχιακού';
+export const PGDsText = 'Πτυχία Μεταπτυχιακού';
+export const PHDsText = 'Πτυχία Διδακτορικού';
+export const uploadFileText = 'Ανέβασμα Αρχείων';

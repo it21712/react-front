@@ -2,7 +2,9 @@ import { useRef, useState } from "react";
 import FILETYPES from "../backend/fileTypes";
 import { APPLICANTS_FILES_URL } from "../backend/urls";
 import useAxiosRole from "../hooks/useAxiosRole";
-import { uploadPGDsText, uploadPHDsText, uploadUGDsText } from "../strings";
+import { PGDsText, PHDsText, UGDsText, uploadFileText, uploadPGDsText, uploadPHDsText, uploadUGDsText } from "../strings";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUpload } from "@fortawesome/free-solid-svg-icons";
 
 const ApplicantFilesFragment = () => {
     const axiosRole = useAxiosRole();
@@ -39,24 +41,31 @@ const ApplicantFilesFragment = () => {
         );
     }
 
-    const FileUploadSpan = ({ uploadText, fileType, multiple = true }) => {
+    const FileUploadSpan = ({ title, uploadText, fileType, multiple = true }) => {
 
         const [uploads, setUploads] = useState([]);
         const fileUploads = useRef([]);
+
+        const handleChange = () => {
+            const fs = Array.from(fileUploads.current.files);
+            setUploads(prev => prev.concat(fs.map((f) => f)));
+            files.current = files.current.concat(fs.map((f) => f));
+            const _types = fs.map(() => fileType);
+            file_types.current = file_types.current.concat(_types);
+        }
+
         return (
             <>
-                <div className='flex bg-gray-800 rounded-lg p-2 cursor-pointer mb-6' onClick={() => { fileUploads.current.click() }}>
-                    <h2 className='text-white'>{uploadText}</h2>
-                </div>
-                <input className='hidden' type='file' multiple={multiple} accept='application/pdf' ref={fileUploads} onChange={() => {
+                <div className='flex items-center justify-center'>
+                    <h2 className='text-xl mr-4 font-semibold'>{title}</h2>
 
-                    const fs = Array.from(fileUploads.current.files);
-                    console.log(fs);
-                    setUploads(prev => prev.concat(fs.map((f) => f)));
-                    files.current = files.current.concat(fs.map((f) => f));
-                    const _types = fs.map(() => fileType);
-                    file_types.current = file_types.current.concat(_types);
-                }}></input>
+                    <div className='flex bg-gray-800 rounded-lg p-2 cursor-pointer justify-center items-center' onClick={() => { fileUploads.current.click() }}>
+                        <h2 className='text-white mr-2'>{uploadText}</h2>
+                        <FontAwesomeIcon color="white" icon={faUpload} />
+                    </div>
+                </div>
+
+                <input className='hidden' type='file' multiple={multiple} accept='application/pdf' ref={fileUploads} onChange={handleChange}></input>
                 <div className="flex w-full items-center justify-start mb-12">
                     {!uploads.length <= 0 && Array.from(uploads).map((file, i) => { return <PdfPreview key={i} content={file.name} /> })}
                 </div>
@@ -70,17 +79,21 @@ const ApplicantFilesFragment = () => {
         <div className='flex bg-gray-200 w-full h-full overflow-y-scroll'>
             <form noValidate onSubmit={handleSubmit} className='flex flex-col items-start justify-start m-auto min-w-[400px] h-full w-[80%] mt-[5%]'>
 
-                <FileUploadSpan uploadText={uploadUGDsText} fileType={FILETYPES.UNDER_GRAD_DIPLOMA} />
-                <FileUploadSpan uploadText={uploadPGDsText} fileType={FILETYPES.POST_GRAD_DIPLOMA} />
-                <FileUploadSpan uploadText={uploadPHDsText} fileType={FILETYPES.PHD_DIPLOMA} />
-                <FileUploadSpan uploadText={uploadUGDsText} fileType={FILETYPES.CV} />
-                <FileUploadSpan uploadText={uploadUGDsText} fileType={FILETYPES.WORK_EXPERIENCE} />
-                <FileUploadSpan uploadText={uploadUGDsText} fileType={FILETYPES.CERTIFICATE} />
-                <FileUploadSpan uploadText={uploadUGDsText} fileType={FILETYPES.MILITARY_CERT} />
-                <FileUploadSpan uploadText={uploadUGDsText} fileType={FILETYPES.AFFIRMATION} />
+                <FileUploadSpan title={UGDsText} uploadText={uploadFileText} fileType={FILETYPES.UNDER_GRAD_DIPLOMA} />
+                <FileUploadSpan title={PGDsText} uploadText={uploadFileText} fileType={FILETYPES.POST_GRAD_DIPLOMA} />
+                <FileUploadSpan title={PHDsText} uploadText={uploadFileText} fileType={FILETYPES.PHD_DIPLOMA} />
+                <FileUploadSpan title={UGDsText} uploadText={uploadFileText} fileType={FILETYPES.CV} />
+                <FileUploadSpan title={UGDsText} uploadText={uploadFileText} fileType={FILETYPES.WORK_EXPERIENCE} />
+                <FileUploadSpan title={UGDsText} uploadText={uploadFileText} fileType={FILETYPES.CERTIFICATE} />
+                <FileUploadSpan title={UGDsText} uploadText={uploadFileText} fileType={FILETYPES.MILITARY_CERT} />
+                <FileUploadSpan title={UGDsText} uploadText={uploadFileText} fileType={FILETYPES.AFFIRMATION} />
 
                 <button className='mt-12' type="submit">Send</button>
+
             </form>
+            <button className='mt-12' onClick={() => {
+                axiosRole.get(APPLICANTS_FILES_URL);
+            }}>Get</button>
         </div>
     );
 }
