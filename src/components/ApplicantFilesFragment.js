@@ -129,20 +129,30 @@ const ApplicantFilesFragment = () => {
 
     return (
         <div className='flex bg-gray-200 w-full h-full overflow-y-scroll'>
-            <form noValidate onSubmit={handleSubmit} className='flex flex-col items-start justify-start m-auto min-w-[400px] h-full w-[80%] mt-[5%]'>
+            <div className='flex flex-col justify-start items-center w-full h-full'>
+                <form noValidate onSubmit={handleSubmit} className='flex flex-col items-start justify-start m-auto min-w-[400px] h-full w-[80%] mt-[5%]'>
 
-                <FileUploadSpan title={UGDsText} uploadText={uploadFileText} fileType={FILETYPES.UNDER_GRAD_DIPLOMA} />
-                <FileUploadSpan title={PGDsText} uploadText={uploadFileText} fileType={FILETYPES.POST_GRAD_DIPLOMA} />
-                <FileUploadSpan title={PHDsText} uploadText={uploadFileText} fileType={FILETYPES.PHD_DIPLOMA} />
-                <FileUploadSpan title={CVText} multiple={false} uploadText={uploadFileText} fileType={FILETYPES.CV} />
-                <FileUploadSpan title={WXPsText} uploadText={uploadFileText} fileType={FILETYPES.WORK_EXPERIENCE} />
-                <FileUploadSpan title={CRTsText} uploadText={uploadFileText} fileType={FILETYPES.CERTIFICATE} />
-                <FileUploadSpan title={MCTText} multiple={false} uploadText={uploadFileText} fileType={FILETYPES.MILITARY_CERT} />
-                <FileUploadSpan title={AFRText} multiple={false} uploadText={uploadFileText} fileType={FILETYPES.AFFIRMATION} />
+                    <FileUploadSpan title={UGDsText} uploadText={uploadFileText} fileType={FILETYPES.UNDER_GRAD_DIPLOMA} />
+                    <FileUploadSpan title={PGDsText} uploadText={uploadFileText} fileType={FILETYPES.POST_GRAD_DIPLOMA} />
+                    <FileUploadSpan title={PHDsText} uploadText={uploadFileText} fileType={FILETYPES.PHD_DIPLOMA} />
+                    <FileUploadSpan title={CVText} multiple={false} uploadText={uploadFileText} fileType={FILETYPES.CV} />
+                    <FileUploadSpan title={WXPsText} uploadText={uploadFileText} fileType={FILETYPES.WORK_EXPERIENCE} />
+                    <FileUploadSpan title={CRTsText} uploadText={uploadFileText} fileType={FILETYPES.CERTIFICATE} />
+                    <FileUploadSpan title={MCTText} multiple={false} uploadText={uploadFileText} fileType={FILETYPES.MILITARY_CERT} />
+                    <FileUploadSpan title={AFRText} multiple={false} uploadText={uploadFileText} fileType={FILETYPES.AFFIRMATION} />
 
-                <button className='mt-12' type="submit">Send</button>
 
-            </form>
+
+                </form>
+                <div className='flex mb-12'>
+                    <div className='flex items-center justify-center min-h-[20px] h-[25%] transition ease-in-out duration-500 hover:bg-gray-800 bg-gray-700 rounded-md p-4 shadow-xl shadow-gray-400'>
+                        <button className='text-white text-lg' type='submit'>{uploadFileText}</button>
+                        <h2 className='mt-44'></h2>
+                    </div>
+                </div>
+
+
+            </div>
 
         </div>
     );
