@@ -1,0 +1,7 @@
+.delete-file-icon {
+    color: gray;
+}
+
+.delete-file:hover .delete-file-icon {
+    color: white;
+}

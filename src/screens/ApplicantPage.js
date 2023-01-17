@@ -21,7 +21,7 @@ const ApplicantPage = () => {
 
     return (
         <div className='flex w-full h-full'>
-            <SidebarDrawer email={auth?.email} setAuth={setAuth}/>
+            <SidebarDrawer email={auth?.email} setAuth={setAuth} />
             <div className='flex w-full h-screen'>
                 <Routes>
                     <Route index element={<UserDetailsFragment email={auth?.email} />} />
@@ -41,9 +41,9 @@ const ApplicantPage = () => {
 const SidebarDrawer = ({ email, setAuth }) => {
 
     const axiosPrivate = useAxiosPrivate();
-    
+
     const navigate = useNavigate();
-    
+
 
     const handleLogout = () => {
 
@@ -55,7 +55,7 @@ const SidebarDrawer = ({ email, setAuth }) => {
             localStorage.removeItem('profilePicUrl');
             localStorage.removeItem('profilePicName');
             localStorage.removeItem('details');
-            
+            localStorage.removeItem('uploads');
             navigate(homeRoute, { replace: true });
         }
     }
@@ -63,13 +63,13 @@ const SidebarDrawer = ({ email, setAuth }) => {
     return (
         <div className='hidden h-screen md:w-[23%] md:flex min-w-[300px]'>
             <div className='flex flex-col bg-gray-800 px-6 w-full h-full'>
-                
+
                 <div className='border-b-[1px] border-white w-full mx-auto mt-12'>
                     <h2 className='text-white font-bold text-lg mb-2'>{email}</h2>
                 </div>
                 <div>
                     <SidebarActionTab linkTo={applicantsRoute + profileRoute} content={accountDetails} icon={faList} />
-                    <SidebarActionTab linkTo={applicantsRoute + profileRoute + applicantFilesRoute} content={uploadedFilesText} icon={faFile}/>
+                    <SidebarActionTab linkTo={applicantsRoute + profileRoute + applicantFilesRoute} content={uploadedFilesText} icon={faFile} />
                     <SidebarActionTab linkTo={applicantsRoute + profileRoute + applicantsApplicationsRoute} content={applicationsText} icon={faShareFromSquare} />
                     <SidebarActionTab linkTo={applicantsRoute + profileRoute + applicantsInvitationsRoute} content={invitationsText} icon={faEnvelope} />
                     <SidebarActionTab content={contactText} icon={faAt} />
@@ -81,7 +81,7 @@ const SidebarDrawer = ({ email, setAuth }) => {
     );
 }
 
-const SidebarAction = ({content, icon, handleClick = () => {}}) => {
+const SidebarAction = ({ content, icon, handleClick = () => { } }) => {
     const neutralClassName = 'flex p-3 mt-6 items-center cursor-pointer transition ease-in-out duration:500 hover:bg-gray-600 hover:translate-x-2';
     return (
         <div className={neutralClassName} onClick={handleClick}>
@@ -98,7 +98,7 @@ const SidebarActionTab = ({ linkTo, content, icon }) => {
     return (
 
         <Link replace={true} className={loc === linkTo ? selectedClassName : neutralClassName} to={linkTo}>
-            <FontAwesomeIcon icon={icon} color='white'/>
+            <FontAwesomeIcon icon={icon} color='white' />
             <h2 className='text-white pl-4'>{content}</h2>
         </Link>
 
