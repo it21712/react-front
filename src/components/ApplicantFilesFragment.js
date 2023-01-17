@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import FILETYPES from "../backend/fileTypes";
 import { APPLICANTS_FILES_URL } from "../backend/urls";
 import useAxiosRole from "../hooks/useAxiosRole";
-import { AFRText, CRTsText, CVText, MCTText, PGDsText, PHDsText, UGDsText, uploadFileText, uploadPGDsText, uploadPHDsText, uploadUGDsText, WXPsText } from "../strings";
+import { AFRText, CRTsText, CVText, MCTText, PGDsText, PHDsText, UGDsText, uploadFileText, WXPsText } from "../strings";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX } from "@fortawesome/free-solid-svg-icons";
 import './ApplicantFilesFragment.css';
@@ -11,9 +11,10 @@ import './ApplicantFilesFragment.css';
 const ApplicantFilesFragment = () => {
     const axiosRole = useAxiosRole();
 
-    const files = useRef([]); //TODO put them in one array
-    const file_types = useRef([]);
+    const files = useRef([]);
+
     const [storedFiles, setStoredFiles] = useState(JSON.parse(localStorage.getItem('uploads')) || undefined);
+
     useEffect(() => {
         if (!localStorage.getItem('uploads')) {
             axiosRole.get(APPLICANTS_FILES_URL).then(response => {
@@ -30,26 +31,19 @@ const ApplicantFilesFragment = () => {
             });
         }
 
-    }, []);
-
-    const getStoredFileNames = () => {
-
-    }
+    }, [axiosRole]);
 
     const handleSubmit = (event) => {
         event.preventDefault();
 
         let formData = new FormData();
 
-        //add files in formData
-        files.current.forEach((file) => {
-            formData.append('files', file, file.name);
+        //add files and their types in formData
+        files.current.forEach((data) => {
+            formData.append('files', data.file, data.file.name);
+            formData.append('file_types', data.file_type);
         });
 
-        //add fileTypes in formData
-        file_types.current.forEach((fileType) => {
-            formData.append('file_types', fileType)
-        });
 
         axiosRole.post(APPLICANTS_FILES_URL, formData, { headers: { 'Content-Type': 'multipart/form-data' } }).then(response => {
             if (response.status === 201) {
@@ -65,7 +59,7 @@ const ApplicantFilesFragment = () => {
 
     }
 
-    const PdfPreview = ({ index, fileId = undefined, content, fileRef = undefined, fileType }) => {
+    const PdfPreview = ({ fileId = undefined, content, fileRef = undefined, handlePreviewDelete }) => {
         return (
             <div className='flex max-w-[30%] shadow-lg rounded-xl cursor-pointer px-2 py-3 mr-4 bg-white transition ease-in-out duration-300 hover:-translate-y-[14%]'>
                 <h2 className='text-sm text-gray-600 font-bold truncate w-full h-full mr-4'>{content}</h2>
@@ -86,10 +80,8 @@ const ApplicantFilesFragment = () => {
                                 })
                                 .catch(error => console.error(error));
                         } else {
-                            console.log(index);
-                            files.current.splice(index, 1);
-                            file_types.current.splice(index, 1);
-
+                            console.log(fileRef);
+                            handlePreviewDelete(fileRef);
                         }
 
 
@@ -109,11 +101,13 @@ const ApplicantFilesFragment = () => {
 
         const handleChange = () => {
             const fs = Array.from(fileUploads.current.files);
-            //setUploads(prev => prev.concat(fs.map((f) => f)));
-            files.current = files.current.concat(fs.map((f) => f));
-            const _types = fs.map(() => fileType);
-            file_types.current = file_types.current.concat(_types);
+            files.current = files.current.concat(fs.map((f) => { return { 'file': f, 'file_type': fileType } }));
             setUploads(prev => prev.concat(fs.map((f) => f)));
+        }
+
+        const handlePreviewDelete = (fileRef) => {
+            files.current = files.current.filter(item => item.file !== fileRef); //does not cause a rerender
+            setUploads(uploads.filter(item => item !== fileRef)); //actual removal of the preview component
         }
 
         return (
@@ -125,7 +119,7 @@ const ApplicantFilesFragment = () => {
                 <input className='hidden' type='file' multiple={multiple} accept='application/pdf' ref={fileUploads} onChange={handleChange}></input>
                 <div className="flex w-full items-center justify-start mb-12">
                     {storedFiles && storedFiles.filter(file => file.file_type.includes(fileType)).map((file) => { return <PdfPreview key={file.id} fileId={file.id} content={file.file} /> })}
-                    {!uploads.length <= 0 && Array.from(uploads).map((file, i) => { return <PdfPreview key={i} index={i} content={file.name} /> })}
+                    {!uploads.length <= 0 && Array.from(uploads).map((file, i) => { return <PdfPreview key={i} content={file.name} fileRef={fileUploads.current.files[i]} handlePreviewDelete={handlePreviewDelete} /> })}
                 </div>
             </>
 
