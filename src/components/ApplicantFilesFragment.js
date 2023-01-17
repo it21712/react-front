@@ -59,7 +59,23 @@ const ApplicantFilesFragment = () => {
 
     }
 
-    const PdfPreview = ({ fileId = undefined, content, fileRef = undefined, handlePreviewDelete }) => {
+    const PdfPreview = ({ content, fileRef = undefined, handlePreviewDelete }) => {
+        return (
+            <div className='flex max-w-[30%] shadow-lg rounded-xl cursor-pointer px-2 py-3 mr-4 bg-slate-300 transition ease-in-out duration-300 hover:-translate-y-[14%]'>
+                <h2 className='text-sm text-gray-600 font-bold truncate w-full h-full mr-4'>{content}</h2>
+                <div className='delete-file flex m-auto bg-slate-400 p-2 rounded-full transition ease-in-out duration-300 hover:bg-orange-400 hover:animate-pulse' onClick={
+                    () => {
+                        handlePreviewDelete(fileRef);
+                    }
+                }>
+                    <FontAwesomeIcon icon={faX} color='white' fontSize={12} />
+                </div>
+            </div >
+
+        );
+    }
+
+    const StoredPdfPreview = ({ content, fileId }) => {
         return (
             <div className='flex max-w-[30%] shadow-lg rounded-xl cursor-pointer px-2 py-3 mr-4 bg-white transition ease-in-out duration-300 hover:-translate-y-[14%]'>
                 <h2 className='text-sm text-gray-600 font-bold truncate w-full h-full mr-4'>{content}</h2>
@@ -79,12 +95,7 @@ const ApplicantFilesFragment = () => {
                                     }
                                 })
                                 .catch(error => console.error(error));
-                        } else {
-                            console.log(fileRef);
-                            handlePreviewDelete(fileRef);
                         }
-
-
                     }
                 }>
                     <FontAwesomeIcon icon={faX} fontSize={12} className='delete-file-icon' />
@@ -118,7 +129,7 @@ const ApplicantFilesFragment = () => {
 
                 <input className='hidden' type='file' multiple={multiple} accept='application/pdf' ref={fileUploads} onChange={handleChange}></input>
                 <div className="flex w-full items-center justify-start mb-12">
-                    {storedFiles && storedFiles.filter(file => file.file_type.includes(fileType)).map((file) => { return <PdfPreview key={file.id} fileId={file.id} content={file.file} /> })}
+                    {storedFiles && storedFiles.filter(file => file.file_type.includes(fileType)).map((file) => { return <StoredPdfPreview key={file.id} fileId={file.id} content={file.file} /> })}
                     {!uploads.length <= 0 && Array.from(uploads).map((file, i) => { return <PdfPreview key={i} content={file.name} fileRef={fileUploads.current.files[i]} handlePreviewDelete={handlePreviewDelete} /> })}
                 </div>
             </>
@@ -141,15 +152,15 @@ const ApplicantFilesFragment = () => {
                     <FileUploadSpan title={MCTText} multiple={false} uploadText={uploadFileText} fileType={FILETYPES.MILITARY_CERT} />
                     <FileUploadSpan title={AFRText} multiple={false} uploadText={uploadFileText} fileType={FILETYPES.AFFIRMATION} />
 
-
+                    <div className='flex mb-12'>
+                        <div className='flex items-center justify-center min-h-[20px] h-[25%] transition ease-in-out duration-500 hover:bg-gray-800 bg-gray-700 rounded-md p-4 shadow-xl shadow-gray-400'>
+                            <button className='text-white text-lg' type='submit'>{uploadFileText}</button>
+                            <h2 className='mt-44'></h2>
+                        </div>
+                    </div>
 
                 </form>
-                <div className='flex mb-12'>
-                    <div className='flex items-center justify-center min-h-[20px] h-[25%] transition ease-in-out duration-500 hover:bg-gray-800 bg-gray-700 rounded-md p-4 shadow-xl shadow-gray-400'>
-                        <button className='text-white text-lg' type='submit'>{uploadFileText}</button>
-                        <h2 className='mt-44'></h2>
-                    </div>
-                </div>
+
 
 
             </div>
