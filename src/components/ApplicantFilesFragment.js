@@ -6,11 +6,12 @@ import { AFRText, CRTsText, CVText, MCTText, PGDsText, PHDsText, UGDsText, uploa
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX } from "@fortawesome/free-solid-svg-icons";
 import './ApplicantFilesFragment.css';
-import { data } from "autoprefixer";
+
+
 const ApplicantFilesFragment = () => {
     const axiosRole = useAxiosRole();
 
-    const files = useRef([]);
+    const files = useRef([]); //TODO put them in one array
     const file_types = useRef([]);
     const [storedFiles, setStoredFiles] = useState(JSON.parse(localStorage.getItem('uploads')) || undefined);
     useEffect(() => {
@@ -64,7 +65,7 @@ const ApplicantFilesFragment = () => {
 
     }
 
-    const PdfPreview = ({ fileId = undefined, content }) => {
+    const PdfPreview = ({ index, fileId = undefined, content, fileRef = undefined, fileType }) => {
         return (
             <div className='flex max-w-[30%] shadow-lg rounded-xl cursor-pointer px-2 py-3 mr-4 bg-white transition ease-in-out duration-300 hover:-translate-y-[14%]'>
                 <h2 className='text-sm text-gray-600 font-bold truncate w-full h-full mr-4'>{content}</h2>
@@ -84,6 +85,11 @@ const ApplicantFilesFragment = () => {
                                     }
                                 })
                                 .catch(error => console.error(error));
+                        } else {
+                            console.log(index);
+                            files.current.splice(index, 1);
+                            file_types.current.splice(index, 1);
+
                         }
 
 
@@ -96,17 +102,18 @@ const ApplicantFilesFragment = () => {
         );
     }
 
-    const FileUploadSpan = ({ title, uploadText, fileType, multiple = true }) => {
+    const FileUploadSpan = ({ title, fileType, multiple = true }) => {
 
         const [uploads, setUploads] = useState([]);
         const fileUploads = useRef([]);
 
         const handleChange = () => {
             const fs = Array.from(fileUploads.current.files);
-            setUploads(prev => prev.concat(fs.map((f) => f)));
+            //setUploads(prev => prev.concat(fs.map((f) => f)));
             files.current = files.current.concat(fs.map((f) => f));
             const _types = fs.map(() => fileType);
             file_types.current = file_types.current.concat(_types);
+            setUploads(prev => prev.concat(fs.map((f) => f)));
         }
 
         return (
@@ -118,7 +125,7 @@ const ApplicantFilesFragment = () => {
                 <input className='hidden' type='file' multiple={multiple} accept='application/pdf' ref={fileUploads} onChange={handleChange}></input>
                 <div className="flex w-full items-center justify-start mb-12">
                     {storedFiles && storedFiles.filter(file => file.file_type.includes(fileType)).map((file) => { return <PdfPreview key={file.id} fileId={file.id} content={file.file} /> })}
-                    {!uploads.length <= 0 && Array.from(uploads).map((file, i) => { return <PdfPreview key={i} content={file.name} /> })}
+                    {!uploads.length <= 0 && Array.from(uploads).map((file, i) => { return <PdfPreview key={i} index={i} content={file.name} /> })}
                 </div>
             </>
 
