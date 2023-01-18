@@ -13,7 +13,6 @@ const WelcomePage = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const navigateTo = (localUrl) => {
-        //<Navigate to={localUrl} state={{ from: location.pathname }} replace={false} />
         navigate(localUrl, { state: { from: localUrl }, replace: false });
     }
 
