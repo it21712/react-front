@@ -1,13 +1,13 @@
-import { alreadyHaveAccountText, clickHereLoginText, signupHeaderText, signupSubmitText, verifyEmailDesc, verifyEmailText } from "../strings";
+import { alreadyHaveAccountText, clickHereLoginText, signupHeaderText, signupSubmitText } from "../strings";
 import React, { useState } from 'react';
 
-import { APPLICANT_SIGNUP_URL, VERIFY_EMAIL_URL } from "../backend/urls";
+import { APPLICANT_SIGNUP_URL } from "../backend/urls";
 
 import axios from "../backend/axios";
-import useAxiosPrivate from "../hooks/useAxiosPrivate";
+
 import useAuth from "../hooks/useAuth";
-import { Navigate } from "react-router-dom";
-import { loginRoute, verifyEmailRoute } from "../routes";
+import { Navigate, useNavigate } from "react-router-dom";
+import { applicantsRoute, loginRoute, profileRoute, signupRoute } from "../routes";
 
 
 const SignupPage = () => {
@@ -21,21 +21,20 @@ const SignupPage = () => {
 
 const SignupForm = () => {
     const { setAuth } = useAuth();
-    const axiosPrivate = useAxiosPrivate();
 
-    const [verify, setVerify] = useState(false);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [emailError, setEmailError] = useState('');
     const [passwordError, setPasswordError] = useState('');
 
     const [login, setLogin] = useState(false);
+    const navigate = useNavigate();
+    const redirectRoute = applicantsRoute + profileRoute;
 
     const handleSubmit = (event) => {
         event.preventDefault();
         if (validateForm()) {
             signUp();
-            setVerify(true);
         }
     };
 
@@ -76,6 +75,7 @@ const SignupForm = () => {
                 const accessToken = response?.data?.access;
 
                 setAuth({ accessToken });
+                navigate(redirectRoute, { replace: true });
             })
             .catch((error) => {
                 console.log(error);
@@ -112,8 +112,7 @@ const SignupForm = () => {
                 <h2 className="text-md text-gray-500">{clickHereLoginText}</h2>
             </div>
 
-            {verify && <Navigate to={verifyEmailRoute} replace={true}></Navigate>}
-            {login && <Navigate to={loginRoute} replace={false}></Navigate>}    
+            {login && <Navigate to={loginRoute} replace={true}></Navigate>}
         </form >
     );
 }

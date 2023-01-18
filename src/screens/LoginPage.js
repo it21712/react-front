@@ -1,20 +1,21 @@
-import { Link, useNavigate, useLocation, Navigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { applicantsRoute, homeRoute, profileRoute, signupRoute } from "../routes";
 import { authErrorText, clickHereSignupText, createAccountText, loginHeaderText, loginSubmitText } from "../strings";
 import axios from "../backend/axios";
 import useAuth from "../hooks/useAuth";
 import { LOGIN_URL } from "../backend/urls";
 import { useEffect, useState } from "react";
-const LoginPage = () => {
+const LoginPage = ({ role }) => {
 
     const navigate = useNavigate();
     const location = useLocation();
-    const from = location.state.from || homeRoute;
+    let from = location.state?.from || homeRoute;
 
 
     const [loggedIn, setLoggedIn] = useState(false);
     const [email, setEmail] = useState('');
 
+    //todo clear localstorage and cookies before login to prevent 401 or 403 errors 
     useEffect(() => {
         if (loggedIn) {
             localStorage.setItem('email', email);

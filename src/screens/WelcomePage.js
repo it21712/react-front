@@ -2,7 +2,7 @@ import React from 'react';
 import { applicantText, appLoginMethodText, appTitle, evaluatorText, welcomeText } from '../strings';
 import RoleButton from '../components/RoleButton';
 import { FaUniversity, FaFolderOpen } from 'react-icons/fa';
-import { Navigate, useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { applicantsRoute, committeeRoute, profileRoute } from '../routes';
 
 
@@ -21,7 +21,7 @@ const WelcomePage = () => {
     return (
         <div className="flex flex-col h-screen">
             <div className="flex bg-gray-800 shadow-md fixed w-full z-10 top-0 h-16 px-3">
-                <h3 className='font-normal invisible sm:visible text-white my-auto'>{appTitle}</h3>
+                <h3 className='font-semibold invisible sm:visible text-white my-auto'>{appTitle}</h3>
             </div>
             <div className="flex items-center justify-center h-1/3 sm:h-1/2" >
                 <img src='huacover_a.jpg' alt='university' className='h-full w-full object-cover'></img>

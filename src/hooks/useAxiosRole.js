@@ -3,9 +3,10 @@ import { useEffect } from "react";
 import useAuth from "./useAuth";
 import Cookies from "js-cookie";
 
-import { BACKEND_URL, LOGOUT_URL } from "../backend/urls";
-import axios from "../backend/axios";
+import { LOGOUT_URL } from "../backend/urls";
+
 import useAxiosPrivate from "./useAxiosPrivate";
+
 
 const useAxiosRole = () => {
     const { auth, setAuth } = useAuth();
@@ -19,6 +20,7 @@ const useAxiosRole = () => {
         localStorage.removeItem('profilePicUrl');
         localStorage.removeItem('profilePicName');
         localStorage.removeItem('details');
+        localStorage.removeItem('uploads');
     }
 
     useEffect(() => {

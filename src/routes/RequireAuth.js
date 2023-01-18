@@ -5,7 +5,6 @@ const RequireAuth = () => {
 
     const { auth } = useAuth();
     const location = useLocation();
-    console.log(location.pathname);
     return (
         auth?.email
             ? <Outlet />

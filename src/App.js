@@ -10,13 +10,14 @@ import Layout from './routes/Layout';
 import RequireAuth from './routes/RequireAuth';
 import UnauthorizedPage from './screens/UnauthorizedPage';
 import { useEffect } from 'react';
+import RequireVerify from './routes/RequireVerify';
 
 
 
 function App() {
   useEffect(() => {
     document.title = 'Hua ELKE';
-  },[]);
+  }, []);
 
   return (
     <Routes>
@@ -24,14 +25,17 @@ function App() {
         {/*Public routes*/}
         <Route index path={homeRoute} element={<WelcomePage />} />
         <Route path={applicantsRoute + signupRoute} element={<SignupPage />} />
-        <Route path={loginRoute} element={<LoginPage />} />
+        <Route path={loginRoute} element={<LoginPage role={applicantsRoute} />} />
         <Route path={verifyEmailRoute} element={<VerifyEmailPage />} />
         <Route path={unauthorizedRoute} element={<UnauthorizedPage />} />
 
         {/*Protected routes*/}
         <Route element={<RequireAuth />}>
-          <Route path={applicantsRoute + profileRoute + '/*'} element={<ApplicantPage />} />
-          
+          <Route element={<RequireVerify />}>
+            <Route path={applicantsRoute + profileRoute + '/*'} element={<ApplicantPage />} />
+          </Route>
+
+
 
         </Route>
 
