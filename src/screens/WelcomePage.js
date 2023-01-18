@@ -2,7 +2,7 @@ import React from 'react';
 import { applicantText, appLoginMethodText, appTitle, evaluatorText, welcomeText } from '../strings';
 import RoleButton from '../components/RoleButton';
 import { FaUniversity, FaFolderOpen } from 'react-icons/fa';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { applicantsRoute, committeeRoute, profileRoute } from '../routes';
 
 
@@ -11,9 +11,10 @@ import { applicantsRoute, committeeRoute, profileRoute } from '../routes';
 
 const WelcomePage = () => {
     const navigate = useNavigate();
-
+    const location = useLocation();
     const navigateTo = (localUrl) => {
-        navigate(localUrl, { state: localUrl, replace: true });
+        //<Navigate to={localUrl} state={{ from: location.pathname }} replace={false} />
+        navigate(localUrl, { state: { from: localUrl }, replace: false });
     }
 
 
