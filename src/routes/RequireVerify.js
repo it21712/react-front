@@ -8,15 +8,15 @@ import VerifyEmailPage from "../screens/VerifyEmailPage";
 const RequireVerify = () => {
 
     const axiosRole = useAxiosRole();
-    const [verified, setVerified] = useState(false);
+    const [verified, setVerified] = useState(null);
     useEffect(() => {
         axiosRole.get('/applicants/verified/').then((response) => {
             setVerified(true);
-        }).catch(error => console.warn(error));
+        }).catch(error => setVerified(false));
     }, []);
 
     return (
-        verified
+        verified === null ? <></> : verified
             ? <Outlet />
             : <VerifyEmailPage />
     );
