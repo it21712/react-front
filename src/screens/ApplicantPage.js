@@ -65,7 +65,7 @@ const SidebarDrawer = ({ email, setAuth }) => {
             <div className='flex flex-col bg-gray-800 px-6 w-full h-full'>
 
                 <div className='border-b-[1px] border-white w-full mx-auto mt-12'>
-                    <h2 className='text-white font-bold text-lg mb-2'>{email}</h2>
+                    <h2 className='text-white font-bold text-sm lg:text-lg mb-2'>{email}</h2>
                 </div>
                 <div>
                     <SidebarActionTab linkTo={applicantsRoute + profileRoute} content={accountDetails} icon={faList} />
