@@ -100,7 +100,7 @@ const ApplicantFilesFragment = () => {
         return (
             <>
                 <div className='flex items-center justify-center mb-4 cursor-pointer'>
-                    <h2 className='text-xl mr-4 font-normal text-gray-600 hover:font-bold' onClick={() => { }}>{title}</h2>
+                    <h2 className='text-xl mr-4 font-normal text-gray-600 hover:font-bold' onClick={() => { setUpload(true)}}>{title}</h2>
                 </div>
 
                 <div className="flex w-full items-center justify-start mb-12">
