@@ -185,13 +185,13 @@ const ApplicantFilesFragment = () => {
         const [errorData, setErrorData] = useState(FILETYPE_OBJS[fileType]);
         const file = useRef();
         const [uploadError, setUploadError] = useState('');
-        const FormField = ({label, field}) => {
+        const FormField = ({label, field, fieldType}) => {
             const [value, setValue] = useState('');
             return (
                 <div className='flex flex-col items-start pr-6 w-full mb-6'>
                     <h2>{label}</h2>
                     <h2 className='text-red-500 text-sm font-bold'>{errorData[field]}</h2>
-                    <InputField type='text' value={data.current[field]} id={field} onChange={(event) => {setValue(event.target.value); data.current = {...data.current, [field]:event.target.value}}} />
+                    <InputField type={fieldType} value={data.current[field]} id={field} onChange={(event) => {setValue(event.target.value); data.current = {...data.current, [field]:event.target.value}}} />
                 
                 </div>
             );
@@ -205,11 +205,11 @@ const ApplicantFilesFragment = () => {
 
             let formData = new FormData();
             console.log(file.current.files[0]);
-            formData.append('file', file.current.files[0], file.current.files[0].name);
-            formData.append('file_type', fileType);
+            formData.set('file', file.current.files[0], file.current.files[0].name);
+            formData.set('file_type', fileType);
             Object.entries(data.current).forEach(([key, value]) => {
                 
-                formData.append(key, value);
+                formData.set(key, value);
               });
             
               for (const [key, value] of formData.entries()) {
@@ -282,7 +282,7 @@ const ApplicantFilesFragment = () => {
                 <div className='flex flex-col justify-start items-center w-full h-full mt-4'>
                     <h2 className='text-xl mr-4  mb-6 font-normal text-gray-600'>{title}</h2>
                     <form noValidate={true} onSubmit={handleSubmit} className='flex flex-col md:w-[50%] w-[80%]'>
-                        {formFields.map((text, i) => {return <FormField key={i} label={text} field={Object.keys(data.current)[i]}/>} )}
+                        {formFields.map((f, i) => {return <FormField key={i} label={!f['text']? f : f['text']} fieldType={!f['type']? 'text' : f['type']} field={Object.keys(data.current)[i]}/>} )}
                         <FileUploadPrompt title={uploadText}/>
 
                         <div className='flex mb-12'>
@@ -299,7 +299,7 @@ const ApplicantFilesFragment = () => {
 
     return (
         // <FileUploadView/>
-        <FormUploadView title={PHDsText} fileType={FILETYPES.PHD_DIPLOMA} formFields={FILETYPE_FORM_TEXTS[FILETYPES.PHD_DIPLOMA]}/>
+        <FormUploadView title={UGDsText} fileType={FILETYPES.WORK_EXPERIENCE} formFields={FILETYPE_FORM_TEXTS[FILETYPES.WORK_EXPERIENCE]}/>
     );
 }
 
