@@ -5,6 +5,8 @@ import useAxiosRole from "../hooks/useAxiosRole";
 import { AFRText, cityText, countryText, CRTsText, CVText, departmentText, detailsSubmitText, diplomaDateText, gpaText, institutionText, MCTText, PGDsText, PHDsText, requiredFieldText, UGDsText, universityText, uploadFilesText, uploadText, WXPsText } from "../strings";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX } from "@fortawesome/free-solid-svg-icons";
+import { Navigate } from "react-router";
+import { Link } from "react-router-dom";
 
 
 
@@ -14,6 +16,8 @@ const ApplicantFilesFragment = () => {
     const files = useRef([]);
 
     const [storedFiles, setStoredFiles] = useState(JSON.parse(localStorage.getItem('uploads')) || undefined);
+
+    const [upload, setUpload] = useState(false);
 
     useEffect(() => {
         if (!localStorage.getItem('uploads')) {
@@ -33,31 +37,7 @@ const ApplicantFilesFragment = () => {
 
     }, [axiosRole]);
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-
-        let formData = new FormData();
-
-        //add files and their types in formData
-        files.current.forEach((data) => {
-            formData.append('files', data.file, data.file.name);
-            formData.append('file_types', data.file_type);
-        });
-
-
-        axiosRole.post(APPLICANTS_FILES_URL, formData, { headers: { 'Content-Type': 'multipart/form-data' } }).then(response => {
-            if (response.status === 201) {
-                axiosRole.get(APPLICANTS_FILES_URL).then(response => {
-                    if (response.status === 200) {
-                        localStorage.setItem('uploads', JSON.stringify(response.data));
-                        setStoredFiles(response.data);
-                    }
-                }).catch(error => console.error(error));
-
-            }
-        }).catch(error => { console.error(error) });
-
-    }
+    
 
     const PdfPreview = ({ content, fileRef = undefined, handlePreviewDelete }) => {
         return (
@@ -105,16 +85,12 @@ const ApplicantFilesFragment = () => {
         );
     }
 
-    const FileUploadSpan = ({ title, fileType, multiple = true }) => {
+
+    const FileUploadSpan = ({ title, fileType }) => {
 
         const [uploads, setUploads] = useState([]);
         const fileUploads = useRef([]);
 
-        const handleChange = () => {
-            const fs = Array.from(fileUploads.current.files);
-            files.current = files.current.concat(fs.map((f) => { return { 'file': f, 'file_type': fileType } }));
-            setUploads(prev => prev.concat(fs.map((f) => f)));
-        }
 
         const handlePreviewDelete = (fileRef) => {
             files.current = files.current.filter(item => item.file !== fileRef); //does not cause a rerender
@@ -124,10 +100,9 @@ const ApplicantFilesFragment = () => {
         return (
             <>
                 <div className='flex items-center justify-center mb-4 cursor-pointer'>
-                    <h2 className='text-xl mr-4 font-normal text-gray-600 hover:font-bold' onClick={() => { fileUploads.current.click(); }}>{title}</h2>
+                    <h2 className='text-xl mr-4 font-normal text-gray-600 hover:font-bold' onClick={() => { }}>{title}</h2>
                 </div>
 
-                <input className='hidden' type='file' multiple={multiple} accept='application/pdf' ref={fileUploads} onChange={handleChange}></input>
                 <div className="flex w-full items-center justify-start mb-12">
                     {storedFiles && storedFiles.filter(file => file.file_type.includes(fileType)).map((file) => { return <StoredPdfPreview key={file.id} fileId={file.id} content={file.file} /> })}
                     {!uploads.length <= 0 && Array.from(uploads).map((file, i) => { return <PdfPreview key={i} content={file.name} fileRef={fileUploads.current.files[i]} handlePreviewDelete={handlePreviewDelete} /> })}
@@ -137,14 +112,12 @@ const ApplicantFilesFragment = () => {
         );
     }
 
-   
-
 
     const FileUploadView = () => {
         return (
             <div className='flex bg-gray-200 w-full h-full overflow-y-scroll'>
                 <div className='flex flex-col justify-start items-center w-full h-full'>
-                    <form noValidate onSubmit={handleSubmit} className='flex flex-col items-start justify-start m-auto min-w-[400px] h-full w-[80%] mt-[5%]'>
+                    <div className='flex flex-col items-start justify-start m-auto min-w-[400px] h-full w-[80%] mt-[5%]'>
     
                         <FileUploadSpan title={UGDsText} uploadText={uploadFilesText} fileType={FILETYPES.UNDER_GRAD_DIPLOMA} />
                         <FileUploadSpan title={PGDsText} uploadText={uploadFilesText} fileType={FILETYPES.POST_GRAD_DIPLOMA} />
@@ -162,7 +135,7 @@ const ApplicantFilesFragment = () => {
                             </div>
                         </div>
     
-                    </form>
+                    </div>
     
     
     
@@ -243,7 +216,7 @@ const ApplicantFilesFragment = () => {
         const sendFormData = (formData) => {
             axiosRole.post(APPLICANTS_FILES_URL, formData, { headers: { 'Content-Type': 'multipart/form-data' } }).then(response => {
                 if(response.status === 201){
-                    console.log('201');
+                    setUpload(false);
                 }
             }).catch(error => console.log(error));
         }
@@ -299,7 +272,8 @@ const ApplicantFilesFragment = () => {
 
     return (
         // <FileUploadView/>
-        <FormUploadView title={UGDsText} fileType={FILETYPES.WORK_EXPERIENCE} formFields={FILETYPE_FORM_TEXTS[FILETYPES.WORK_EXPERIENCE]}/>
+        upload ? <FormUploadView title={UGDsText} fileType={FILETYPES.WORK_EXPERIENCE} formFields={FILETYPE_FORM_TEXTS[FILETYPES.WORK_EXPERIENCE]}/> : <FileUploadView/>
+        
     );
 }
 
