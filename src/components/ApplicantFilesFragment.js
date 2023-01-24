@@ -160,8 +160,6 @@ const ApplicantFilesFragment = () => {
             <Route path={'/MCTs'} element={<MCTUploadForm />} />
             <Route path={'/FLNs'} element={<FLNUploadForm />} />
         </Routes>
-
-        // upload ? <FLNUploadForm /> : <FileCategoriesView />
     );
 }
 

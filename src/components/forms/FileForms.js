@@ -1,8 +1,10 @@
 import { faX } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import { APPLICANTS_FILES_URL } from "../../backend/urls";
 import { useAxiosRole } from "../../hooks/useAxiosPrivate";
+import { applicantFilesRoute, applicantsRoute, profileRoute } from "../../routes";
 import { certDateText, cityText, countryText, currentlyThereText, departmentText, detailsSubmitText, diplomaDateText, fileText, fromDateText, gpaText, institutionText, languageText, levelText, militaryDoneText, positionText, requiredFieldText, supervisorText, titleText, universityText, untilDateText, uploadText } from "../../strings";
 
 
@@ -60,7 +62,12 @@ const FileUploadPrompt = ({ file, title }) => {
 
 const handleSubmit = (event, data, setError, file, setUploadError, fileType, axiosRole) => {
     event.preventDefault();
-    if (validateForm(data, setError, file, setUploadError)) uploadFile(data, file, fileType, axiosRole);
+    if (validateForm(data, setError, file, setUploadError))
+        uploadFile(data, file, fileType, axiosRole).then((response) => {
+            if (response.status === 201) { }
+            //TODO use context to go back to files
+        }).catch(error => console.log(error));
+
 }
 
 const validateForm = (data, setError, file, setUploadError) => {
@@ -85,7 +92,7 @@ const validateForm = (data, setError, file, setUploadError) => {
     return isValid;
 }
 
-const uploadFile = (data, file, fileType, axiosRole) => {
+const uploadFile = async (data, file, fileType, axiosRole) => {
 
 
     let formData = new FormData();
@@ -97,16 +104,7 @@ const uploadFile = (data, file, fileType, axiosRole) => {
         formData.set(field, data[field]);
     });
 
-
-
-    axiosRole.post(APPLICANTS_FILES_URL, formData, { headers: { 'Content-Type': 'multipart/form-data' } }).then(response => {
-        if (response.status === 201) {
-
-        }
-    }).catch(error => console.log(error));
-
-
-
+    return axiosRole.post(APPLICANTS_FILES_URL, formData, { headers: { 'Content-Type': 'multipart/form-data' } });
 }
 
 
