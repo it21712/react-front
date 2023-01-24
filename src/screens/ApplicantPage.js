@@ -5,13 +5,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRightFromBracket, faList, faEnvelope, faAt, faFile, faShareFromSquare } from "@fortawesome/free-solid-svg-icons";
 import { LOGOUT_URL } from "../backend/urls";
 
-import { Link, Route, Routes, useNavigate, } from "react-router-dom";
+import { Link, Route, Routes, useNavigate } from "react-router-dom";
 import { applicantFilesRoute, applicantsApplicationsRoute, applicantsInvitationsRoute, applicantsRoute, homeRoute, profileRoute } from "../routes";
 import UserDetailsFragment from "../components/UserDetailsFragment";
 
 import InvitationsFragment from "../components/InvitationsFragment";
 import ApplicationsFragment from "../components/ApplicationsFragment";
 import ApplicantFilesFragment from "../components/ApplicantFilesFragment";
+import { UGDUploadForm } from "../components/forms/FileForms";
 
 
 const ApplicantPage = () => {
@@ -25,7 +26,7 @@ const ApplicantPage = () => {
             <div className='flex w-full h-screen'>
                 <Routes>
                     <Route index element={<UserDetailsFragment email={auth?.email} />} />
-                    <Route path={applicantFilesRoute} element={<ApplicantFilesFragment />} />
+                    <Route path={applicantFilesRoute + '/*'} element={<ApplicantFilesFragment />} />
                     <Route path={applicantsApplicationsRoute} element={<ApplicationsFragment />} />
                     <Route path={applicantsInvitationsRoute} element={<InvitationsFragment />} />
                 </Routes>
