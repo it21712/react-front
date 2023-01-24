@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import FILETYPES, { FILETYPE_OBJS } from "../backend/fileTypes";
 import { APPLICANTS_FILES_URL } from "../backend/urls";
 import useAxiosRole from "../hooks/useAxiosRole";
-import { AFRText, CRTsText, CVText, detailsSubmitText, FLNsText, MCTText, PGDsText, PHDsText, requiredFieldText, UGDsText, uploadFilesText, uploadText, WXPsText } from "../strings";
+import { AFRText, CRTsText, CVText, FLNsText, MCTText, PGDsText, PHDsText, UGDsText, uploadFilesText, WXPsText } from "../strings";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX } from "@fortawesome/free-solid-svg-icons";
 import { CRTUploadForm, FLNUploadForm, MCTUploadForm, PGDUploadForm, PHDUploadForm, UGDUploadForm, WXPUploadForm } from "./forms/FileForms";
@@ -121,19 +121,19 @@ const ApplicantFilesFragment = () => {
                 <div className='flex flex-col justify-start items-center w-full h-full'>
                     <div className='flex flex-col items-start justify-start m-auto min-w-[400px] h-full w-[80%] mt-[5%]'>
 
-                        <FileUploadSpan title={UGDsText} uploadText={uploadFilesText} fileType={FILETYPES.UNDER_GRAD_DIPLOMA} linkTo={'UGDs'} />
-                        <FileUploadSpan title={PGDsText} uploadText={uploadFilesText} fileType={FILETYPES.POST_GRAD_DIPLOMA} linkTo={'PGDs'} />
-                        <FileUploadSpan title={PHDsText} uploadText={uploadFilesText} fileType={FILETYPES.PHD_DIPLOMA} linkTo={'PHDs'} />
+                        <FileUploadSpan title={UGDsText} fileType={FILETYPES.UNDER_GRAD_DIPLOMA} linkTo={'UGDs'} />
+                        <FileUploadSpan title={PGDsText} fileType={FILETYPES.POST_GRAD_DIPLOMA} linkTo={'PGDs'} />
+                        <FileUploadSpan title={PHDsText} fileType={FILETYPES.PHD_DIPLOMA} linkTo={'PHDs'} />
 
 
-                        <FileUploadSpan title={CVText} multiple={false} uploadText={uploadFilesText} fileType={FILETYPES.CV} />
+                        <FileUploadSpan title={CVText} fileType={FILETYPES.CV} />
 
-                        <FileUploadSpan title={WXPsText} uploadText={uploadFilesText} fileType={FILETYPES.WORK_EXPERIENCE} linkTo={'WXPs'} />
-                        <FileUploadSpan title={CRTsText} uploadText={uploadFilesText} fileType={FILETYPES.CERTIFICATE} linkTo={'CRTs'} />
-                        <FileUploadSpan title={FLNsText} uploadText={uploadFilesText} fileType={FILETYPES.FOREIGN_LANG} linkTo={'FLNs'} />
-                        <FileUploadSpan title={MCTText} multiple={false} uploadText={uploadFilesText} fileType={FILETYPES.MILITARY_CERT} linkTo={'MCTs'} />
+                        <FileUploadSpan title={WXPsText} fileType={FILETYPES.WORK_EXPERIENCE} linkTo={'WXPs'} />
+                        <FileUploadSpan title={CRTsText} fileType={FILETYPES.CERTIFICATE} linkTo={'CRTs'} />
+                        <FileUploadSpan title={FLNsText} fileType={FILETYPES.FOREIGN_LANG} linkTo={'FLNs'} />
+                        <FileUploadSpan title={MCTText} fileType={FILETYPES.MILITARY_CERT} linkTo={'MCTs'} />
 
-                        <FileUploadSpan title={AFRText} multiple={false} uploadText={uploadFilesText} fileType={FILETYPES.AFFIRMATION} />
+                        <FileUploadSpan title={AFRText} fileType={FILETYPES.AFFIRMATION} />
 
                         <div className='flex mb-12'>
 
