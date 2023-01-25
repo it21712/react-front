@@ -4,12 +4,13 @@ import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { APPLICANTS_FILES_URL } from "../../backend/urls";
 import { useAxiosRole } from "../../hooks/useAxiosPrivate";
+import useFileRefresh from "../../hooks/useFileRefresh";
 import { applicantFilesRoute, applicantsRoute, profileRoute } from "../../routes";
 import { certDateText, cityText, countryText, currentlyThereText, departmentText, detailsSubmitText, diplomaDateText, fileText, fromDateText, gpaText, institutionText, languageText, levelText, militaryDoneText, positionText, requiredFieldText, supervisorText, titleText, universityText, untilDateText, uploadText } from "../../strings";
 
 
 const InputField = ({ type, id, onChange, value, readOnly }) => {
-
+    if (id === 'title') id = 'ttId';
     return (
         <input type={type} id={id} value={value} readOnly={readOnly} onChange={onChange} className='w-full py-3 px-3 border-2 rounded-sm text-gray-700 leading-tight mt-2 focus:outline-none'></input>
     );
@@ -59,12 +60,11 @@ const FileUploadPrompt = ({ file, title, upload, setUpload }) => {
     );
 }
 
-export const validateForm = (data, setError, file, setUploadError) => {
+const validateForm = (data, setError, file, setUploadError) => {
     let isValid = true;
     const errors = {};
     let uploadError = '';
     Object.keys(data).forEach(field => {
-        console.log(data[field]);
         if (!data[field]) {
             isValid = false;
             errors[field] = requiredFieldText;
@@ -81,7 +81,8 @@ export const validateForm = (data, setError, file, setUploadError) => {
     return isValid;
 }
 
-export const uploadFile = async (data, file, fileType, axiosRole) => {
+
+const uploadFile = async (data, file, fileType, axiosRole, setRefreshFiles) => {
 
 
     let formData = new FormData();
@@ -93,15 +94,20 @@ export const uploadFile = async (data, file, fileType, axiosRole) => {
         formData.set(field, data[field]);
     });
 
-    return axiosRole.post(APPLICANTS_FILES_URL, formData, { headers: { 'Content-Type': 'multipart/form-data' } });
-}
+    //return axiosRole.post(APPLICANTS_FILES_URL, formData, { headers: { 'Content-Type': 'multipart/form-data' } });
+    const response = await axiosRole.post(APPLICANTS_FILES_URL, formData, { headers: { 'Content-Type': 'multipart/form-data' } });
+    if (response.status === 201)
+        setRefreshFiles(true);
 
+    return response;
+}
 
 
 export const UGDUploadForm = () => {
     const axiosRole = useAxiosRole();
     const file = useRef();
-    const [fileUpload, setFileUpload] = useState(file.current?.files[0] || undefined);
+    const { setRefreshFiles } = useFileRefresh();
+    const [fileUpload, setFileUpload] = useState(file.current?.files[0] || '');
     const [uploadError, setUploadError] = useState();
     const [error, setError] = useState({
         institution: '',
@@ -126,14 +132,22 @@ export const UGDUploadForm = () => {
     const handleSubmit = (event) => {
         event.preventDefault();
         if (validateForm(data, setError, file, setUploadError))
-            uploadFile(data, file, 'UGD', axiosRole).then((response) => {
+            uploadFile(data, file, 'UGD', axiosRole, setRefreshFiles).then((response) => {
                 if (response.status === 201) {
                     //clear and reset form
-                    event.target.reset();
-                    setData({});
+
+                    setData({
+                        institution: '',
+                        university: '',
+                        department: '',
+                        country: '',
+                        city: '',
+                        diplomaDate: '',
+                        gpa: '',
+                    });
                     setFileUpload('');
                     file.current.value = '';
-
+                    event.target.reset();
                 }
                 //TODO use context to go back to files
             }).catch(error => console.log(error));
@@ -213,7 +227,8 @@ export const UGDUploadForm = () => {
 export const PGDUploadForm = () => {
     const axiosRole = useAxiosRole();
     const file = useRef();
-    const [fileUpload, setFileUpload] = useState(file.current?.files[0] || undefined);
+    const { setRefreshFiles } = useFileRefresh();
+    const [fileUpload, setFileUpload] = useState(file.current?.files[0] || '');
     const [uploadError, setUploadError] = useState();
     const [error, setError] = useState({
         institution: '',
@@ -240,14 +255,23 @@ export const PGDUploadForm = () => {
     const handleSubmit = (event) => {
         event.preventDefault();
         if (validateForm(data, setError, file, setUploadError))
-            uploadFile(data, file, 'PGD', axiosRole).then((response) => {
+            uploadFile(data, file, 'PGD', axiosRole, setRefreshFiles).then((response) => {
                 if (response.status === 201) {
                     //clear and reset form
-                    event.target.reset();
-                    setData({});
+
+                    setData({
+                        institution: '',
+                        university: '',
+                        department: '',
+                        country: '',
+                        city: '',
+                        title: '',
+                        diplomaDate: '',
+                        gpa: '',
+                    });
                     setFileUpload('');
                     file.current.value = '';
-
+                    event.target.reset();
                 }
                 //TODO use context to go back to files
             }).catch(error => console.log(error));
@@ -332,7 +356,8 @@ export const PGDUploadForm = () => {
 export const PHDUploadForm = () => {
     const axiosRole = useAxiosRole();
     const file = useRef();
-    const [fileUpload, setFileUpload] = useState(file.current?.files[0] || undefined);
+    const { setRefreshFiles } = useFileRefresh();
+    const [fileUpload, setFileUpload] = useState(file.current?.files[0] || '');
     const [uploadError, setUploadError] = useState();
     const [error, setError] = useState({
         institution: '',
@@ -361,14 +386,24 @@ export const PHDUploadForm = () => {
     const handleSubmit = (event) => {
         event.preventDefault();
         if (validateForm(data, setError, file, setUploadError))
-            uploadFile(data, file, 'PHD', axiosRole).then((response) => {
+            uploadFile(data, file, 'PHD', axiosRole, setRefreshFiles).then((response) => {
                 if (response.status === 201) {
                     //clear and reset form
-                    event.target.reset();
-                    setData({});
+
+                    setData({
+                        institution: '',
+                        university: '',
+                        department: '',
+                        country: '',
+                        city: '',
+                        title: '',
+                        supervisor: '',
+                        diplomaDate: '',
+                        gpa: '',
+                    });
                     setFileUpload('');
                     file.current.value = '';
-
+                    event.target.reset();
                 }
                 //TODO use context to go back to files
             }).catch(error => console.log(error));
@@ -415,7 +450,7 @@ export const PHDUploadForm = () => {
                     <div className='flex flex-col items-start pr-6 w-full mb-4'>
                         <h2>{titleText}</h2>
                         <h2 className='text-red-500 text-sm font-bold'>{error.title}</h2>
-                        <InputField type={'text'} id={'title'} value={data['title']} onChange={(event) => { setData((prev) => { return { ...prev, 'title': event.target.value } }) }} />
+                        <InputField type={'text'} id={'title'} value={data.title} onChange={(event) => { setData((prev) => { return { ...prev, 'title': event.target.value } }) }} />
                     </div>
 
                     <div className='flex flex-col items-start pr-6 w-full mb-4'>
@@ -459,7 +494,8 @@ export const PHDUploadForm = () => {
 export const WXPUploadForm = () => {
     const axiosRole = useAxiosRole();
     const file = useRef();
-    const [fileUpload, setFileUpload] = useState(file.current?.files[0] || undefined);
+    const { setRefreshFiles } = useFileRefresh();
+    const [fileUpload, setFileUpload] = useState(file.current?.files[0] || '');
     const [uploadError, setUploadError] = useState();
     const [error, setError] = useState({
         position: '',
@@ -484,14 +520,22 @@ export const WXPUploadForm = () => {
     const handleSubmit = (event) => {
         event.preventDefault();
         if (validateForm(data, setError, file, setUploadError))
-            uploadFile(data, file, 'WXP', axiosRole).then((response) => {
+            uploadFile(data, file, 'WXP', axiosRole, setRefreshFiles).then((response) => {
                 if (response.status === 201) {
                     //clear and reset form
-                    event.target.reset();
-                    setData({});
+
+                    setData({
+                        position: '',
+                        from: '',
+                        currently_working: false,
+                        until: '',
+                        carrier: '',
+                        country: '',
+                        city: '',
+                    });
                     setFileUpload('');
                     file.current.value = '';
-
+                    event.target.reset();
                 }
                 //TODO use context to go back to files
             }).catch(error => console.log(error));
@@ -563,7 +607,8 @@ export const WXPUploadForm = () => {
 export const CRTUploadForm = () => {
     const axiosRole = useAxiosRole();
     const file = useRef();
-    const [fileUpload, setFileUpload] = useState(file.current?.files[0] || undefined);
+    const { setRefreshFiles } = useFileRefresh();
+    const [fileUpload, setFileUpload] = useState(file.current?.files[0] || '');
     const [uploadError, setUploadError] = useState();
     const [error, setError] = useState({
         title: '',
@@ -578,14 +623,17 @@ export const CRTUploadForm = () => {
     const handleSubmit = (event) => {
         event.preventDefault();
         if (validateForm(data, setError, file, setUploadError))
-            uploadFile(data, file, 'CRT', axiosRole).then((response) => {
+            uploadFile(data, file, 'CRT', axiosRole, setRefreshFiles).then((response) => {
                 if (response.status === 201) {
                     //clear and reset form
-                    event.target.reset();
-                    setData({});
+
+                    setData({
+                        title: '',
+                        date: '',
+                    });
                     setFileUpload('');
                     file.current.value = '';
-
+                    event.target.reset();
                 }
                 //TODO use context to go back to files
             }).catch(error => console.log(error));
@@ -629,7 +677,8 @@ export const CRTUploadForm = () => {
 export const MCTUploadForm = () => {
     const axiosRole = useAxiosRole();
     const file = useRef();
-    const [fileUpload, setFileUpload] = useState(file.current?.files[0] || undefined);
+    const { setRefreshFiles } = useFileRefresh();
+    const [fileUpload, setFileUpload] = useState(file.current?.files[0] || '');
     const [uploadError, setUploadError] = useState();
     const [error, setError] = useState({
         fulfilled: false,
@@ -642,14 +691,14 @@ export const MCTUploadForm = () => {
     const handleSubmit = (event) => {
         event.preventDefault();
         if (validateForm(data, setError, file, setUploadError))
-            uploadFile(data, file, 'MCT', axiosRole).then((response) => {
+            uploadFile(data, file, 'MCT', axiosRole, setRefreshFiles).then((response) => {
                 if (response.status === 201) {
                     //clear and reset form
-                    event.target.reset();
-                    setData({});
+
+                    setData({ fulfilled: false, });
                     setFileUpload('');
                     file.current.value = '';
-
+                    event.target.reset();
                 }
                 //TODO use context to go back to files
             }).catch(error => console.log(error));
@@ -686,6 +735,7 @@ export const MCTUploadForm = () => {
 export const FLNUploadForm = () => {
     const axiosRole = useAxiosRole();
     const file = useRef();
+    const { setRefreshFiles } = useFileRefresh();
     const [fileUpload, setFileUpload] = useState(file.current?.files[0] || undefined);
     const [uploadError, setUploadError] = useState();
     const [error, setError] = useState({
@@ -703,13 +753,18 @@ export const FLNUploadForm = () => {
     const handleSubmit = (event) => {
         event.preventDefault();
         if (validateForm(data, setError, file, setUploadError))
-            uploadFile(data, file, 'FLN', axiosRole).then((response) => {
+            uploadFile(data, file, 'FLN', axiosRole, setRefreshFiles).then((response) => {
                 if (response.status === 201) {
                     //clear and reset form
-                    event.target.reset();
-                    setData({});
+
+                    setData({
+                        lang: '',
+                        level: '',
+                        title: '',
+                    });
                     setFileUpload('');
                     file.current.value = '';
+                    event.target.reset();
 
                 }
                 //TODO use context to go back to files

@@ -9,6 +9,7 @@ import { CRTUploadForm, FLNUploadForm, MCTUploadForm, PGDUploadForm, PHDUploadFo
 import { Link, Route, Routes } from "react-router-dom";
 import { applicantFilesRoute, applicantsRoute, profileRoute } from "../routes";
 import { FileFormsProvider } from "../context/FileFormsProvider";
+import useFileRefresh from "../hooks/useFileRefresh";
 
 
 const ApplicantFilesFragment = () => {
@@ -20,23 +21,25 @@ const ApplicantFilesFragment = () => {
 
     const [upload, setUpload] = useState(false);
 
-    useEffect(() => {
-        if (!localStorage.getItem('uploads')) {
-            axiosRole.get(APPLICANTS_FILES_URL).then(response => {
 
-                //save to localstorage
-                const jsonFiles = JSON.stringify(response.data);
-                localStorage.setItem('uploads', jsonFiles);
 
-                //set state
-                setStoredFiles(response.data);
+    // useEffect(() => {
+    //     if (!localStorage.getItem('uploads')) {
+    //         axiosRole.get(APPLICANTS_FILES_URL).then(response => {
 
-            }).catch(error => {
-                console.error(error);
-            });
-        }
+    //             //save to localstorage
+    //             const jsonFiles = JSON.stringify(response.data);
+    //             localStorage.setItem('uploads', jsonFiles);
 
-    }, [axiosRole]);
+    //             //set state
+    //             setStoredFiles(response.data);
+
+    //         }).catch(error => {
+    //             console.error(error);
+    //         });
+    //     }
+
+    // }, [axiosRole]);
 
 
 
@@ -117,6 +120,28 @@ const ApplicantFilesFragment = () => {
     //TODO deleting pdf preview trigers route change
 
     const FileCategoriesView = () => {
+
+        const { refreshFiles, setRefreshFiles } = useFileRefresh();
+
+        useEffect(() => {
+
+            if (refreshFiles) {
+
+                axiosRole.get(APPLICANTS_FILES_URL).then(response => {
+                    //save to localstorage
+                    const jsonFiles = JSON.stringify(response.data);
+                    localStorage.setItem('uploads', jsonFiles);
+
+                    //set state
+                    setStoredFiles(response.data);
+
+                    setRefreshFiles(false);
+                }).catch(error => {
+                    console.log(error);
+                });
+            }
+        }, [refreshFiles]);
+
         return (
             <div className='flex bg-gray-200 w-full h-full overflow-y-scroll'>
                 <div className='flex flex-col justify-start items-center w-full h-full'>

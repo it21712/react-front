@@ -4,10 +4,10 @@ const FileFormContext = createContext({});
 
 export const FileFormsProvider = ({ children }) => {
 
-    const [path, setPath] = useState(true);
+    const [refreshFiles, setRefreshFiles] = useState(true);
 
     return (
-        <FileFormContext.Provider value={{ path, setPath }}>
+        <FileFormContext.Provider value={{ refreshFiles, setRefreshFiles }}>
             {children}
         </FileFormContext.Provider>
     );
