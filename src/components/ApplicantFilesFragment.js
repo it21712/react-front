@@ -5,9 +5,10 @@ import useAxiosRole from "../hooks/useAxiosRole";
 import { AFRText, CRTsText, CVText, FLNsText, MCTText, PGDsText, PHDsText, UGDsText, uploadFilesText, WXPsText } from "../strings";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX } from "@fortawesome/free-solid-svg-icons";
-import { CRTUploadForm, FLNUploadForm, MCTUploadForm, PGDUploadForm, PHDUploadForm, UGDUploadForm, WXPUploadForm } from "./forms/FileForms";
+import { CRTUploadForm, FLNUploadForm, MCTUploadForm, PGDUploadForm, PHDUploadForm, UGDUploadForm, uploadFile, validateForm, WXPUploadForm } from "./forms/FileForms";
 import { Link, Route, Routes } from "react-router-dom";
 import { applicantFilesRoute, applicantsRoute, profileRoute } from "../routes";
+import { FileFormsProvider } from "../context/FileFormsProvider";
 
 
 const ApplicantFilesFragment = () => {
@@ -150,16 +151,19 @@ const ApplicantFilesFragment = () => {
     }
 
     return (
-        <Routes>
-            <Route index element={<FileCategoriesView />} />
-            <Route path={'/UGDs'} element={<UGDUploadForm />} />
-            <Route path={'/PGDs'} element={<PGDUploadForm />} />
-            <Route path={'/PHDs'} element={<PHDUploadForm />} />
-            <Route path={'/WXPs'} element={<WXPUploadForm />} />
-            <Route path={'/CRTs'} element={<CRTUploadForm />} />
-            <Route path={'/MCTs'} element={<MCTUploadForm />} />
-            <Route path={'/FLNs'} element={<FLNUploadForm />} />
-        </Routes>
+        <FileFormsProvider>
+            <Routes>
+                <Route index element={<FileCategoriesView />} />
+                <Route path={'/UGDs'} element={<UGDUploadForm />} />
+                <Route path={'/PGDs'} element={<PGDUploadForm />} />
+                <Route path={'/PHDs'} element={<PHDUploadForm />} />
+                <Route path={'/WXPs'} element={<WXPUploadForm />} />
+                <Route path={'/CRTs'} element={<CRTUploadForm />} />
+                <Route path={'/MCTs'} element={<MCTUploadForm />} />
+                <Route path={'/FLNs'} element={<FLNUploadForm />} />
+            </Routes>
+        </FileFormsProvider>
+
     );
 }
 

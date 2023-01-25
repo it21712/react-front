@@ -31,8 +31,7 @@ const PdfPreview = ({ content, fileRef = undefined, handlePreviewDelete }) => {
     );
 }
 
-const FileUploadPrompt = ({ file, title }) => {
-    const [upload, setUpload] = useState(file.current?.files[0] || undefined);
+const FileUploadPrompt = ({ file, title, upload, setUpload }) => {
 
     const handleChange = () => {
         setUpload(file.current.files[0]);
@@ -60,17 +59,7 @@ const FileUploadPrompt = ({ file, title }) => {
     );
 }
 
-const handleSubmit = (event, data, setError, file, setUploadError, fileType, axiosRole) => {
-    event.preventDefault();
-    if (validateForm(data, setError, file, setUploadError))
-        uploadFile(data, file, fileType, axiosRole).then((response) => {
-            if (response.status === 201) { }
-            //TODO use context to go back to files
-        }).catch(error => console.log(error));
-
-}
-
-const validateForm = (data, setError, file, setUploadError) => {
+export const validateForm = (data, setError, file, setUploadError) => {
     let isValid = true;
     const errors = {};
     let uploadError = '';
@@ -92,7 +81,7 @@ const validateForm = (data, setError, file, setUploadError) => {
     return isValid;
 }
 
-const uploadFile = async (data, file, fileType, axiosRole) => {
+export const uploadFile = async (data, file, fileType, axiosRole) => {
 
 
     let formData = new FormData();
@@ -112,6 +101,7 @@ const uploadFile = async (data, file, fileType, axiosRole) => {
 export const UGDUploadForm = () => {
     const axiosRole = useAxiosRole();
     const file = useRef();
+    const [fileUpload, setFileUpload] = useState(file.current?.files[0] || undefined);
     const [uploadError, setUploadError] = useState();
     const [error, setError] = useState({
         institution: '',
@@ -133,10 +123,26 @@ export const UGDUploadForm = () => {
 
     });
 
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        if (validateForm(data, setError, file, setUploadError))
+            uploadFile(data, file, 'UGD', axiosRole).then((response) => {
+                if (response.status === 201) {
+                    //clear and reset form
+                    event.target.reset();
+                    setData({});
+                    setFileUpload('');
+                    file.current.value = '';
+
+                }
+                //TODO use context to go back to files
+            }).catch(error => console.log(error));
+    }
+
     return (
         <div className='flex bg-gray-200 w-full h-full overflow-y-scroll pt-6'>
             <div className='flex flex-col justify-start items-center w-full h-full mt-4'>
-                <form noValidate={true} onSubmit={(event) => { handleSubmit(event, data, setError, file, setUploadError, 'UGD', axiosRole) }} className='flex flex-col md:w-[50%] w-[80%]'>
+                <form noValidate={true} onSubmit={handleSubmit} className='flex flex-col md:w-[50%] w-[80%]'>
                     <div className='flex flex-col items-start pr-6 w-full mb-4'>
                         <h2>{institutionText}</h2>
                         <h2 className='text-red-500 text-sm font-bold '>{error.institution}</h2>
@@ -186,7 +192,7 @@ export const UGDUploadForm = () => {
                     </div>
 
                     <div className='flex flex-col justify-center items-start w-full'>
-                        <FileUploadPrompt file={file} title={uploadText} />
+                        <FileUploadPrompt file={file} title={uploadText} upload={fileUpload} setUpload={setFileUpload} />
                         <h2 className='text-red-500 text-sm font-bold mb-10'>{uploadError}</h2>
                     </div>
 
@@ -207,6 +213,7 @@ export const UGDUploadForm = () => {
 export const PGDUploadForm = () => {
     const axiosRole = useAxiosRole();
     const file = useRef();
+    const [fileUpload, setFileUpload] = useState(file.current?.files[0] || undefined);
     const [uploadError, setUploadError] = useState();
     const [error, setError] = useState({
         institution: '',
@@ -230,10 +237,26 @@ export const PGDUploadForm = () => {
 
     });
 
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        if (validateForm(data, setError, file, setUploadError))
+            uploadFile(data, file, 'PGD', axiosRole).then((response) => {
+                if (response.status === 201) {
+                    //clear and reset form
+                    event.target.reset();
+                    setData({});
+                    setFileUpload('');
+                    file.current.value = '';
+
+                }
+                //TODO use context to go back to files
+            }).catch(error => console.log(error));
+    }
+
     return (
         <div className='flex bg-gray-200 w-full h-full overflow-y-scroll pt-6'>
             <div className='flex flex-col justify-start items-center w-full h-full mt-4'>
-                <form noValidate={true} onSubmit={(event) => { handleSubmit(event, data, setError, file, setUploadError, 'PGD', axiosRole) }} className='flex flex-col md:w-[50%] w-[80%]'>
+                <form noValidate={true} onSubmit={handleSubmit} className='flex flex-col md:w-[50%] w-[80%]'>
                     <div className='flex flex-col items-start pr-6 w-full mb-4'>
                         <h2>{institutionText}</h2>
                         <h2 className='text-red-500 text-sm font-bold '>{error.institution}</h2>
@@ -289,7 +312,7 @@ export const PGDUploadForm = () => {
                     </div>
 
                     <div className='flex flex-col justify-center items-start w-full'>
-                        <FileUploadPrompt file={file} title={uploadText} />
+                        <FileUploadPrompt file={file} title={uploadText} upload={fileUpload} setUpload={setFileUpload} />
                         <h2 className='text-red-500 text-sm font-bold mb-10'>{uploadError}</h2>
                     </div>
 
@@ -309,6 +332,7 @@ export const PGDUploadForm = () => {
 export const PHDUploadForm = () => {
     const axiosRole = useAxiosRole();
     const file = useRef();
+    const [fileUpload, setFileUpload] = useState(file.current?.files[0] || undefined);
     const [uploadError, setUploadError] = useState();
     const [error, setError] = useState({
         institution: '',
@@ -334,10 +358,26 @@ export const PHDUploadForm = () => {
 
     });
 
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        if (validateForm(data, setError, file, setUploadError))
+            uploadFile(data, file, 'PHD', axiosRole).then((response) => {
+                if (response.status === 201) {
+                    //clear and reset form
+                    event.target.reset();
+                    setData({});
+                    setFileUpload('');
+                    file.current.value = '';
+
+                }
+                //TODO use context to go back to files
+            }).catch(error => console.log(error));
+    }
+
     return (
         <div className='flex bg-gray-200 w-full h-full overflow-y-scroll pt-6'>
             <div className='flex flex-col justify-start items-center w-full h-full mt-4'>
-                <form noValidate={true} onSubmit={(event) => { handleSubmit(event, data, setError, file, setUploadError, 'PHD', axiosRole) }} className='flex flex-col md:w-[50%] w-[80%]'>
+                <form noValidate={true} onSubmit={handleSubmit} className='flex flex-col md:w-[50%] w-[80%]'>
                     <div className='flex flex-col items-start pr-6 w-full mb-4'>
                         <h2>{institutionText}</h2>
                         <h2 className='text-red-500 text-sm font-bold '>{error.institution}</h2>
@@ -399,7 +439,7 @@ export const PHDUploadForm = () => {
                     </div>
 
                     <div className='flex flex-col justify-center items-start w-full'>
-                        <FileUploadPrompt file={file} title={uploadText} />
+                        <FileUploadPrompt file={file} title={uploadText} upload={fileUpload} setUpload={setFileUpload} />
                         <h2 className='text-red-500 text-sm font-bold mb-10'>{uploadError}</h2>
                     </div>
 
@@ -419,6 +459,7 @@ export const PHDUploadForm = () => {
 export const WXPUploadForm = () => {
     const axiosRole = useAxiosRole();
     const file = useRef();
+    const [fileUpload, setFileUpload] = useState(file.current?.files[0] || undefined);
     const [uploadError, setUploadError] = useState();
     const [error, setError] = useState({
         position: '',
@@ -440,10 +481,26 @@ export const WXPUploadForm = () => {
 
     });
 
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        if (validateForm(data, setError, file, setUploadError))
+            uploadFile(data, file, 'WXP', axiosRole).then((response) => {
+                if (response.status === 201) {
+                    //clear and reset form
+                    event.target.reset();
+                    setData({});
+                    setFileUpload('');
+                    file.current.value = '';
+
+                }
+                //TODO use context to go back to files
+            }).catch(error => console.log(error));
+    }
+
     return (
         <div className='flex bg-gray-200 w-full h-full overflow-y-scroll pt-6'>
             <div className='flex flex-col justify-start items-center w-full h-full mt-4'>
-                <form noValidate={true} onSubmit={(event) => { handleSubmit(event, data, setError, file, setUploadError, 'WXP', axiosRole) }} className='flex flex-col md:w-[50%] w-[80%]'>
+                <form noValidate={true} onSubmit={handleSubmit} className='flex flex-col md:w-[50%] w-[80%]'>
                     <div className='flex flex-col items-start pr-6 w-full mb-4'>
                         <h2>{positionText}</h2>
                         <h2 className='text-red-500 text-sm font-bold '>{error.position}</h2>
@@ -486,7 +543,7 @@ export const WXPUploadForm = () => {
 
 
                     <div className='flex flex-col justify-center items-start w-full'>
-                        <FileUploadPrompt file={file} title={uploadText} />
+                        <FileUploadPrompt file={file} title={uploadText} upload={fileUpload} setUpload={setFileUpload} />
                         <h2 className='text-red-500 text-sm font-bold mb-10'>{uploadError}</h2>
                     </div>
 
@@ -506,6 +563,7 @@ export const WXPUploadForm = () => {
 export const CRTUploadForm = () => {
     const axiosRole = useAxiosRole();
     const file = useRef();
+    const [fileUpload, setFileUpload] = useState(file.current?.files[0] || undefined);
     const [uploadError, setUploadError] = useState();
     const [error, setError] = useState({
         title: '',
@@ -517,10 +575,26 @@ export const CRTUploadForm = () => {
 
     });
 
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        if (validateForm(data, setError, file, setUploadError))
+            uploadFile(data, file, 'CRT', axiosRole).then((response) => {
+                if (response.status === 201) {
+                    //clear and reset form
+                    event.target.reset();
+                    setData({});
+                    setFileUpload('');
+                    file.current.value = '';
+
+                }
+                //TODO use context to go back to files
+            }).catch(error => console.log(error));
+    }
+
     return (
         <div className='flex bg-gray-200 w-full h-full overflow-y-scroll pt-6'>
             <div className='flex flex-col justify-start items-center w-full h-full mt-4'>
-                <form noValidate={true} onSubmit={(event) => { handleSubmit(event, data, setError, file, setUploadError, 'CRT', axiosRole) }} className='flex flex-col md:w-[50%] w-[80%]'>
+                <form noValidate={true} onSubmit={handleSubmit} className='flex flex-col md:w-[50%] w-[80%]'>
                     <div className='flex flex-col items-start pr-6 w-full mb-4'>
                         <h2>{titleText}</h2>
                         <h2 className='text-red-500 text-sm font-bold '>{error.title}</h2>
@@ -535,7 +609,7 @@ export const CRTUploadForm = () => {
 
 
                     <div className='flex flex-col justify-center items-start w-full'>
-                        <FileUploadPrompt file={file} title={uploadText} />
+                        <FileUploadPrompt file={file} title={uploadText} upload={fileUpload} setUpload={setFileUpload} />
                         <h2 className='text-red-500 text-sm font-bold mb-10'>{uploadError}</h2>
                     </div>
 
@@ -555,6 +629,7 @@ export const CRTUploadForm = () => {
 export const MCTUploadForm = () => {
     const axiosRole = useAxiosRole();
     const file = useRef();
+    const [fileUpload, setFileUpload] = useState(file.current?.files[0] || undefined);
     const [uploadError, setUploadError] = useState();
     const [error, setError] = useState({
         fulfilled: false,
@@ -564,10 +639,26 @@ export const MCTUploadForm = () => {
 
     });
 
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        if (validateForm(data, setError, file, setUploadError))
+            uploadFile(data, file, 'MCT', axiosRole).then((response) => {
+                if (response.status === 201) {
+                    //clear and reset form
+                    event.target.reset();
+                    setData({});
+                    setFileUpload('');
+                    file.current.value = '';
+
+                }
+                //TODO use context to go back to files
+            }).catch(error => console.log(error));
+    }
+
     return (
         <div className='flex bg-gray-200 w-full h-full overflow-y-scroll pt-6'>
             <div className='flex flex-col justify-start items-center w-full h-full mt-4'>
-                <form noValidate={true} onSubmit={(event) => { handleSubmit(event, data, setError, file, setUploadError, 'MCT', axiosRole) }} className='flex flex-col md:w-[50%] w-[80%]'>
+                <form noValidate={true} onSubmit={handleSubmit} className='flex flex-col md:w-[50%] w-[80%]'>
                     <div className='flex w-full mb-4'>
                         <h2 className='mr-4'>{militaryDoneText}</h2>
                         <input className='' type={'checkbox'} id={'fulfilled'} value={data['fulfilled']} onChange={(event) => { setData((prev) => { return { ...prev, 'fulfilled': event.target.checked } }) }} />
@@ -575,7 +666,7 @@ export const MCTUploadForm = () => {
 
 
                     <div className='flex flex-col justify-center items-start w-full'>
-                        <FileUploadPrompt file={file} title={uploadText} />
+                        <FileUploadPrompt file={file} title={uploadText} upload={fileUpload} setUpload={setFileUpload} />
                         <h2 className='text-red-500 text-sm font-bold mb-10'>{uploadError}</h2>
                     </div>
 
@@ -595,6 +686,7 @@ export const MCTUploadForm = () => {
 export const FLNUploadForm = () => {
     const axiosRole = useAxiosRole();
     const file = useRef();
+    const [fileUpload, setFileUpload] = useState(file.current?.files[0] || undefined);
     const [uploadError, setUploadError] = useState();
     const [error, setError] = useState({
         lang: '',
@@ -608,10 +700,26 @@ export const FLNUploadForm = () => {
 
     });
 
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        if (validateForm(data, setError, file, setUploadError))
+            uploadFile(data, file, 'FLN', axiosRole).then((response) => {
+                if (response.status === 201) {
+                    //clear and reset form
+                    event.target.reset();
+                    setData({});
+                    setFileUpload('');
+                    file.current.value = '';
+
+                }
+                //TODO use context to go back to files
+            }).catch(error => console.log(error));
+    }
+
     return (
         <div className='flex bg-gray-200 w-full h-full overflow-y-scroll pt-6'>
             <div className='flex flex-col justify-start items-center w-full h-full mt-4'>
-                <form noValidate={true} onSubmit={(event) => { handleSubmit(event, data, setError, file, setUploadError, 'FLN', axiosRole) }} className='flex flex-col md:w-[50%] w-[80%]'>
+                <form noValidate={true} onSubmit={handleSubmit} className='flex flex-col md:w-[50%] w-[80%]'>
                     <div className='flex flex-col items-start pr-6 w-full mb-4'>
                         <h2>{languageText}</h2>
                         <h2 className='text-red-500 text-sm font-bold '>{error.lang}</h2>
@@ -632,7 +740,7 @@ export const FLNUploadForm = () => {
 
 
                     <div className='flex flex-col justify-center items-start w-full'>
-                        <FileUploadPrompt file={file} title={uploadText} />
+                        <FileUploadPrompt file={file} title={uploadText} upload={fileUpload} setUpload={setFileUpload} />
                         <h2 className='text-red-500 text-sm font-bold mb-10'>{uploadError}</h2>
                     </div>
 
