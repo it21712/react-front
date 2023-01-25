@@ -1,12 +1,10 @@
 import { faX } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { useRef, useState } from "react";
 import { APPLICANTS_FILES_URL } from "../../backend/urls";
 import { useAxiosRole } from "../../hooks/useAxiosPrivate";
 import useFileRefresh from "../../hooks/useFileRefresh";
-import { applicantFilesRoute, applicantsRoute, profileRoute } from "../../routes";
-import { certDateText, cityText, countryText, currentlyThereText, departmentText, detailsSubmitText, diplomaDateText, fileText, fromDateText, gpaText, institutionText, languageText, levelText, militaryDoneText, positionText, requiredFieldText, supervisorText, titleText, universityText, untilDateText, uploadText } from "../../strings";
+import { certDateText, cityText, countryText, currentlyThereText, departmentText, detailsSubmitText, diplomaDateText, fromDateText, gpaText, institutionText, languageText, levelText, militaryDoneText, positionText, requiredFieldText, supervisorText, titleText, universityText, untilDateText, uploadText } from "../../strings";
 
 
 const InputField = ({ type, id, onChange, value, readOnly }) => {
@@ -94,7 +92,6 @@ const uploadFile = async (data, file, fileType, axiosRole, setRefreshFiles) => {
         formData.set(field, data[field]);
     });
 
-    //return axiosRole.post(APPLICANTS_FILES_URL, formData, { headers: { 'Content-Type': 'multipart/form-data' } });
     const response = await axiosRole.post(APPLICANTS_FILES_URL, formData, { headers: { 'Content-Type': 'multipart/form-data' } });
     if (response.status === 201)
         setRefreshFiles(true);
