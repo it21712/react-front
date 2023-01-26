@@ -79,6 +79,11 @@ const validateForm = (data, setError, file, setUploadError) => {
     return isValid;
 }
 
+const successMessageBar = () => {
+
+
+}
+
 
 const uploadFile = async (data, file, fileType, axiosRole, setRefreshFiles) => {
 
