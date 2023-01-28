@@ -60,28 +60,32 @@ const ApplicantFilesFragment = () => {
     }
 
     const StoredPdfPreview = ({ content, fileId }) => {
-        return (
-            <div className='flex max-w-[30%] shadow-lg rounded-xl cursor-pointer px-2 py-3 mr-4 bg-white transition ease-in-out duration-300 hover:-translate-y-[14%]'>
-                <h2 className='text-sm text-gray-600 font-bold truncate w-full h-full mr-4'>{content}</h2>
-                <div className='delete-file flex m-auto bg-slate-200 p-2 rounded-full transition ease-in-out duration-300 hover:bg-orange-400 hover:animate-pulse' onClick={
-                    () => {
-                        if (fileId) {
-                            const data = { 'id': fileId };
-                            axiosRole.delete(APPLICANTS_FILES_URL, { data }, { headers: { 'Content-Type': 'application/json' } })
-                                .then(response => {
-                                    if (response.status === 204) {
-                                        axiosRole.get(APPLICANTS_FILES_URL).then(response => {
-                                            if (response.status === 200) {
-                                                localStorage.setItem('uploads', JSON.stringify(response.data));
-                                                setStoredFiles(response.data);
-                                            }
-                                        }).catch(error => console.error(error));
-                                    }
-                                })
-                                .catch(error => console.error(error));
+
+        const [showDetails, setShowDetails] = useState(false);
+
+
+        const handleDeleteFile = () => {
+            if (fileId) {
+                const data = { 'id': fileId };
+                axiosRole.delete(APPLICANTS_FILES_URL, { data }, { headers: { 'Content-Type': 'application/json' } })
+                    .then(response => {
+                        if (response.status === 204) {
+                            axiosRole.get(APPLICANTS_FILES_URL).then(response => {
+                                if (response.status === 200) {
+                                    localStorage.setItem('uploads', JSON.stringify(response.data));
+                                    setStoredFiles(response.data);
+                                }
+                            }).catch(error => console.error(error));
                         }
-                    }
-                }>
+                    })
+                    .catch(error => console.error(error));
+            }
+        }
+
+        return (//flex max-w-[30%] shadow-lg rounded-xl cursor-pointer px-2 py-3 mr-4 bg-white transition ease-in-out duration-300 hover:-translate-y-[14%] 
+            <div className={`flex max-w-[30%] shadow-lg rounded-xl cursor-pointer px-2 py-3 mr-4 bg-white ${showDetails ? 'h-[300px]' : 'h-[50px] '} transition-all duration-500 ease-out`} onClick={() => setShowDetails(!showDetails)}>
+                <h2 className='text-sm text-gray-600 font-bold truncate w-full h-full mr-4'>{content}</h2>
+                <div className='delete-file flex  m-auto bg-slate-200 p-2 rounded-full transition ease-in-out duration-300 hover:bg-orange-400 hover:animate-pulse' onClick={handleDeleteFile}>
                     <FontAwesomeIcon icon={faX} fontSize={12} className='delete-file-icon' />
                 </div>
             </div>
