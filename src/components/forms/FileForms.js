@@ -1,6 +1,7 @@
 import { faX } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRef, useState } from "react";
+import { FILETYPE_OBJS } from "../../backend/fileTypes";
 import { APPLICANTS_FILES_URL } from "../../backend/urls";
 import { useAxiosRole } from "../../hooks/useAxiosPrivate";
 import useFileRefresh from "../../hooks/useFileRefresh";
@@ -111,25 +112,8 @@ export const UGDUploadForm = () => {
     const { setRefreshFiles } = useFileRefresh();
     const [fileUpload, setFileUpload] = useState(file.current?.files[0] || '');
     const [uploadError, setUploadError] = useState();
-    const [error, setError] = useState({
-        institution: '',
-        university: '',
-        department: '',
-        country: '',
-        city: '',
-        diplomaDate: '',
-        gpa: '',
-    });
-    const [data, setData] = useState({
-        institution: '',
-        university: '',
-        department: '',
-        country: '',
-        city: '',
-        diplomaDate: '',
-        gpa: '',
-
-    });
+    const [error, setError] = useState(FILETYPE_OBJS.UGD);
+    const [data, setData] = useState(FILETYPE_OBJS.UGD);
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -138,15 +122,7 @@ export const UGDUploadForm = () => {
                 if (response.status === 201) {
                     //clear and reset form
 
-                    setData({
-                        institution: '',
-                        university: '',
-                        department: '',
-                        country: '',
-                        city: '',
-                        diplomaDate: '',
-                        gpa: '',
-                    });
+                    setData(FILETYPE_OBJS.UGD);
                     setFileUpload('');
                     file.current.value = '';
                     event.target.reset();
@@ -232,27 +208,8 @@ export const PGDUploadForm = () => {
     const { setRefreshFiles } = useFileRefresh();
     const [fileUpload, setFileUpload] = useState(file.current?.files[0] || '');
     const [uploadError, setUploadError] = useState();
-    const [error, setError] = useState({
-        institution: '',
-        university: '',
-        department: '',
-        country: '',
-        city: '',
-        title: '',
-        diplomaDate: '',
-        gpa: '',
-    });
-    const [data, setData] = useState({
-        institution: '',
-        university: '',
-        department: '',
-        country: '',
-        city: '',
-        title: '',
-        diplomaDate: '',
-        gpa: '',
-
-    });
+    const [error, setError] = useState(FILETYPE_OBJS.PGD);
+    const [data, setData] = useState(FILETYPE_OBJS.PGD);
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -261,16 +218,7 @@ export const PGDUploadForm = () => {
                 if (response.status === 201) {
                     //clear and reset form
 
-                    setData({
-                        institution: '',
-                        university: '',
-                        department: '',
-                        country: '',
-                        city: '',
-                        title: '',
-                        diplomaDate: '',
-                        gpa: '',
-                    });
+                    setData(FILETYPE_OBJS.PGD);
                     setFileUpload('');
                     file.current.value = '';
                     event.target.reset();
@@ -361,29 +309,8 @@ export const PHDUploadForm = () => {
     const { setRefreshFiles } = useFileRefresh();
     const [fileUpload, setFileUpload] = useState(file.current?.files[0] || '');
     const [uploadError, setUploadError] = useState();
-    const [error, setError] = useState({
-        institution: '',
-        university: '',
-        department: '',
-        country: '',
-        city: '',
-        title: '',
-        supervisor: '',
-        diplomaDate: '',
-        gpa: '',
-    });
-    const [data, setData] = useState({
-        institution: '',
-        university: '',
-        department: '',
-        country: '',
-        city: '',
-        title: '',
-        supervisor: '',
-        diplomaDate: '',
-        gpa: '',
-
-    });
+    const [error, setError] = useState(FILETYPE_OBJS.PHD);
+    const [data, setData] = useState(FILETYPE_OBJS.PHD);
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -392,17 +319,7 @@ export const PHDUploadForm = () => {
                 if (response.status === 201) {
                     //clear and reset form
 
-                    setData({
-                        institution: '',
-                        university: '',
-                        department: '',
-                        country: '',
-                        city: '',
-                        title: '',
-                        supervisor: '',
-                        diplomaDate: '',
-                        gpa: '',
-                    });
+                    setData(FILETYPE_OBJS.PHD);
                     setFileUpload('');
                     file.current.value = '';
                     event.target.reset();
@@ -499,25 +416,8 @@ export const WXPUploadForm = () => {
     const { setRefreshFiles } = useFileRefresh();
     const [fileUpload, setFileUpload] = useState(file.current?.files[0] || '');
     const [uploadError, setUploadError] = useState();
-    const [error, setError] = useState({
-        position: '',
-        from: '',
-        currently_working: false,
-        until: '',
-        carrier: '',
-        country: '',
-        city: '',
-    });
-    const [data, setData] = useState({
-        position: '',
-        from: '',
-        currently_working: false,
-        until: '',
-        carrier: '',
-        country: '',
-        city: '',
-
-    });
+    const [error, setError] = useState(FILETYPE_OBJS.WXP);
+    const [data, setData] = useState(FILETYPE_OBJS.WXP);
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -526,15 +426,7 @@ export const WXPUploadForm = () => {
                 if (response.status === 201) {
                     //clear and reset form
 
-                    setData({
-                        position: '',
-                        from: '',
-                        currently_working: false,
-                        until: '',
-                        carrier: '',
-                        country: '',
-                        city: '',
-                    });
+                    setData(FILETYPE_OBJS.WXP);
                     setFileUpload('');
                     file.current.value = '';
                     event.target.reset();
@@ -612,15 +504,8 @@ export const CRTUploadForm = () => {
     const { setRefreshFiles } = useFileRefresh();
     const [fileUpload, setFileUpload] = useState(file.current?.files[0] || '');
     const [uploadError, setUploadError] = useState();
-    const [error, setError] = useState({
-        title: '',
-        date: '',
-    });
-    const [data, setData] = useState({
-        title: '',
-        date: '',
-
-    });
+    const [error, setError] = useState(FILETYPE_OBJS.CRT);
+    const [data, setData] = useState(FILETYPE_OBJS.CRT);
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -629,10 +514,7 @@ export const CRTUploadForm = () => {
                 if (response.status === 201) {
                     //clear and reset form
 
-                    setData({
-                        title: '',
-                        date: '',
-                    });
+                    setData(FILETYPE_OBJS.CRT);
                     setFileUpload('');
                     file.current.value = '';
                     event.target.reset();
@@ -682,13 +564,8 @@ export const MCTUploadForm = () => {
     const { setRefreshFiles } = useFileRefresh();
     const [fileUpload, setFileUpload] = useState(file.current?.files[0] || '');
     const [uploadError, setUploadError] = useState();
-    const [error, setError] = useState({
-        fulfilled: false,
-    });
-    const [data, setData] = useState({
-        fulfilled: false,
-
-    });
+    const [error, setError] = useState(FILETYPE_OBJS.MCT);
+    const [data, setData] = useState(FILETYPE_OBJS.MCT);
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -697,7 +574,7 @@ export const MCTUploadForm = () => {
                 if (response.status === 201) {
                     //clear and reset form
 
-                    setData({ fulfilled: false, });
+                    setData(FILETYPE_OBJS.MCT);
                     setFileUpload('');
                     file.current.value = '';
                     event.target.reset();
@@ -740,17 +617,8 @@ export const FLNUploadForm = () => {
     const { setRefreshFiles } = useFileRefresh();
     const [fileUpload, setFileUpload] = useState(file.current?.files[0] || undefined);
     const [uploadError, setUploadError] = useState();
-    const [error, setError] = useState({
-        lang: '',
-        level: '',
-        title: '',
-    });
-    const [data, setData] = useState({
-        lang: '',
-        level: '',
-        title: '',
-
-    });
+    const [error, setError] = useState(FILETYPE_OBJS.FLN);
+    const [data, setData] = useState(FILETYPE_OBJS.FLN);
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -759,11 +627,7 @@ export const FLNUploadForm = () => {
                 if (response.status === 201) {
                     //clear and reset form
 
-                    setData({
-                        lang: '',
-                        level: '',
-                        title: '',
-                    });
+                    setData(FILETYPE_OBJS.FLN);
                     setFileUpload('');
                     file.current.value = '';
                     event.target.reset();

@@ -13,16 +13,7 @@ const FILETYPES = {
     MILITARY_CERT: 'MCT',
     AFFIRMATION: 'AFR',
 }
-export const FILETYPE_FORM_TEXTS = {
-    UGD: [institutionText, universityText, departmentText, countryText, cityText, {text: diplomaDateText, type:'date'}, gpaText],
-    PGD: [institutionText, universityText, departmentText, countryText, cityText, {text: diplomaDateText, type:'date'}, gpaText, diplomaTitleText],
-    PHD: [institutionText, universityText, departmentText, countryText, cityText, {text: diplomaDateText, type:'date'}, gpaText, diplomaTitleText, supervisorText],
-    WXP: [positionText, {text: fromDateText, type: 'date'}, {text: currentlyThereText, type: 'checkbox'}, {text: untilDateText, type: 'date'}, carrierText, countryText, cityText],
-    REF: [firstNameText, lastNameText, carrierText, positionText, 'Email'],
-    CRT: [titleText, {text: certDateText, type: 'date'}],
-    MCT: [{text: militaryDoneText, type: 'checkbox'}],
-    FLN: [languageText, levelText, studyTitleText],
-}
+
 export const FILETYPE_OBJS = {
     UGD: {
         institution: '',
@@ -32,7 +23,7 @@ export const FILETYPE_OBJS = {
         city: '',
         diplomaDate: '',
         gpa: '',
-    }, 
+    },
     PGD: {
         institution: '',
         university: '',
