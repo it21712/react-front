@@ -76,4 +76,65 @@ export const FILETYPE_OBJS = {
 
 }
 
+export const FILETYPE_FIELS = {
+    UGD: {
+        institution: institutionText,
+        university: universityText,
+        department: departmentText,
+        country: countryText,
+        city: cityText,
+        diplomaDate: diplomaDateText,
+        gpa: gpaText,
+    },
+    PGD: {
+        institution: institutionText,
+        university: universityText,
+        department: departmentText,
+        country: countryText,
+        city: cityText,
+        diplomaDate: diplomaDateText,
+        gpa: gpaText,
+        title: titleText,
+    },
+    PHD: {
+        institution: institutionText,
+        university: universityText,
+        department: departmentText,
+        country: countryText,
+        city: cityText,
+        diplomaDate: diplomaDateText,
+        gpa: gpaText,
+        title: titleText,
+        supervisor: supervisorText,
+    },
+    WXP: {
+        position: positionText,
+        from: fromDateText,
+        currently_working: currentlyThereText,
+        until: untilDateText,
+        carrier: carrierText,
+        country: countryText,
+        city: cityText,
+    },
+    REF: {
+        firstName: firstNameText,
+        lastName: lastNameText,
+        carrier: carrierText,
+        position: positionText,
+        email: 'Email',
+    },
+    CRT: {
+        title: titleText,
+        date: diplomaDateText,
+    },
+    MCT: {
+        fulfilled: militaryDoneText,
+    },
+    FLN: {
+        lang: languageText,
+        level: levelText,
+        title: studyTitleText,
+    },
+}
+
 export default FILETYPES;
