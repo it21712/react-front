@@ -102,12 +102,12 @@ const ApplicantFilesFragment = () => {
         }
 
         return (//flex max-w-[30%] shadow-lg rounded-xl cursor-pointer px-2 py-3 mr-4 bg-white transition ease-in-out duration-300 hover:-translate-y-[14%] 
-            <div className={`flex flex-col max-w-[35%] shadow-lg rounded-xl cursor-pointer px-2 py-3 mr-4 bg-white ${showDetails ? 'h-full ' : 'h-[50px] '} transition-all duration-500 ease-out`} onClick={() => setShowDetails(!showDetails)}>
+            <div className={`flex flex-col overflow-hidden max-w-[35%] shadow-lg rounded-xl cursor-pointer px-2 py-3 mr-4 bg-white ${showDetails ? 'h-full ' : 'h-[50px] '} transition-all duration-500 ease-out`} onClick={() => setShowDetails(!showDetails)}>
 
                 <div className='flex justify-start items-start'>
                     <h2 className='flex text-sm text-gray-600 font-bold truncate w-[80%]'>{content}</h2>
-                    <div className='flex w-[20%]'>
-                        <div className='delete-file flex m-auto bg-slate-200 p-2 rounded-full transition ease-in-out duration-300 hover:bg-orange-400 hover:animate-pulse' onClick={handleDeleteFile}>
+                    <div className='flex w-[20%] justify-end'>
+                        <div className='delete-file flex my-auto bg-slate-200 p-2 rounded-full transition ease-in-out duration-300 hover:bg-orange-400 hover:animate-pulse' onClick={handleDeleteFile}>
                             <FontAwesomeIcon icon={faX} fontSize={12} className='delete-file-icon' />
                         </div>
                     </div>
