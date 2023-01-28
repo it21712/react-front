@@ -9,3 +9,4 @@ export const APPLICANTS_VIEW_INVITATIONS_URL = '/applicants/invitations/';
 export const APPLICANTS_APPLY_URL = '/applicants/apply/';
 export const APPLICANTS_APPLICATIONS_URL = '/applicants/applications/';
 export const APPLICANTS_FILES_URL = '/applicants/files/';
+export const APPLICANTS_FILE_METADATA_URL = '/applicants/files/metadata/';
