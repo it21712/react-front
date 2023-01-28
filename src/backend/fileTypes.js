@@ -76,7 +76,7 @@ export const FILETYPE_OBJS = {
 
 }
 
-export const FILETYPE_FIELS = {
+export const FILETYPE_FIELDS = {
     UGD: {
         institution: institutionText,
         university: universityText,

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import FILETYPES, { FILETYPE_OBJS } from "../backend/fileTypes";
+import FILETYPES, { FILETYPE_FIELDS, FILETYPE_OBJS } from "../backend/fileTypes";
 import { APPLICANTS_FILES_URL, APPLICANTS_FILE_METADATA_URL } from "../backend/urls";
 import useAxiosRole from "../hooks/useAxiosRole";
 import { AFRText, CRTsText, CVText, FLNsText, MCTText, PGDsText, PHDsText, UGDsText, uploadFilesText, WXPsText } from "../strings";
@@ -20,27 +20,6 @@ const ApplicantFilesFragment = () => {
     const [storedFiles, setStoredFiles] = useState(JSON.parse(localStorage.getItem('uploads')) || undefined);
 
     const [upload, setUpload] = useState(false);
-
-
-
-    // useEffect(() => {
-    //     if (!localStorage.getItem('uploads')) {
-    //         axiosRole.get(APPLICANTS_FILES_URL).then(response => {
-
-    //             //save to localstorage
-    //             const jsonFiles = JSON.stringify(response.data);
-    //             localStorage.setItem('uploads', jsonFiles);
-
-    //             //set state
-    //             setStoredFiles(response.data);
-
-    //         }).catch(error => {
-    //             console.error(error);
-    //         });
-    //     }
-
-    // }, [axiosRole]);
-
 
 
     const PdfPreview = ({ content, fileRef = undefined, handlePreviewDelete }) => {
@@ -64,7 +43,7 @@ const ApplicantFilesFragment = () => {
         const [showDetails, setShowDetails] = useState(false);
         const [loading, setLoading] = useState(false);
         const fileDetails = useRef(undefined);
-
+        const printObj = useRef({});
         const handleDeleteFile = () => {
             if (fileId) {
                 const data = { 'id': fileId };
@@ -90,6 +69,18 @@ const ApplicantFilesFragment = () => {
                 fetchFileDetails().then(response => {
                     fileDetails.current = response.data;
                     console.log(fileDetails);
+
+                    //map field titles to sent values
+                    const fileType = fileDetails.current.file_type;
+                    console.log(fileType);
+
+                    const dataObj = FILETYPE_FIELDS[fileType];
+
+                    Object.keys(dataObj).map(key => {
+                        printObj.current[dataObj[key]] = fileDetails.current[key];
+                    });
+                    console.log(printObj.current);
+
                     setLoading(false);
                 })
                     .catch(error => console.log(error));
@@ -102,7 +93,7 @@ const ApplicantFilesFragment = () => {
         }
 
         return (//flex max-w-[30%] shadow-lg rounded-xl cursor-pointer px-2 py-3 mr-4 bg-white transition ease-in-out duration-300 hover:-translate-y-[14%] 
-            <div className={`flex flex-col overflow-y-hidden max-w-[35%] shadow-lg rounded-xl cursor-pointer px-2 py-3 mr-4 bg-white ${showDetails ? 'h-full ' : 'h-[50px] '} transition-all duration-500 ease-out`} onClick={() => setShowDetails(!showDetails)}>
+            <div className={`flex flex-col overflow-y-hidden max-w-[35%] shadow-lg rounded-xl cursor-pointer px-2 py-3 mr-4 bg-white ${showDetails ? 'h-full max-w-[40%] ' : 'h-[50px] '} transition-all ease-in-out duration-500 `} onClick={() => setShowDetails(!showDetails)}>
 
                 <div className='flex justify-start items-start'>
                     <h2 className='flex text-sm text-gray-600 font-bold truncate w-[80%]'>{content}</h2>
@@ -114,10 +105,14 @@ const ApplicantFilesFragment = () => {
 
                 </div>
 
-                {showDetails && fileDetails.current ?
-                    <div className='flex flex-col justify-start items-start'>
-                        {Object.keys(fileDetails.current).map(key => (
-                            <h2 className='p-2' key={key}>{`${fileDetails.current[key]}`}</h2>
+                {showDetails && printObj.current ?
+                    <div className='flex flex-col justify-center items-start mt-2'>
+                        {Object.keys(printObj.current).map(key => (
+                            <div key={key} className='flex flex-col justify-center items-start'>
+                                <h2 className='font-bold text-lg text-yellow-600 mt-1'>{`${key}`}</h2>
+                                <h2 className='mb-4'>{`${printObj.current[key]}`}</h2>
+                            </div>
+
                         ))}
                     </div> : <></>}
 
