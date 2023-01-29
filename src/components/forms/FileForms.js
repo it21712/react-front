@@ -5,7 +5,7 @@ import { FILETYPE_OBJS } from "../../backend/fileTypes";
 import { APPLICANTS_FILES_URL } from "../../backend/urls";
 import { useAxiosRole } from "../../hooks/useAxiosPrivate";
 import useFileRefresh from "../../hooks/useFileRefresh";
-import { certDateText, cityText, countryText, currentlyThereText, departmentText, detailsSubmitText, diplomaDateText, fromDateText, gpaText, institutionText, languageText, levelText, militaryDoneText, positionText, requiredFieldText, supervisorText, titleText, universityText, untilDateText, uploadText } from "../../strings";
+import { carrierText, certDateText, cityText, countryText, currentlyThereText, departmentText, detailsSubmitText, diplomaDateText, fromDateText, gpaText, institutionText, languageText, levelText, militaryDoneText, positionText, requiredFieldText, supervisorText, titleText, universityText, untilDateText, uploadText } from "../../strings";
 
 
 const InputField = ({ type, id, onChange, value, readOnly }) => {
@@ -421,8 +421,13 @@ export const WXPUploadForm = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        if (validateForm(data, setError, file, setUploadError))
+        let rawData = data;
+        //filter data
+        if (data.currently_working) rawData.until = ' ';
+
+        if (validateForm(rawData, setError, file, setUploadError))
             uploadFile(data, file, 'WXP', axiosRole, setRefreshFiles).then((response) => {
+
                 if (response.status === 201) {
                     //clear and reset form
 
@@ -443,6 +448,11 @@ export const WXPUploadForm = () => {
                         <h2>{positionText}</h2>
                         <h2 className='text-red-500 text-sm font-bold '>{error.position}</h2>
                         <InputField type={'text'} id={'position'} value={data['position']} onChange={(event) => { setData((prev) => { return { ...prev, 'position': event.target.value } }) }} />
+                    </div>
+                    <div className='flex flex-col items-start pr-6 w-full mb-4'>
+                        <h2>{carrierText}</h2>
+                        <h2 className='text-red-500 text-sm font-bold '>{error.carrier}</h2>
+                        <InputField type={'text'} id={'carrier'} value={data['carrier']} onChange={(event) => { setData((prev) => { return { ...prev, 'carrier': event.target.value } }) }} />
                     </div>
                     <div className='flex w-full mb-4'>
                         <h2 className='mr-4'>{currentlyThereText}</h2>
