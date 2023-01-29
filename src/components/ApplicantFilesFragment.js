@@ -92,12 +92,13 @@ const ApplicantFilesFragment = () => {
             return axiosRole.get(APPLICANTS_FILE_METADATA_URL, { params: { file_id: fileId } });
         }
 
-        const handleFileDownload = async () => {
-            return axiosRole.get(APPLICANTS_FILE_DOWNLOAD_URL, { params: { file_id: fileId }, responseType: 'blob' }).then((response) => {
+        const handleFileDownload = () => {
+            axiosRole.get(APPLICANTS_FILE_DOWNLOAD_URL, { params: { file_id: fileId }, responseType: 'blob' }).then((response) => {
                 const url = window.URL.createObjectURL(new Blob([response.data]));
                 const link = document.createElement('a');
                 link.href = url;
-                link.setAttribute('download', 'file.pdf'); // set the file name
+                const filename = response.headers['content-disposition'].split('filename=')[1];
+                link.setAttribute('download', filename); // set the file name
                 document.body.appendChild(link);
                 link.click();
             });
