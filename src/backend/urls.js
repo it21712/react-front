@@ -10,3 +10,4 @@ export const APPLICANTS_APPLY_URL = '/applicants/apply/';
 export const APPLICANTS_APPLICATIONS_URL = '/applicants/applications/';
 export const APPLICANTS_FILES_URL = '/applicants/files/';
 export const APPLICANTS_FILE_METADATA_URL = '/applicants/files/metadata/';
+export const APPLICANTS_FILE_DOWNLOAD_URL = '/applicants/files/download/';
