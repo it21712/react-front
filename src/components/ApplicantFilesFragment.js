@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowAltCircleDown, faArrowDown, faArrowUp, faX } from "@fortawesome/free-solid-svg-icons";
 import { CRTUploadForm, FLNUploadForm, MCTUploadForm, PGDUploadForm, PHDUploadForm, UGDUploadForm, uploadFile, validateForm, WXPUploadForm } from "./forms/FileForms";
 import { Link, Route, Routes } from "react-router-dom";
-import { applicantFilesRoute, applicantsRoute, profileRoute } from "../routes";
+
 import { FileFormsProvider } from "../context/FileFormsProvider";
 import useFileRefresh from "../hooks/useFileRefresh";
 
@@ -93,10 +93,10 @@ const ApplicantFilesFragment = () => {
         }
 
         return (//flex max-w-[30%] shadow-lg rounded-xl cursor-pointer px-2 py-3 mr-4 bg-white transition ease-in-out duration-300 hover:-translate-y-[14%] 
-            <div className={`flex flex-col max-w-[35%] overflow-y-hidden shadow-lg rounded-xl cursor-pointer px-2 py-3 mr-4 bg-white ${showDetails ? 'h-full max-w-[40%] ' : 'h-[70px] '} transition-all ease-in-out duration-500 `} >
+            <div className={`flex flex-col max-w-[35%] min-w-[300px] shadow-lg rounded-xl cursor-pointer px-2 py-3 mr-4 bg-white`} >
 
                 <div className='flex justify-start items-start'>
-                    <h2 className='flex text-sm text-gray-600 font-bold truncate w-[80%] hover:text-red-900'>{content}</h2>
+                    <h2 className='flex text-sm text-gray-600 font-bold truncate w-[80%] hover:text-red-900' onClick={() => console.log('h2')}>{content}</h2>
                     <div className='flex w-[20%] justify-end'>
                         <div className='delete-file flex my-auto bg-slate-200 p-2 rounded-full transition ease-in-out duration-300 hover:bg-orange-400 hover:animate-pulse' onClick={handleDeleteFile}>
                             <FontAwesomeIcon icon={faX} fontSize={12} className='delete-file-icon' />
@@ -105,8 +105,19 @@ const ApplicantFilesFragment = () => {
 
                 </div>
 
-                {showDetails && printObj.current ?
-                    <div className='flex flex-col justify-center items-start mt-2'>
+                {/* {showDetails && printObj.current ?
+                    <div className='h-0 flex flex-col justify-center items-start mt-2 transition-all duration-300 ease-in-out '>
+                        {Object.keys(printObj.current).map(key => (
+                            <div key={key} className='flex flex-col justify-center items-start'>
+                                <h2 className='font-bold text-lg text-yellow-600 mt-1'>{`${key}`}</h2>
+                                <h2 className='mb-4'>{`${printObj.current[key]}`}</h2>
+                            </div>
+
+                        ))}
+                    </div> : <></>} */}
+
+                {printObj.current ?
+                    <div style={{ maxHeight: showDetails ? '500px' : 0 }} className={`flex flex-col overflow-y-hidden justify-center items-start mt-2 transition-all duration-500 ease-in-out `}>
                         {Object.keys(printObj.current).map(key => (
                             <div key={key} className='flex flex-col justify-center items-start'>
                                 <h2 className='font-bold text-lg text-yellow-600 mt-1'>{`${key}`}</h2>
