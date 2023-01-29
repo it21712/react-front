@@ -66,6 +66,7 @@ const ApplicantFilesFragment = () => {
             if (showDetails) {
                 console.log('fetching details');
                 setLoading(true);
+                //TODO not send request if printObj.current is not null
                 fetchFileDetails().then(response => {
                     fileDetails.current = response.data;
                     console.log(fileDetails);
@@ -89,6 +90,7 @@ const ApplicantFilesFragment = () => {
         }, [showDetails, fileDetails]);
 
         const fetchFileDetails = async () => {
+
             return axiosRole.get(APPLICANTS_FILE_METADATA_URL, { params: { file_id: fileId } });
         }
 
