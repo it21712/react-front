@@ -45,6 +45,8 @@ const useAxiosRole = () => {
                     console.warn('refresh expired, logging out');
                     forceLogout();
 
+                } else if (error?.response.status === 403 && !prevRequest.sent && error?.response.data.detail === 'Uncompleted Details') {
+                    console.warn('Please complete your profile details before continuing');
                 }
                 //todo add 403 Forbidden interceptor
 

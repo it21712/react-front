@@ -6,7 +6,7 @@ import { AFRText, CRTsText, CVText, FLNsText, MCTText, PGDsText, PHDsText, UGDsT
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowAltCircleDown, faArrowDown, faArrowUp, faX } from "@fortawesome/free-solid-svg-icons";
 import { CRTUploadForm, FLNUploadForm, MCTUploadForm, PGDUploadForm, PHDUploadForm, UGDUploadForm, uploadFile, validateForm, WXPUploadForm } from "./forms/FileForms";
-import { Link, Route, Routes } from "react-router-dom";
+import { Link, Route, Routes, useLocation } from "react-router-dom";
 
 import { FileFormsProvider } from "../context/FileFormsProvider";
 import useFileRefresh from "../hooks/useFileRefresh";
@@ -62,29 +62,32 @@ const ApplicantFilesFragment = () => {
             }
         }
 
+        const mapFileDetails = () => {
+            const fileType = fileDetails.current.file_type;
+            const dataObj = FILETYPE_FIELDS[fileType];
+
+            Object.keys(dataObj).map(key => {
+                printObj.current[dataObj[key]] = fileDetails.current[key];
+            });
+
+            setLoading(false);
+        }
+
         useEffect(() => {
             if (showDetails) {
-                console.log('fetching details');
                 setLoading(true);
-                //TODO not send request if printObj.current is not null
-                fetchFileDetails().then(response => {
-                    fileDetails.current = response.data;
-                    console.log(fileDetails);
 
-                    //map field titles to sent values
-                    const fileType = fileDetails.current.file_type;
-                    console.log(fileType);
+                if (!fileDetails.current) {
+                    fetchFileDetails().then(response => {
+                        fileDetails.current = response.data;
+                        console.log(fileDetails);
 
-                    const dataObj = FILETYPE_FIELDS[fileType];
-
-                    Object.keys(dataObj).map(key => {
-                        printObj.current[dataObj[key]] = fileDetails.current[key];
-                    });
-                    console.log(printObj.current);
-
-                    setLoading(false);
-                })
-                    .catch(error => console.log(error));
+                        mapFileDetails();
+                    })
+                        .catch(error => console.log(error));
+                } else {
+                    mapFileDetails();
+                }
             }
 
         }, [showDetails, fileDetails]);
@@ -156,6 +159,8 @@ const ApplicantFilesFragment = () => {
             files.current = files.current.filter(item => item.file !== fileRef); //does not cause a rerender
             setUploads(uploads.filter(item => item !== fileRef)); //actual removal of the preview component
         }
+
+
 
         return (
             <>
