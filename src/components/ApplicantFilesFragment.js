@@ -124,7 +124,7 @@ const ApplicantFilesFragment = () => {
                     <div style={{ maxHeight: showDetails ? '300px' : 0 }} className={`flex flex-col overflow-y-scroll justify-start items-start mt-2 transition-all duration-500 ease-in-out `}>
                         {Object.keys(printObj.current).map(key => (
                             <div key={key} className='flex flex-col justify-center items-start'>
-                                <h2 className='font-bold text-lg text-yellow-600 mt-1'>{`${key}`}</h2>
+                                <h2 className='font-bold text-lg text-amber-600 mt-1'>{`${key}`}</h2>
                                 <h2 className='mb-4'>{`${printObj.current[key]}`}</h2>
                             </div>
 
