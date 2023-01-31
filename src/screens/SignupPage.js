@@ -74,7 +74,8 @@ const SignupForm = () => {
             .then((response) => {
                 const accessToken = response?.data?.access;
 
-                setAuth({ accessToken });
+                setAuth({ accessToken: accessToken, email: email });
+                localStorage.setItem('email', email);
                 navigate(redirectRoute, { replace: true });
             })
             .catch((error) => {
