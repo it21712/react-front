@@ -11,6 +11,7 @@ import RequireAuth from './routes/RequireAuth';
 import UnauthorizedPage from './screens/UnauthorizedPage';
 import { useEffect } from 'react';
 import RequireVerify from './routes/RequireVerify';
+import CommiteePage from './screens/CommiteePage';
 
 
 
@@ -35,10 +36,8 @@ function App() {
             <Route path={applicantsRoute + profileRoute + '/*'} element={<ApplicantPage />} />
           </Route>
 
-
-
         </Route>
-
+        <Route path={committeeRoute + profileRoute} element={<CommiteePage />} />
       </Route>
     </Routes>
   );
