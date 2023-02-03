@@ -3,7 +3,7 @@ import { FaArrowDown, FaArrowUp, FaCheckCircle, FaFontAwesome } from "react-icon
 import { EVALUATOR_VIEW_INVITATIONS_URL } from "../backend/urls";
 import useAxiosEvaluator from "../hooks/useAxiosEvaluator";
 import { expirationText, logoutText } from "../strings";
-
+import './CommitteePage.css';
 const CommiteePage = () => {
 
     const testEvaluator = {
@@ -52,6 +52,14 @@ const CommiteePage = () => {
     );
 }
 
+const ApplicantView = ({ applicant }) => {
+    return (
+        <span className='flex mb-6  bg-stone-300 rounded-md cursor-pointer hover:bg-stone-400 transition ease-in-out duration-300'>
+            <h2 className='text-base font-semibold text-gray-600 p-2' key={applicant.id}>{applicant.firstName + ' ' + applicant.lastName}</h2>
+        </span>
+    );
+}
+
 export const InvitationComponent = ({ invitation }) => {
 
 
@@ -78,8 +86,8 @@ export const InvitationComponent = ({ invitation }) => {
                             {!viewApplicants ? <FaArrowDown color="gray" fontSize={20} /> : <FaArrowUp color="gray" fontSize={20} />}
                         </div>
                     </div>
-                    <div className='flex flex-col justify-start items-start w-full transition-all ease-in-out duration-500 overflow-y-hidden' style={{ maxHeight: viewApplicants ? 'fit-content' : 0 }}>
-                        {invitation.applicants ? invitation.applicants.map((applicant) => <h2 className='mt-4 mb-2 text-base' key={applicant.id}>{applicant.firstName}</h2>) : <></>}
+                    <div className='flex flex-col justify-start items-start w-full transition-all ease-in-out duration-500 overflow-y-scroll' style={{ maxHeight: viewApplicants ? '500px' : 0 }}>
+                        {invitation.applicants ? invitation.applicants.map((applicant) => <ApplicantView key={applicant.id} applicant={applicant} />) : <></>}
                     </div>
                 </span>
             </div>
