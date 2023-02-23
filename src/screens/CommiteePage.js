@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { FaArrowDown, FaArrowUp, FaCheckCircle, FaFontAwesome } from "react-icons/fa";
+import { useNavigate, useNavigation } from "react-router-dom";
 import { EVALUATOR_VIEW_INVITATIONS_URL } from "../backend/urls";
 import useAxiosEvaluator from "../hooks/useAxiosEvaluator";
+import { applicantPreviewRoute, committeeRoute } from "../routes";
 import { expirationText, logoutText } from "../strings";
 import './CommitteePage.css';
 const CommiteePage = () => {
@@ -40,7 +42,7 @@ const CommiteePage = () => {
 
             </div>
 
-            <div className='flex flex-col mx-auto w-full h-full '>
+            <div className='flex flex-col w-full h-full '>
                 <h2 className='mt-28 text-xl font-bold text-stone-600'>Βλέπετε ενεργές και μη Προσκλήσεις</h2>
                 <div className='flex flex-col mt-12 mx-auto min-w-[600px] w-full h-full max-w-[50%]'>
                     {invitations ? invitations.map((invitation) => <InvitationComponent key={invitation.id} invitation={invitation} />) : <></>}
@@ -53,9 +55,16 @@ const CommiteePage = () => {
 }
 
 const ApplicantView = ({ applicant }) => {
+
+    const navigate = useNavigate();
+
+    const handleClick = () => {
+        navigate(committeeRoute + applicantPreviewRoute, { state: { applicant } });
+    }
+
     return (
-        <span className='flex mb-6  bg-stone-300 rounded-md cursor-pointer hover:bg-stone-400 transition ease-in-out duration-300'>
-            <h2 className='text-base font-semibold text-gray-600 p-2' key={applicant.id}>{applicant.firstName + ' ' + applicant.lastName}</h2>
+        <span className='flex mb-6 cursor-pointer border-b border-b-stone-300 w-full' onClick={handleClick}>
+            <h2 className='text-base font-semibold text-gray-600 p-2  hover:translate-x-2 transition ease-in-out duration-300' key={applicant.id}>{applicant.firstName + ' ' + applicant.lastName}</h2>
         </span>
     );
 }
@@ -66,8 +75,16 @@ export const InvitationComponent = ({ invitation }) => {
     const [viewApplicants, setViewApplicants] = useState(false);
 
 
+    const ActionButton = ({ content, handleClick }) => {
+        return (
+            <div className="flex p-4 cursor-pointer rounded-md bg-stone-400 justify-center items-center hover:drop-shadow-xl transition-all duration-300 ease-in-out">
+                {content}
+            </div>
+        );
+    }
+
     return (
-        <div className={`mb-20 mx-auto flex flex-col md:w-[60%] w-[90%] min-h-[250px] bg-white rounded-t-2xl rounded-b-2xl drop-shadow-md transition-all ease-in-out duration-500 hover:-translate-y-1 hover:shadow-lg`}>
+        <div className={`mb-20 mx-auto flex flex-col md:w-[70%] w-[90%] min-h-[250px] bg-white drop-shadow-md transition-all ease-in-out duration-500 hover:-translate-y-1 hover:shadow-lg`}>
             <span className='flex px-6 justify-between items-center w-full min-h-[50px] bg-stone-300'>
                 <h1 className='text-xl font-sans font-medium text-gray-800'>{invitation.title}</h1>
                 <h2 className='text-sm text-gray-700'>{invitation.start.split('T')[0]}</h2>
@@ -79,20 +96,27 @@ export const InvitationComponent = ({ invitation }) => {
                     <h2 className='pl-8 tex-base font-mono'>{invitation.end.split('T')[0]}</h2>
 
                 </span>
-                <span className='flex flex-col w-full justify-start mt-6 transition-all ease-in-out duration-500'>
-                    <div className='flex justify-start items-start mb-6 cursor-pointer' onClick={() => { setViewApplicants(!viewApplicants) }}>
-                        <h2 className='flex text-gray-600 font-bold mr-2'>View Applicants</h2>
-                        <div className='flex justify-center items-center mr-2'>
-                            {!viewApplicants ? <FaArrowDown color="gray" fontSize={20} /> : <FaArrowUp color="gray" fontSize={20} />}
-                        </div>
+                <div className='flex flex-col w-full justify-start mt-6 transition-all ease-in-out duration-500'>
+                    <div className='flex justify-center items-center space-x-6 mb-6 w-full' onClick={() => { setViewApplicants(!viewApplicants) }}>
+                        <ActionButton
+                            content={<div className="flex flex-row">
+                                <h2 className='flex text-white font-bold mr-2'>Show Applicants</h2>
+                                <div className='flex justify-center items-center mr-2'>
+                                    {!viewApplicants ? <FaArrowDown color="white" fontSize={20} /> : <FaArrowUp color="white" fontSize={20} />}
+                                </div>
+                            </div>} />
+
+                        <ActionButton content={<h2 className='flex text-white font-bold mr-2'>Show Applicants</h2>} />
+
+
                     </div>
                     <div className='flex flex-col justify-start items-start w-full transition-all ease-in-out duration-500 overflow-y-scroll' style={{ maxHeight: viewApplicants ? '500px' : 0 }}>
                         {invitation.applicants ? invitation.applicants.map((applicant) => <ApplicantView key={applicant.id} applicant={applicant} />) : <></>}
                     </div>
-                </span>
+                </div>
             </div>
 
-        </div>
+        </div >
     );
 
 

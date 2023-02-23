@@ -1,7 +1,7 @@
 import './App.css';
 import WelcomePage from './screens/WelcomePage';
 import { Route, Routes } from 'react-router-dom';
-import { homeRoute, applicantsRoute, loginRoute, signupRoute, committeeRoute, verifyEmailRoute, profileRoute, logoutRoute, unauthorizedRoute, applicantDetailsRoute } from './routes';
+import { homeRoute, applicantsRoute, loginRoute, signupRoute, committeeRoute, verifyEmailRoute, profileRoute, logoutRoute, unauthorizedRoute, applicantDetailsRoute, applicantPreviewRoute } from './routes';
 import SignupPage from './screens/SignupPage';
 import VerifyEmailPage from './screens/VerifyEmailPage';
 import LoginPage from './screens/LoginPage';
@@ -12,6 +12,7 @@ import UnauthorizedPage from './screens/UnauthorizedPage';
 import { useEffect } from 'react';
 import RequireVerify from './routes/RequireVerify';
 import CommiteePage from './screens/CommiteePage';
+import ApplicantPreviewPage from './screens/ApplicantPreviewPage';
 
 
 
@@ -38,6 +39,7 @@ function App() {
 
         </Route>
         <Route path={committeeRoute + profileRoute} element={<CommiteePage />} />
+        <Route path={committeeRoute + applicantPreviewRoute} element={<ApplicantPreviewPage />} />
       </Route>
     </Routes>
   );

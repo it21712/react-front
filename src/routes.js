@@ -11,3 +11,4 @@ export const applicantDetailsRoute = '/details';
 export const applicantFilesRoute = '/uploads';
 export const applicantsApplicationsRoute = '/applications';
 export const applicantsInvitationsRoute = '/invitations';
+export const applicantPreviewRoute = '/applicant-details';
