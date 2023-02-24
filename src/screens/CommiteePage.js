@@ -4,7 +4,7 @@ import { useNavigate, useNavigation } from "react-router-dom";
 import { EVALUATOR_VIEW_INVITATIONS_URL } from "../backend/urls";
 import useAxiosEvaluator from "../hooks/useAxiosEvaluator";
 import { applicantPreviewRoute, committeeRoute } from "../routes";
-import { expirationText, logoutText } from "../strings";
+import { expirationText, logoutText, viewApplicantsText } from "../strings";
 import './CommitteePage.css';
 const CommiteePage = () => {
 
@@ -27,6 +27,18 @@ const CommiteePage = () => {
     useEffect(() => {
         fetchInvitations();
     }, []);
+
+    // return (
+    //     <div className="flex flex-row w-screen h-screen bg-gray-200">
+    //         <div className="flex h-full w-[50%] border-r border-gray-300 overflow-y-scroll">
+    //             <div className='flex flex-col mt-12 mx-auto min-w-[600px] w-full h-full max-w-[80%]'>
+    //                 {invitations ? invitations.map((invitation) => <InvitationComponent key={invitation.id} invitation={invitation} />) : <></>}
+    //             </div>
+
+    //         </div>
+    //         <div className="h-full w-[50%] border-l border-gray-300 overflow-y-scroll"></div>
+    //     </div>
+    // );
 
     return (
         <div className='flex h-screen w-screen bg-gray-200 overflow-y-scroll'>
@@ -74,10 +86,16 @@ export const InvitationComponent = ({ invitation }) => {
 
     const [viewApplicants, setViewApplicants] = useState(false);
 
+    const navigate = useNavigate();
+
+    const handleAllApplicantsPreview = () => {
+        navigate(committeeRoute + applicantPreviewRoute, { state: { applicants: invitation.applicants, title: invitation.title } });
+    }
 
     const ActionButton = ({ content, handleClick }) => {
         return (
-            <div className="flex p-4 cursor-pointer rounded-md bg-stone-400 justify-center items-center hover:drop-shadow-xl transition-all duration-300 ease-in-out">
+            <div className="flex p-4 cursor-pointer rounded-md bg-stone-400 justify-center items-center hover:drop-shadow-xl transition-all duration-300 ease-in-out"
+                onClick={handleClick}>
                 {content}
             </div>
         );
@@ -98,15 +116,16 @@ export const InvitationComponent = ({ invitation }) => {
                 </span>
                 <div className='flex flex-col w-full justify-start mt-6 transition-all ease-in-out duration-500'>
                     <div className='flex justify-center items-center space-x-6 mb-6 w-full' onClick={() => { setViewApplicants(!viewApplicants) }}>
-                        <ActionButton
+                        {/* <ActionButton
                             content={<div className="flex flex-row">
                                 <h2 className='flex text-white font-bold mr-2'>Show Applicants</h2>
                                 <div className='flex justify-center items-center mr-2'>
                                     {!viewApplicants ? <FaArrowDown color="white" fontSize={20} /> : <FaArrowUp color="white" fontSize={20} />}
                                 </div>
-                            </div>} />
+                            </div>} /> */}
 
-                        <ActionButton content={<h2 className='flex text-white font-bold mr-2'>Show Applicants</h2>} />
+                        <ActionButton content={<h2 className='flex text-white font-semibold mr-2'>{viewApplicantsText}</h2>}
+                            handleClick={handleAllApplicantsPreview} />
 
 
                     </div>
